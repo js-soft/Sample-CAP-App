@@ -266,6 +266,22 @@ annotate common.Currencies with @(UI: {
 
 ////////////////////////////////////////////////////////////////////////////
 //
+//	Publishers List
+//
+annotate my.Publishers with @(
+  Common.SemanticKey: [ID],
+  UI: {
+    LineItem: [
+      { Value: name },
+      { Value: location },
+      { Value: foundedYear },
+      { Value: website }
+    ]
+  }
+);
+
+////////////////////////////////////////////////////////////////////////////
+//
 //	Reviews List
 //
 annotate my.Reviews with @(

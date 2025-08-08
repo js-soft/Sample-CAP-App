@@ -9,7 +9,8 @@ annotate CatalogService.Books with @(UI : {
         TypeName      : '{i18n>Book}',
         TypeNamePlural: '{i18n>Books}',
         Title         : {Value: title},
-        Description   : {Value : author}
+        Description   : {Value : author},
+        Publisher     : {Value : publisher}
     },
     HeaderFacets: [{
         $Type : 'UI.ReferenceFacet',
@@ -39,7 +40,8 @@ annotate CatalogService.Books with @(UI : {
     SelectionFields: [
         ID,
         price,
-        currency_code
+        currency_code,
+        publisher
     ],
     LineItem: [
         {
@@ -50,8 +52,12 @@ annotate CatalogService.Books with @(UI : {
             Value: author,
             Label: '{i18n>Author}'
         },
+        {
+            Value: publisher.name,
+            Label: '{i18n>Publisher}'
+        },
         {Value: genre.name},
         {Value: price},
-        {Value: currency.symbol},
+        {Value: currency.symbol}
     ]
 });
