@@ -24,7 +24,19 @@ modules:
         properties:
           srv-url: ${default-url}
     requires:
-      []
+      - name: sample-cap-app-db
+
+  - name: sample-cap-app-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+    requires:
+      - name: sample-cap-app-db
 
 resources:
-  []
+  - name: sample-cap-app-db
+    type: com.sap.xs.hdi-container
+    parameters:
+      service: hana
+      service-plan: hdi-shared
