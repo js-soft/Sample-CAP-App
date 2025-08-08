@@ -19,6 +19,7 @@ annotate my.Books with @(
     SelectionFields: [
       ID,
       author_ID,
+      publisher,
       price,
       currency_code
     ],
@@ -30,6 +31,10 @@ annotate my.Books with @(
       {
         Value: author.ID,
         Label: '{i18n>Author}'
+      },
+      {
+        Value: publisher.name,
+        Label: '{i18n>Publisher}'
       },
       {Value: genre.name},
       {Value: stock},
