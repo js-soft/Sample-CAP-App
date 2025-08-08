@@ -30,7 +30,10 @@
     "requires": {
       "[production]": {
         "auth": "xsuaa"
-      }
+      },
+      "destinations": true,
+      "html5-runtime": true,
+      "workzone": true
     }
   }
 }
