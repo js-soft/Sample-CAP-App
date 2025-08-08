@@ -34,6 +34,26 @@ modules:
     requires:
       - name: sample-cap-app-db
 
+  - name: sample-cap-app
+    type: approuter.nodejs
+    path: app/router
+    parameters:
+      keep-existing-routes: true
+      disk-quota: 256M
+      memory: 256M
+    requires:
+      - name: srv-api
+        group: destinations
+        properties:
+          name: srv-api # must be used in xs-app.json as well
+          url: ~{srv-url}
+          forwardAuthToken: true
+    provides:
+      - name: app-api
+        properties:
+          app-protocol: ${protocol}
+          app-uri: ${default-uri}
+
 resources:
   - name: sample-cap-app-db
     type: com.sap.xs.hdi-container
