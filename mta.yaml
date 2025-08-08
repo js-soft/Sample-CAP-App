@@ -25,6 +25,7 @@ modules:
           srv-url: ${default-url}
     requires:
       - name: sample-cap-app-db
+      - name: sample-cap-app-auth
 
   - name: sample-cap-app-db-deployer
     type: hdb
@@ -48,6 +49,7 @@ modules:
           name: srv-api # must be used in xs-app.json as well
           url: ~{srv-url}
           forwardAuthToken: true
+      - name: sample-cap-app-auth
     provides:
       - name: app-api
         properties:
@@ -60,3 +62,22 @@ resources:
     parameters:
       service: hana
       service-plan: hdi-shared
+  - name: sample-cap-app-auth
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: xsuaa
+      service-plan: application
+      path: ./xs-security.json
+      config:
+        xsappname: sample-cap-app-${org}-${space}
+        tenant-mode: dedicated
+        role-collections:
+          - name: 'admin (sample-cap-app ${org}-${space})'
+            description: 'generated'
+            role-template-references:
+              - '$XSAPPNAME.admin'
+        oauth2-configuration:
+          redirect-uris:
+            - https://*~{app-api/app-uri}/**
+    requires:
+      - name: app-api

@@ -8,7 +8,8 @@
   "dependencies": {
     "@sap/cds": "^9.2.0",
     "express": "^4",
-    "@cap-js/hana": "^2"
+    "@cap-js/hana": "^2",
+    "@sap/xssec": "^4"
   },
   "engines": {
     "node": ">=20"
@@ -25,5 +26,11 @@
     "app/admin-books",
     "app/browse"
   ],
-  "cds": {}
+  "cds": {
+    "requires": {
+      "[production]": {
+        "auth": "xsuaa"
+      }
+    }
+  }
 }
