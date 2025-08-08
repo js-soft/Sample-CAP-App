@@ -1,5 +1,5 @@
-using { AdminService } from '../../srv/admin-service.cds';
-using { sap.capire.bookshop } from '../../db/schema';
+using {AdminService} from '../../srv/admin-service.cds';
+using {sap.capire.bookshop} from '../../db/schema';
 
 ////////////////////////////////////////////////////////////////////////////
 //
@@ -7,13 +7,13 @@ using { sap.capire.bookshop } from '../../db/schema';
 //
 
 annotate AdminService.Books with @(UI: {
-  HeaderInfo       : {
+  HeaderInfo         : {
     TypeName      : '{i18n>Book}',
     TypeNamePlural: '{i18n>Books}',
     Title         : {Value: title},
     Description   : {Value: author.name}
   },
-  Facets: [
+  Facets             : [
     {
       $Type : 'UI.ReferenceFacet',
       Label : '{i18n>General}',
@@ -23,6 +23,11 @@ annotate AdminService.Books with @(UI: {
       $Type : 'UI.ReferenceFacet',
       Label : '{i18n>Translations}',
       Target: 'texts/@UI.LineItem'
+    },
+    {
+      $Type : 'UI.ReferenceFacet',
+      Label : '{i18n>Reviews}',
+      Target: 'reviews/@UI.LineItem'
     },
     {
       $Type : 'UI.ReferenceFacet',
@@ -49,7 +54,7 @@ annotate AdminService.Books with @(UI: {
       Label: '{i18n>Currency}'
     },
   ]},
-  FieldGroup #Admin: {Data: [
+  FieldGroup #Admin  : {Data: [
     {Value: createdBy},
     {Value: createdAt},
     {Value: modifiedBy},
@@ -67,12 +72,12 @@ annotate sap.capire.bookshop.Books with @fiori.draft.enabled;
 annotate AdminService.Books with @odata.draft.enabled;
 
 annotate AdminService.Books.texts with @(UI: {
-  Identification: [{Value: title}],
+  Identification : [{Value: title}],
   SelectionFields: [
     locale,
     title
   ],
-  LineItem: [
+  LineItem       : [
     {
       Value: locale,
       Label: 'Locale'
@@ -105,7 +110,8 @@ annotate AdminService.Books.texts {
 using {sap} from '@sap/cds/common';
 
 extend service AdminService {
-  @readonly entity Languages as projection on sap.common.Languages;
+  @readonly
+  entity Languages as projection on sap.common.Languages;
 }
 
 // Workaround for Fiori popup for asking user to enter a new UUID on Create
