@@ -7,8 +7,14 @@ service CatalogService {
 
   /** For display in details pages */
   @readonly entity Books as projection on my.Books { *,
-    author.name as author
+    author.name as author,
+    reviews
   } excluding { createdBy, modifiedBy };
+
+  entity Reviews as projection on my.Reviews {
+    *,
+    book
+  };
 
   @requires: 'authenticated-user'
   action submitOrder (

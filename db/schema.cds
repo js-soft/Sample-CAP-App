@@ -16,8 +16,11 @@ entity Books : managed {
       price             : Decimal;
       currency          : Currency;
       image             : LargeBinary @Core.MediaType: 'image/png';
-      reviews           : Association to many Reviews
+      reviews           : Association to many Reviews 
                             on reviews.book = $self;
+
+      pages  : Integer @assert.range: [(0),_]; // hint: adds validation, must be > 0
+      isbn   : String(20) @assert.format: '^(?=(?:\D*\d){10}(?:(?:\D*\d){3})?$)[\d-]+$'; // hint: https://stackoverflow.com/questions/41271613/use-regex-to-verify-an-isbn-number
 }
 
 entity Reviews : managed {

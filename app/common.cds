@@ -70,6 +70,8 @@ annotate my.Books with {
   stock   @title: '{i18n>Stock}';
   descr   @title: '{i18n>Description}'  @UI.MultiLineText;
   image   @title: '{i18n>Image}';
+  // hint: labels the search field with value from i18n
+  isbn    @title: '{i18n>ISBN}';
 }
 
 ////////////////////////////////////////////////////////////////////////////
