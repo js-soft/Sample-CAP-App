@@ -39,6 +39,12 @@ annotate AdminService.Books with @(UI: {
       Label : '{i18n>Admin}',
       Target: '@UI.FieldGroup#Admin'
     },
+    // hint: add Publication section to Manage Books app's page view
+    { 
+      $Type : 'UI.ReferenceFacet', 
+      Label : '{i18n>Publication}',
+      Target: '@UI.FieldGroup#Publication' 
+    }
   ],
   FieldGroup #General: {Data: [
     {Value: title},
@@ -59,9 +65,28 @@ annotate AdminService.Books with @(UI: {
     {Value: createdAt},
     {Value: modifiedBy},
     {Value: modifiedAt}
+  ]},
+  // hint: adds Pages and ISBN display to the Publication section
+  FieldGroup #Publication: {Data: [ 
+    {Value: pages, Label:'{i18n>Pages}'}, 
+    {Value: isbn, Label:'{i18n>ISBN}'} 
   ]}
 });
 
+// hint: define data that is displayed in the list display's extended row mode
+annotate AdminService.Books with @(UI: {
+  SelectionFields: [ title, author_ID, isbn ],
+  LineItem: [
+    { Value:title,           Label:'{i18n>Title}'    },
+    { Value:author.name,     Label:'{i18n>Author}'   },
+    { Value:genre.name,      Label:'{i18n>Genre}'    },
+    { Value:pages,           Label:'{i18n>Pages}'    }, // hint: display Pages
+    { Value:isbn,            Label:'{i18n>ISBN}'     }, // hint: display ISBN
+    { Value:price,           Label:'{i18n>Price}'    },
+    { Value:currency.symbol, Label:'{i18n>Currency}' },
+    { Value:stock,           Label:'{i18n>Stock}'    }
+  ]
+});
 
 ////////////////////////////////////////////////////////////
 //
@@ -123,3 +148,11 @@ annotate AdminService.Books with {
 annotate AdminService.Books with {
   genre @Common.ValueListWithFixedValues;
 }
+
+// hint: this was needed to make the path not found at 'reviews/@UI.LineItem' go away
+annotate AdminService.Reviews with @(UI: {
+  LineItem: [
+    { Value: text,   Label: '{i18n>ReviewText}' },
+    { Value: rating, Label: '{i18n>Rating}' }
+  ]
+});
