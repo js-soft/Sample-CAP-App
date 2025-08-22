@@ -26,11 +26,13 @@ annotate my.Books with @(
     LineItem       : [
       {
         Value: ID,
-        Label: '{i18n>Title}'
+        Label: '{i18n>Title}',
+        ![@HTML5.CssDefaults] : {width : '10rem'}
       },
       {
         Value: author.ID,
-        Label: '{i18n>Author}'
+        Label: '{i18n>Author}',
+        ![@HTML5.CssDefaults] : {width : '5rem'}
       },
       {
         Value: publisher.name,
