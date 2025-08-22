@@ -6,11 +6,15 @@ using {
 
 namespace sap.capire.bookshop;
 
+entity BookAuthors {
+  book   : Association to Books;
+  author : Association to Authors;
+}
+
 entity Books : managed {
   key ID                : Integer;
       @mandatory title  : localized String(111);
       descr             : localized String(1111);
-      @mandatory author : Association to Authors;
       genre             : Association to Genres;
       stock             : Integer;
       price             : Decimal;
@@ -18,6 +22,8 @@ entity Books : managed {
       image             : LargeBinary @Core.MediaType: 'image/png';
       reviews           : Association to many Reviews
                             on reviews.book = $self;
+      authors           : Association to many BookAuthors
+                            on authors.book_ID = ID;
 }
 
 entity Reviews : managed {
@@ -34,16 +40,7 @@ entity Authors : managed {
       dateOfDeath     : Date;
       placeOfBirth    : String;
       placeOfDeath    : String;
-      books           : Association to many Books
-                          on books.author = $self;
-}
-
-entity BookAuthors {
-  key book_ID   : Integer;
-  key author_ID : Integer;
-
-  book   : Association to Books   on book_ID = book.ID;
-  author : Association to Authors on author_ID = author.ID;
+      books           : Association to many BookAuthors on books.author_ID = ID;
 }
 
 /** Hierarchically organized Code List for Genres */
