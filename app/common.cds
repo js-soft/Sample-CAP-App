@@ -274,4 +274,4 @@ annotate my.Reviews with @(
     {Value: text},
     {Value: rating}
   ], }
-)
+);
