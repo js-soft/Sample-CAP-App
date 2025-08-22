@@ -38,11 +38,11 @@ entity Authors : managed {
                           on books.author = $self;
 }
 
-entity BookAuthors : managed {
+entity BookAuthors {
   key book_ID   : Integer;
   key author_ID : Integer;
 
-  book   : Association to Books   on book_ID = books.ID;
+  book   : Association to Books   on book_ID = book.ID;
   author : Association to Authors on author_ID = author.ID;
 }
 
