@@ -7,7 +7,7 @@ service CatalogService {
 
   /** For display in details pages */
   @readonly entity Books as projection on my.Books { *,
-    author.name as author
+    authors
   } excluding { createdBy, modifiedBy };
 
   @requires: 'authenticated-user'
