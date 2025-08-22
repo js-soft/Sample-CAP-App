@@ -43,7 +43,7 @@ annotate my.Books with @(
     Text           : title,
     TextArrangement: #TextOnly
   };
-  author @ValueList.entity: 'Authors';
+  authors @ValueList.entity: 'Authors';
 };
 
 annotate Currencies with {
@@ -62,7 +62,7 @@ annotate my.Books with {
     Text           : genre.name,
     TextArrangement: #TextOnly
   };
-  author  @title: '{i18n>Author}'       @Common              : {
+  authors  @title: '{i18n>Author}'       @Common              : {
     Text           : author.name,
     TextArrangement: #TextOnly
   };
