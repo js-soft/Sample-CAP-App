@@ -7,8 +7,8 @@ using {
 namespace sap.capire.bookshop;
 
 entity BookAuthors {
-  book   : Association to Books;
-  author : Association to Authors;
+  key book   : Association to Books;
+  key author : Association to Authors;
 }
 
 entity Books : managed {
@@ -23,7 +23,7 @@ entity Books : managed {
       reviews           : Association to many Reviews
                             on reviews.book = $self;
       authors           : Association to many BookAuthors
-                            on authors.book_ID = ID;
+                            on authors.book = $self;
 }
 
 entity Reviews : managed {
@@ -40,7 +40,7 @@ entity Authors : managed {
       dateOfDeath     : Date;
       placeOfBirth    : String;
       placeOfDeath    : String;
-      books           : Association to many BookAuthors on books.author_ID = ID;
+      books           : Association to many BookAuthors on books.author = $self;
 }
 
 /** Hierarchically organized Code List for Genres */
