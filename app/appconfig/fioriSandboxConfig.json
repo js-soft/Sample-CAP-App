@@ -22,6 +22,23 @@
                 }
               ]
             },
+                        {
+              "id": "Publishers",
+              "title": "Publishers",
+              "isPreset": true,
+              "isVisible": true,
+              "isGroupLocked": false,
+              "tiles": [
+                {
+                  "id": "BrowsePublishers",
+                  "tileType": "sap.ushell.ui.tile.StaticTile",
+                  "properties": {
+                    "title": "Browse Publishers",
+                    "targetURL": "#Publishers-display"
+                  }
+                }
+              ]
+            },
             {
               "id": "Administration",
               "title": "Administration",
@@ -73,10 +90,28 @@
                 "url": "browse/webapp"
               }
             },
+            "BrowsePublishers": {
+              "semanticObject": "Publishers",
+              "action": "display",
+              "title": "Browse Publishers",
+              "signature": {
+                "parameters": {
+                  "Publishers.ID": {
+                    "renameTo": "ID"
+                  }
+                },
+                "additionalParameters": "ignored"
+              },
+              "resolutionResult": {
+                "applicationType": "SAPUI5",
+                "additionalInformation": "SAPUI5.Component=publisher",
+                "url": "publish/webapp"
+              }
+            },
             "ManageBooks": {
-              "semanticObject": "Books",
+              "semanticObject": "Publishers",
               "action": "manage",
-              "title": "Manage Books",
+              "title": "Manage Publishers",
               "signature": {
                 "parameters": {},
                 "additionalParameters": "allowed"
