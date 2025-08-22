@@ -11,7 +11,7 @@ entity Books : managed {
       @mandatory title  : localized String(111);
       descr             : localized String(1111);
       @mandatory author : Association to Authors;
-      authors           : Association to Authors throught BookAuthors;
+      authors           : Association to BookAuthors;
       genre             : Association to Genres;
       stock             : Integer;
       price             : Decimal;
