@@ -6,11 +6,6 @@ using {
 
 namespace sap.capire.bookshop;
 
-entity BookAuthors {
-  key book   : Association to Books;
-  key author : Association to Authors;
-}
-
 entity Books : managed {
   key ID                : Integer;
       @mandatory title  : localized String(111);
@@ -41,6 +36,11 @@ entity Authors : managed {
       placeOfBirth    : String;
       placeOfDeath    : String;
       books           : Association to many BookAuthors on books.author = $self;
+}
+
+entity BookAuthors {
+  key book   : Association to Books;
+  key author : Association to Authors;
 }
 
 /** Hierarchically organized Code List for Genres */
