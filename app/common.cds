@@ -289,6 +289,63 @@ annotate my.Publishers with @(
 
 ////////////////////////////////////////////////////////////////////////////
 //
+//  Publishers Details (Object Page)
+//
+annotate my.Publishers with @(
+  UI: {
+    HeaderInfo: {
+      TypeName      : '{i18n>Publisher}',
+      TypeNamePlural: '{i18n>Publishers}',
+      Title         : { Value: name },
+      Description   : { Value: location }     // show something under the title
+    },
+
+    // What fields to show in the header/content by default
+    Identification: [
+      { $Type: 'UI.DataField', Value: name,        Label: '{i18n>Name}' },
+      { $Type: 'UI.DataField', Value: location,    Label: '{i18n>Location}' },
+      { $Type: 'UI.DataField', Value: foundedYear, Label: '{i18n>Founded}' },
+      { $Type: 'UI.DataField', Value: website,     Label: '{i18n>Website}' }
+    ],
+
+    // Define the page sections (facets). At least one is required.
+    Facets: [
+      {
+        $Type : 'UI.ReferenceFacet',
+        Label : '{i18n>Details}',
+        Target: '@UI.Identification'
+      },
+      {
+        $Type : 'UI.ReferenceFacet',
+        Label : '{i18n>Books}',
+        Target: 'books/@UI.LineItem'
+      }
+    ]
+  }
+);
+
+// Table of books on the Publisher Object Page
+annotate my.Publishers:books with @(
+  UI.LineItem: [
+    { $Type: 'UI.DataField', Value: books.ID,    Label: '{i18n>ID}' },
+    { $Type: 'UI.DataField', Value: books.title, Label: '{i18n>Title}' },
+    { $Type: 'UI.DataField', Value: books.price, Label: '{i18n>Price}' },
+    { $Type: 'UI.DataField', Value: books.currency, Label: '{i18n>Currency}' }
+  ]
+);
+
+// (optional) Titles for property editors / field labels on elements
+annotate my.Publishers with {
+  ID          @title: '{i18n>ID}';
+  name        @title: '{i18n>Name}';
+  location    @title: '{i18n>Location}';
+  foundedYear @title: '{i18n>Founded}';
+  website     @title: '{i18n>Website}';
+};
+
+
+////////////////////////////////////////////////////////////////////////////
+//
 //	Reviews List
 //
 annotate my.Reviews with @(
