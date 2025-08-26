@@ -289,7 +289,7 @@ annotate my.Publishers with @(
 
 ////////////////////////////////////////////////////////////////////////////
 //
-//  Publishers Details (Object Page)
+//  Publishers Details with grouped sections
 //
 annotate my.Publishers with @(
   UI: {
@@ -297,51 +297,51 @@ annotate my.Publishers with @(
       TypeName      : '{i18n>Publisher}',
       TypeNamePlural: '{i18n>Publishers}',
       Title         : { Value: name },
-      Description   : { Value: location }     // show something under the title
+      Description   : { Value: location }
     },
 
-    // What fields to show in the header/content by default
-    Identification: [
-      { $Type: 'UI.DataField', Value: name,        Label: '{i18n>Name}' },
-      { $Type: 'UI.DataField', Value: location,    Label: '{i18n>Location}' },
-      { $Type: 'UI.DataField', Value: foundedYear, Label: '{i18n>Founded}' },
-      { $Type: 'UI.DataField', Value: website,     Label: '{i18n>Website}' }
-    ],
-
-    // Define the page sections (facets). At least one is required.
     Facets: [
       {
         $Type : 'UI.ReferenceFacet',
-        Label : '{i18n>Details}',
-        Target: '@UI.Identification'
+        Label : '{i18n>GeneralInfo}',
+        Target: '@UI.FieldGroup#GeneralInfo'
+      },
+      {
+        $Type : 'UI.ReferenceFacet',
+        Label : '{i18n>AdditionalInfo}',
+        Target: '@UI.FieldGroup#AdditionalInfo'
       },
       {
         $Type : 'UI.ReferenceFacet',
         Label : '{i18n>Books}',
         Target: 'books/@UI.LineItem'
       }
-    ]
+    ],
+
+    FieldGroup #GeneralInfo: {
+      Data: [
+        { Value: name,     Label: '{i18n>Name}' },
+        { Value: location, Label: '{i18n>Location}' }
+      ]
+    },
+
+    FieldGroup #AdditionalInfo: {
+      Data: [
+        { Value: foundedYear, Label: '{i18n>Founded}' },
+        { Value: website,     Label: '{i18n>Website}' }
+      ]
+    }
   }
 );
 
-// Table of books on the Publisher Object Page
 annotate my.Publishers:books with @(
   UI.LineItem: [
-    { $Type: 'UI.DataField', Value: books.ID,    Label: '{i18n>ID}' },
-    { $Type: 'UI.DataField', Value: books.title, Label: '{i18n>Title}' },
-    { $Type: 'UI.DataField', Value: books.price, Label: '{i18n>Price}' },
-    { $Type: 'UI.DataField', Value: books.currency, Label: '{i18n>Currency}' }
+    { Value: books.ID,    Label: '{i18n>ID}' },
+    { Value: books.title, Label: '{i18n>Title}' },
+    { Value: books.price, Label: '{i18n>Price}' },
+    { Value: books.currency_code, Label: '{i18n>Currency}' }
   ]
 );
-
-// (optional) Titles for property editors / field labels on elements
-annotate my.Publishers with {
-  ID          @title: '{i18n>ID}';
-  name        @title: '{i18n>Name}';
-  location    @title: '{i18n>Location}';
-  foundedYear @title: '{i18n>Founded}';
-  website     @title: '{i18n>Website}';
-};
 
 
 ////////////////////////////////////////////////////////////////////////////
