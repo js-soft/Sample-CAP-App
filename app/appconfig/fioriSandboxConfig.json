@@ -109,9 +109,9 @@
               }
             },
             "ManageBooks": {
-              "semanticObject": "Publishers",
+              "semanticObject": "Books",
               "action": "manage",
-              "title": "Manage Publishers",
+              "title": "Manage Books",
               "signature": {
                 "parameters": {},
                 "additionalParameters": "allowed"
