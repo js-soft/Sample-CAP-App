@@ -6,8 +6,8 @@
           "catalogs": [],
           "groups": [
             {
-              "id": "Bookshop",
-              "title": "Bookshop",
+              "id": "MyHome",
+              "title": "My Home",
               "isPreset": true,
               "isVisible": true,
               "isGroupLocked": false,
@@ -19,16 +19,7 @@
                     "title": "Browse Books",
                     "targetURL": "#Books-display"
                   }
-                }
-              ]
-            },
-            {
-              "id": "Publishers",
-              "title": "Publishers",
-              "isPreset": true,
-              "isVisible": true,
-              "isGroupLocked": false,
-              "tiles": [
+                },
                 {
                   "id": "BrowsePublishers",
                   "tileType": "sap.ushell.ui.tile.StaticTile",
