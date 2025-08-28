@@ -45,3 +45,30 @@ entity Genres : sap.common.CodeList {
       children : Composition of many Genres
                    on children.parent = $self;
 }
+
+entity SalesOrders : managed {
+  key ID                : UUID;
+      orderNumber       : String(20);
+      orderDate         : Date;
+      customerName      : String(100);
+      customerEmail     : String(255);
+      customerPhone     : String(20);
+      deliveryAddress   : String(500);
+      totalAmount       : Decimal(15,2);
+      currency          : Currency;
+      status            : String(20);
+      notes             : String(1000);
+      items             : Composition of many SalesOrderItems on items.salesOrder = $self;
+}
+
+entity SalesOrderItems : managed {
+  key ID                : UUID;
+      itemNumber        : Integer;
+      productName       : String(100);
+      productCode       : String(50);
+      quantity          : Integer;
+      unitPrice         : Decimal(15,2);
+      totalPrice        : Decimal(15,2);
+      currency          : Currency;
+      salesOrder        : Association to SalesOrders;
+}
