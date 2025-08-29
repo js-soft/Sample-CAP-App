@@ -1,4 +1,4 @@
-ID,itemNumber,productName,productCode,quantity,unitPrice,totalPrice,currency,salesOrder_ID
+ID,itemNumber,productName,productCode,quantity,unitPrice,totalPrice,currency_code,salesOrder_ID
 660e8400-e29b-41d4-a716-446655440001,1,Laptop Pro,LP-001,2,500.00,1000.00,USD,550e8400-e29b-41d4-a716-446655440001
 660e8400-e29b-41d4-a716-446655440002,2,Wireless Mouse,WM-002,5,50.00,250.00,USD,550e8400-e29b-41d4-a716-446655440001
 660e8400-e29b-41d4-a716-446655440003,1,Tablet Air,TA-003,1,400.00,400.00,USD,550e8400-e29b-41d4-a716-446655440002
