@@ -1,4 +1,5 @@
 using { sap.capire.bookshop as my } from '../db/schema';
+
 service CatalogService {
 
   /** For displaying lists of Books */
@@ -7,7 +8,8 @@ service CatalogService {
 
   /** For display in details pages */
   @readonly entity Books as projection on my.Books { *,
-    author.name as author
+    author.name as author,
+    availabilities
   } excluding { createdBy, modifiedBy };
 
   @requires: 'authenticated-user'
@@ -17,4 +19,13 @@ service CatalogService {
   ) returns { stock: Integer };
 
   event OrderedBook : { book: Books:ID; quantity: Integer; buyer: String };
+
+  /** List of availabilities per warehouse */
+  @readonly entity Availabilities as projection on my.Inventory {
+    book,
+    warehouse,
+    quantity
+  };
+
+  @readonly entity Warehouses as projection on my.Warehouses;
 }

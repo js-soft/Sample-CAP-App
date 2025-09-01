@@ -45,3 +45,23 @@ entity Genres : sap.common.CodeList {
       children : Composition of many Genres
                    on children.parent = $self;
 }
+
+/** Inventory */
+entity Warehouses : managed {
+  key ID   : Integer;
+      name : String(111);
+      address : String(255);
+      city    : String(111);
+      email   : String(111);
+}
+
+entity Inventory : managed {
+  key book      : Association to Books;
+  key warehouse : Association to Warehouses;
+      quantity  : Integer;
+}
+
+extend Books with {
+  availabilities : Association to many Inventory
+                   on availabilities.book = $self;
+}
