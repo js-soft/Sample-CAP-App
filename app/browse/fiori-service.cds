@@ -34,7 +34,7 @@ annotate CatalogService.Books with @(UI: {
         {Value: title},
         {
             $Type : 'UI.DataFieldForAction',
-            Action: 'CatalogService.Books/placeOrder',
+            Action: 'CatalogService.placeOrder',
             Label : '{i18n>PlaceOrder}'
         }
     ]
