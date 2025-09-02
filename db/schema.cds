@@ -48,27 +48,41 @@ entity Genres : sap.common.CodeList {
 
 entity SalesOrders : managed {
   key ID                : UUID;
+      @UI.Identification: [{ position: 10 }]
       orderNumber       : String(20);
-      orderDate         : Date;
+      @UI.Identification: [{ position: 20 }]
       customerName      : String(100);
+      @UI.Identification: [{ position: 30 }]
+      orderDate         : Date;
+      @UI.Identification: [{ position: 40 }]
+      totalAmount       : Decimal(15,2);
+      @UI.Identification: [{ position: 50 }]
+      currency          : Currency;
+      @UI.Identification: [{ position: 60 }]
+      status            : String(20);
       customerEmail     : String(255);
       customerPhone     : String(20);
       deliveryAddress   : String(500);
-      totalAmount       : Decimal(15,2);
-      currency          : Currency;
-      status            : String(20);
       notes             : String(1000);
       items             : Composition of many SalesOrderItems on items.salesOrder = $self;
 }
 
 entity SalesOrderItems : managed {
   key ID                : UUID;
+      @UI.Identification: [{ position: 10 }]
       itemNumber        : Integer;
+      @UI.Identification: [{ position: 20 }]
       productName       : String(100);
+      @UI.Identification: [{ position: 30 }]
       productCode       : String(50);
+      @UI.Identification: [{ position: 40 }]
       quantity          : Integer;
+      @UI.Identification: [{ position: 50 }]
       unitPrice         : Decimal(15,2);
+      @UI.Identification: [{ position: 60 }]
       totalPrice        : Decimal(15,2);
+      @UI.Identification: [{ position: 70 }]
       currency          : Currency;
       salesOrder        : Association to SalesOrders;
+      book              : Association to Books;
 }
