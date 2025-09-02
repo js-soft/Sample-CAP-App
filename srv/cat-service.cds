@@ -2,14 +2,6 @@ using {sap.capire.bookshop as my} from '../db/schema';
 
 service CatalogService {
 
-  /** For displaying lists of Books */
-  @readonly
-  entity ListOfBooks as
-    projection on Books
-    excluding {
-      descr
-    };
-
   /** For display in details pages */
   @readonly
   entity Books       as
@@ -20,18 +12,27 @@ service CatalogService {
     excluding {
       createdBy,
       modifiedBy
+    }
+    actions {
+      action placeOrder(quantity: Integer,
+                        customerName: String,
+                        customerEmail: String) returns UUID;
+    };
+
+  /** For displaying lists of Books */
+  @readonly
+  entity ListOfBooks as
+    projection on Books
+    excluding {
+      descr
     };
 
   @requires: 'authenticated-user'
   action submitOrder(book: Books:ID @mandatory,
                      quantity: Integer @mandatory
-  )                                        returns {
+  ) returns {
     stock : Integer
   };
-
-  action placeOrder(quantity: Integer,
-                    customerName: String,
-                    customerEmail: String) returns UUID;
 
   event OrderedBook : {
     book     : Books:ID;

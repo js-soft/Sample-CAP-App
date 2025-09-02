@@ -38,7 +38,7 @@ module.exports = class CatalogService extends cds.ApplicationService {
     // Declared INSIDE CatalogService.Books in cat-service.cds
     this.on("placeOrder", "Books", async (req) => {
       // For bound actions, the instance key is in req.params[0]
-      const { ID } = req.params?.[0] || {};
+      const { ID } = req.params[0];
       if (ID == null) return req.error(400, "Missing Book ID from context");
 
       const { quantity, customerName, customerEmail } = req.data;
