@@ -45,26 +45,34 @@ module.exports = class CatalogService extends cds.ApplicationService {
         const customerName = req.data.customerName;
         const customerEmail = req.data.customerEmail;
 
-        if (!quantity || quantity <= 0)
+        if (!Number.isFinite(quantity) || quantity <= 0) {
           return req.error(400, "Provide a positive quantity");
-        if (!customerName || !customerEmail)
+        }
+        if (!customerName || !customerEmail) {
           return req.error(400, "Customer name and email are required");
+        }
 
         const tx = cds.tx(req);
 
         const book = await tx
           .read(Books)
           .where({ ID })
-          .columns("ID", "title", "price", "currency_code");
-        if (!book) return req.error(404, `Book ${ID} not found`);
+          .columns("ID", "title", "price", "currency_code")
+          .then((rows) => rows?.[0]);
 
-        const price = Number(book.price) || 0;
-        const total = price * quantity;
+        if (!book) return req.error(404, `Book ${ID} not found`);
+        if (book.price == null)
+          return req.error(409, `Book ${ID} has no price set`);
+
+        const price = Number(book.price);
+        if (!Number.isFinite(price))
+          return req.error(409, `Invalid price for Book ${ID}`);
+
+        const total = Number((price * quantity).toFixed(2));
         const curr = book.currency_code || "EUR";
 
         const orderId = cds.utils.uuid();
         const itemId = cds.utils.uuid();
-
         const today = new Date().toISOString().slice(0, 10);
 
         await tx.run([
@@ -97,7 +105,6 @@ module.exports = class CatalogService extends cds.ApplicationService {
         return orderId;
       } catch (e) {
         console.error("placeOrder failed:", e);
-
         return req.error(500, e.message || "Failed to place order");
       }
     });
