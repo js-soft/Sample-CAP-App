@@ -37,58 +37,69 @@ module.exports = class CatalogService extends cds.ApplicationService {
     // === BOUND action: Books.placeOrder ===
     // Declared INSIDE CatalogService.Books in cat-service.cds
     this.on("placeOrder", "Books", async (req) => {
-      // For bound actions, the instance key is in req.params[0]
-      const { ID } = req.params[0];
-      if (ID == null) return req.error(400, "Missing Book ID from context");
+      try {
+        const { ID } = req.params?.[0] || {};
+        if (ID == null) return req.error(400, "Missing Book ID from context");
 
-      const { quantity, customerName, customerEmail } = req.data;
-      if (!quantity || quantity <= 0)
-        return req.error(400, "Provide a positive quantity");
+        const quantity = Number(req.data.quantity);
+        const customerName = req.data.customerName;
+        const customerEmail = req.data.customerEmail;
 
-      const tx = cds.tx(req);
+        if (!quantity || quantity <= 0)
+          return req.error(400, "Provide a positive quantity");
+        if (!customerName || !customerEmail)
+          return req.error(400, "Customer name and email are required");
 
-      // Load the book
-      const book = await tx.read(Books).where({ ID });
-      if (!book) return req.error(404, `Book ${ID} not found`);
+        const tx = cds.tx(req);
 
-      // Compute totals
-      const price = book.price || 0;
-      const total = price * quantity;
-      // Depending on your model this may be currency_code or currency
-      const curr = book.currency_code ?? book.currency ?? "EUR";
+        const book = await tx
+          .read(Books)
+          .where({ ID })
+          .columns("ID", "title", "price", "currency_code");
+        if (!book) return req.error(404, `Book ${ID} not found`);
 
-      const orderId = cds.utils.uuid();
-      const itemId = cds.utils.uuid();
+        const price = Number(book.price) || 0;
+        const total = price * quantity;
+        const curr = book.currency_code || "EUR";
 
-      // Create order + single item
-      await tx.run([
-        INSERT.into(SalesOrders).entries({
-          ID: orderId,
-          orderNumber: `SO-${Math.floor(Math.random() * 90000 + 10000)}`,
-          orderDate: new Date(),
-          customerName,
-          customerEmail,
-          customerPhone: null,
-          deliveryAddress: null,
-          totalAmount: total,
-          currency: curr,
-          status: "NEW",
-          notes: `Auto-created from Books.placeOrder for Book ID ${ID}`,
-        }),
-        INSERT.into(SalesOrderItems).entries({
-          ID: itemId,
-          itemNumber: 10,
-          productName: book.title,
-          productCode: String(ID),
-          quantity,
-          unitPrice: price,
-          totalPrice: total,
-          currency: curr,
-          salesOrder_ID: orderId,
-        }),
-      ]);
+        const orderId = cds.utils.uuid();
+        const itemId = cds.utils.uuid();
 
-      return orderId;
+        const today = new Date().toISOString().slice(0, 10);
+
+        await tx.run([
+          INSERT.into(SalesOrders).entries({
+            ID: orderId,
+            orderNumber: `SO-${Math.floor(Math.random() * 90000 + 10000)}`,
+            orderDate: today,
+            customerName,
+            customerEmail,
+            customerPhone: null,
+            deliveryAddress: null,
+            totalAmount: total,
+            currency_code: curr,
+            status: "NEW",
+            notes: `Auto-created from Books.placeOrder for Book ID ${ID}`,
+          }),
+          INSERT.into(SalesOrderItems).entries({
+            ID: itemId,
+            itemNumber: 10,
+            productName: book.title,
+            productCode: String(ID),
+            quantity,
+            unitPrice: price,
+            totalPrice: total,
+            currency_code: curr,
+            salesOrder_ID: orderId,
+          }),
+        ]);
+
+        return orderId;
+      } catch (e) {
+        console.error("placeOrder failed:", e);
+
+        return req.error(500, e.message || "Failed to place order");
+      }
     });
 
     // Delegate requests to the underlying generic service
