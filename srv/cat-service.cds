@@ -14,9 +14,9 @@ service CatalogService {
       modifiedBy
     }
     actions {
-      action placeOrder(quantity: Integer,
-                        customerName: String,
-                        customerEmail: String) returns UUID;
+      action placeOrder(quantity: Integer @title: '{i18n>Quantity}',
+                        customerName: String @title: '{i18n>Customer Name}',
+                        customerEmail: String @title: '{i18n>Customer Email}' ) returns UUID;
     };
 
   /** For displaying lists of Books */
