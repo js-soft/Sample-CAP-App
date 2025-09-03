@@ -16,6 +16,13 @@
         "settings": {
           "odataVersion": "4.0"
         }
+      },
+      "SalesServiceAnnotations": {
+        "type": "ODataAnnotation",
+        "uri": "annotations/SalesService.xml",
+        "settings": {
+          "odataVersion": "4.0"
+        }
       }
     },
     "crossNavigation": {
@@ -67,6 +74,9 @@
       },
       "": {
         "dataSource": "SalesService",
+        "annotations": [
+          "SalesServiceAnnotations"
+        ],
         "settings": {
           "operationMode": "Server",
           "autoExpandSelect": true,
