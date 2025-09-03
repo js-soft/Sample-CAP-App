@@ -102,6 +102,12 @@ module.exports = class CatalogService extends cds.ApplicationService {
           }),
         ]);
 
+        req.info(
+          `You have successfully placed an order for ${quantity} copy(ies) of book "${
+            book.title
+          }".\n\nThe total amount is ${total.toFixed(2)} ${curr}.`
+        );
+
         return orderId;
       } catch (e) {
         console.error("placeOrder failed:", e);
