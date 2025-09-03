@@ -65,3 +65,7 @@ extend Books with {
   availabilities : Association to many Inventory
                    on availabilities.book = $self;
 }
+
+extend Warehouses with {
+  stocks : Association to many Inventory on stocks.warehouse = $self;
+}

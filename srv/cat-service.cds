@@ -27,5 +27,5 @@ service CatalogService {
     quantity
   };
 
-  @readonly entity Warehouses as projection on my.Warehouses;
+  @readonly entity Warehouses as projection on my.Warehouses { *, stocks };
 }
