@@ -12,7 +12,6 @@ entity Books : managed {
       descr             : localized String(1111);
       @mandatory author : Association to Authors;
       genre             : Association to Genres;
-      stock             : Integer;
       price             : Decimal;
       currency          : Currency;
       image             : LargeBinary @Core.MediaType: 'image/png';
