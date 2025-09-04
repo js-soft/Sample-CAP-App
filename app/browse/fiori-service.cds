@@ -16,11 +16,18 @@ annotate CatalogService.Books with @(UI: {
         Label : '{i18n>Description}',
         Target: '@UI.FieldGroup#Descr'
     }, ],
-    Facets           : [{
-        $Type : 'UI.ReferenceFacet',
-        Label : '{i18n>Details}',
-        Target: '@UI.FieldGroup#Price'
-    }, ],
+    Facets           : [
+        {
+            $Type : 'UI.ReferenceFacet',
+            Label : '{i18n>Details}',
+            Target: '@UI.FieldGroup#Price'
+        },
+        {
+            $Type : 'UI.ReferenceFacet',
+            Label : '{i18n>InventoryByWarehouse}',
+            Target: 'availabilities/@UI.LineItem'
+        }
+    ],
     FieldGroup #Descr: {Data: [{Value: descr}, ]},
     FieldGroup #Price: {Data: [
         {Value: price},
