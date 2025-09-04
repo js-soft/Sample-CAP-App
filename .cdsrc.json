@@ -1,0 +1,9 @@
+{
+  "odata": {
+    "version": "v4"
+  },
+  "features": {
+    "deep_insert": true,
+    "fiori_preview": true
+  }
+}

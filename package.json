@@ -25,6 +25,7 @@
   "sapux": [
     "app/admin-books",
     "app/browse",
+    "app/browse-sales-orders",
     "app/publish"
   ],
   "cds": {
