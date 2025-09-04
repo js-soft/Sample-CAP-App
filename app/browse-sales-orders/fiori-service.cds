@@ -34,7 +34,7 @@ annotate SalesService.SalesOrders with @(UI : {
         {Value: orderDate},
         {Value: status},
         {Value: totalAmount},
-        {Value: currency.symbol}
+        {Value: currency_code}
     ]},
     FieldGroup #Customer: {Data : [
         {Value: customerName},
@@ -45,7 +45,7 @@ annotate SalesService.SalesOrders with @(UI : {
     FieldGroup #Order: {Data : [
         {Value: orderDate},
         {Value: totalAmount},
-        {Value: currency.symbol},
+        {Value: currency_code},
         {Value: status},
         {Value: notes}
     ]}
@@ -54,10 +54,6 @@ annotate SalesService.SalesOrders with @(UI : {
         {
             Value: itemNumber,
             Label: '{i18n>ItemNumber}'
-        },
-        {
-            Value: book.title,
-            Label: '{i18n>Book}'
         },
         {
             Value: productName,
@@ -80,7 +76,7 @@ annotate SalesService.SalesOrders with @(UI : {
             Label: '{i18n>TotalPrice}'
         },
         {
-            Value: currency.symbol,
+            Value: currency,
             Label: '{i18n>Currency}'
         }
     ];
@@ -115,7 +111,7 @@ annotate SalesService.SalesOrders with @(UI : {
             Label: '{i18n>TotalAmount}'
         },
         {
-            Value: currency.symbol,
+            Value: currency_code,
             Label: '{i18n>Currency}'
         },
         {
@@ -123,9 +119,7 @@ annotate SalesService.SalesOrders with @(UI : {
             Label: '{i18n>Status}'
         }
     ]
-}) {
-    ID @UI.Hidden;
-};
+});
 
 ////////////////////////////////////////////////////////////////////////////
 //
@@ -136,10 +130,6 @@ annotate SalesService.SalesOrderItems with @(UI : {
         {
             Value: itemNumber,
             Label: '{i18n>ItemNumber}'
-        },
-        {
-            Value: book.title,
-            Label: '{i18n>Book}'
         },
         {
             Value: productName,
@@ -162,13 +152,11 @@ annotate SalesService.SalesOrderItems with @(UI : {
             Label: '{i18n>TotalPrice}'
         },
         {
-            Value: currency.symbol,
+            Value: currency_code,
             Label: '{i18n>Currency}'
         }
     ]
-}) {
-    book @ValueList.entity: 'Books';
-};
+});
 
 ////////////////////////////////////////////////////////////////////////////
 //
@@ -203,7 +191,7 @@ annotate SalesService.Books with @(UI : {
             Label: '{i18n>Price}'
         },
         {
-            Value: currency.symbol,
+            Value: currency_code,
             Label: '{i18n>Currency}'
         },
         {

@@ -19,7 +19,7 @@
       },
       "SalesServiceAnnotations": {
         "type": "ODataAnnotation",
-        "uri": "annotations/SalesService.xml",
+        "uri": "annotations/annotations.xml",
         "settings": {
           "odataVersion": "4.0"
         }
@@ -36,12 +36,11 @@
             },
             "additionalParameters": "allowed"
           },
-          "semanticObject": "SalesOrders",
+          "semanticObject": "Sales Orders",
           "action": "display",
           "title": "{{appTitle}}",
           "info": "{{appInfo}}",
           "subTitle": "{{appSubTitle}}",
-          "icon": "sap-icon://sales-order",
           "indicatorDataSource": {
             "dataSource": "SalesService",
             "path": "SalesOrders/$count",
