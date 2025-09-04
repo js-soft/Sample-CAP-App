@@ -97,3 +97,17 @@ annotate CatalogService.Availabilities with @(UI: {LineItem: [
     Value: quantity,
     Label: '{i18n>Quantity}'
   },
+
+  {
+    $Type : 'UI.DataFieldForAction',
+    Action: 'CatalogService.decreaseQuantity',
+    Label : '−',
+    Inline: true
+  },
+  {
+    $Type : 'UI.DataFieldForAction',
+    Action: 'CatalogService.increaseQuantity',
+    Label : '+',
+    Inline: true
+  }
+]});

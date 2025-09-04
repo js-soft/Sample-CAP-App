@@ -15,8 +15,8 @@ service CatalogService {
   entity Books          as
     projection on my.Books {
       *,
-    author.name as author,
-    availabilities
+      author.name as author,
+      availabilities
     }
     excluding {
       createdBy,
@@ -40,10 +40,14 @@ service CatalogService {
   @readonly
   entity Availabilities as
     projection on my.Inventory {
-    book,
-    warehouse,
-    quantity
-  };
+      book,
+      warehouse,
+      quantity
+    }
+    actions {
+      action increaseQuantity(by: Integer default 1) returns CatalogService.Availabilities;
+      action decreaseQuantity(by: Integer default 1) returns CatalogService.Availabilities;
+    };
 
   @readonly
   entity Warehouses     as
