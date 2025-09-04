@@ -113,30 +113,50 @@ module.exports = class CatalogService extends cds.ApplicationService { init() {
       }
 
       const tx = cds.tx(req);
+      const { Books, Inventory, Warehouses } = cds.entities("sap.capire.bookshop");
 
-      const book = await tx
-        .read(Books)
-        .where({ ID })
-        .columns("ID", "title", "price", "currency_code")
-        .then((rows) => rows?.[0]);
-
+      // Fetch book (price/currency)
+      const book = await tx.read(Books).where({ ID }).columns("ID", "title", "price", "currency_code").then(r => r?.[0]);
       if (!book) return req.error(404, `Book ${ID} not found`);
-      if (book.price == null)
-        return req.error(409, `Book ${ID} has no price set`);
-
+      if (book.price == null) return req.error(409, `Book ${ID} has no price set`);
       const price = Number(book.price);
-      if (!Number.isFinite(price))
-        return req.error(409, `Invalid price for Book ${ID}`);
+      if (!Number.isFinite(price)) return req.error(409, `Invalid price for Book ${ID}`);
 
+      // Find first warehouse which has at least 1 requested book
+      const invRows = await tx.read(Inventory)
+        .where({ book_ID: ID })
+        .columns("book_ID", "warehouse_ID", "quantity")
+        .orderBy({ warehouse_ID: "asc" }); // "first" is the lowest warehouse_ID
+
+      const firstWithStock = invRows.find(r => (r.quantity ?? 0) > 0);
+      if (!firstWithStock) return req.error(409, `Book ${ID} is out of stock in all warehouses`);
+
+      // How many do we take from the warehouse
+      const take = Math.min(quantity, firstWithStock.quantity);
+      const chosenWarehouseId = firstWithStock.warehouse_ID;
+
+      // Atomisk reduksjon av inventory
+      await tx.update(Inventory)
+        .set({ quantity: { "-=": take } })
+        .where({ book_ID: ID, warehouse_ID: chosenWarehouseId });
+
+      // Fetch warehouse details for notice
+      const wh = await tx.read(Warehouses)
+        .where({ ID: chosenWarehouseId })
+        .columns("ID", "name", "city")
+        .then(r => r?.[0]);
+
+      // Calculate total
       const total = Number((price * quantity).toFixed(2));
       const curr = book.currency_code || "EUR";
 
+      // Create order
       const orderId = cds.utils.uuid();
-      const itemId = cds.utils.uuid();
-      const today = new Date().toISOString().slice(0, 10);
+      const itemId  = cds.utils.uuid();
+      const today   = new Date().toISOString().slice(0, 10);
 
       await tx.run([
-        INSERT.into(SalesOrders).entries({
+        INSERT.into("sap.capire.bookshop.SalesOrders").entries({
           ID: orderId,
           orderNumber: `SO-${Math.floor(Math.random() * 90000 + 10000)}`,
           orderDate: today,
@@ -147,9 +167,9 @@ module.exports = class CatalogService extends cds.ApplicationService { init() {
           totalAmount: total,
           currency_code: curr,
           status: "NEW",
-          notes: `Auto-created from Books.placeOrder for Book ID ${ID}`,
+          notes: `Auto-created from Books.placeOrder for Book ID ${ID}. Fulfilled from warehouse ${chosenWarehouseId}${wh ? ` (${wh.name}, ${wh.city})` : ""}. Reserved ${take}/${quantity}.`
         }),
-        INSERT.into(SalesOrderItems).entries({
+        INSERT.into("sap.capire.bookshop.SalesOrderItems").entries({
           ID: itemId,
           itemNumber: 10,
           productName: book.title,
@@ -158,17 +178,18 @@ module.exports = class CatalogService extends cds.ApplicationService { init() {
           unitPrice: price,
           totalPrice: total,
           currency_code: curr,
-          salesOrder_ID: orderId,
-        }),
+          salesOrder_ID: orderId
+        })
       ]);
 
-      req.info(
-        `You have successfully placed an order for ${quantity} copy(ies) of book "${
-          book.title
-        }".\n\nThe total amount is ${total.toFixed(2)} ${curr}.`
-      );
+      // Status/info
+      const msg = (take === quantity)
+        ? `Order placed: ${quantity} x "${book.title}" from warehouse ${chosenWarehouseId}.`
+        : `Order placed: requested ${quantity}, reserved ${take} from warehouse ${chosenWarehouseId} (partial).`;
 
+      req.info(`${msg} Total ${total.toFixed(2)} ${curr}.`);
       return orderId;
+
     } catch (e) {
       console.error("placeOrder failed:", e);
       return req.error(500, e.message || "Failed to place order");
