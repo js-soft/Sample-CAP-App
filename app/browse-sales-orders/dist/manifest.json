@@ -1,25 +1,25 @@
 {
   "_version": "1.49.0",
   "sap.app": {
-    "id": "sample-cap-app.browse",
+    "id": "sample-cap-app.browse-sales-orders",
     "applicationVersion": {
       "version": "1.0.0"
     },
     "type": "application",
     "title": "{{appTitle}}",
     "description": "{{appDescription}}",
-    "i18n": "i18n/i18n.properties",
+    "i18n": {
+      "bundleUrl": "i18n/i18n.properties",
+      "supportedLocales": [
+        "",
+        "de",
+        "en"
+      ]
+    },
     "dataSources": {
-      "CatalogService": {
-        "uri": "odata/v4/catalog/",
+      "SalesService": {
+        "uri": "odata/v4/sales/",
         "type": "OData",
-        "settings": {
-          "odataVersion": "4.0"
-        }
-      },
-      "CatalogServiceAnnotations": {
-        "type": "ODataAnnotation",
-        "uri": "annotations/annotations.xml",
         "settings": {
           "odataVersion": "4.0"
         }
@@ -27,27 +27,24 @@
     },
     "crossNavigation": {
       "inbounds": {
-        "Books-display": {
+        "SalesOrders-display": {
           "signature": {
             "parameters": {
-              "Books.ID": {
-                "renameTo": "ID"
-              },
-              "Authors.books.ID": {
+              "SalesOrders.ID": {
                 "renameTo": "ID"
               }
             },
             "additionalParameters": "allowed"
           },
-          "semanticObject": "Books",
+          "semanticObject": "SalesOrders",
           "action": "display",
           "title": "{{appTitle}}",
           "info": "{{appInfo}}",
           "subTitle": "{{appSubTitle}}",
-          "icon": "sap-icon://course-book",
+          "icon": "sap-icon://sales-order",
           "indicatorDataSource": {
-            "dataSource": "CatalogService",
-            "path": "Books/$count",
+            "dataSource": "SalesService",
+            "path": "SalesOrders/$count",
             "refresh": 1800
           }
         }
@@ -73,13 +70,17 @@
     "models": {
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
-        "uri": "i18n/i18n.properties"
+        "uri": "i18n/i18n.properties",
+        "settings": {
+          "supportedLocales": [
+            "",
+            "de",
+            "en"
+          ]
+        }
       },
       "": {
-        "dataSource": "CatalogService",
-        "annotations": [
-          "CatalogServiceAnnotations"
-        ],
+        "dataSource": "SalesService",
         "settings": {
           "operationMode": "Server",
           "autoExpandSelect": true,
@@ -96,41 +97,41 @@
       "routes": [
         {
           "pattern": ":?query:",
-          "name": "BooksList",
-          "target": "BooksList"
+          "name": "SalesOrdersList",
+          "target": "SalesOrdersList"
         },
         {
-          "pattern": "Books({key}):?query:",
-          "name": "BooksDetails",
-          "target": "BooksDetails"
+          "pattern": "SalesOrders({key}):?query:",
+          "name": "SalesOrdersDetails",
+          "target": "SalesOrdersDetails"
         }
       ],
       "targets": {
-        "BooksList": {
+        "SalesOrdersList": {
           "type": "Component",
-          "id": "BooksList",
+          "id": "SalesOrdersList",
           "name": "sap.fe.templates.ListReport",
           "options": {
             "settings": {
-              "entitySet": "Books",
+              "entitySet": "SalesOrders",
               "initialLoad": true,
               "navigation": {
-                "Books": {
+                "SalesOrders": {
                   "detail": {
-                    "route": "BooksDetails"
+                    "route": "SalesOrdersDetails"
                   }
                 }
               }
             }
           }
         },
-        "BooksDetails": {
+        "SalesOrdersDetails": {
           "type": "Component",
-          "id": "BooksDetailsList",
+          "id": "SalesOrdersDetailsList",
           "name": "sap.fe.templates.ObjectPage",
           "options": {
             "settings": {
-              "entitySet": "Books"
+              "entitySet": "SalesOrders"
             }
           }
         }
