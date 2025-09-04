@@ -21,6 +21,11 @@ service CatalogService {
     excluding {
       createdBy,
       modifiedBy
+    }
+    actions {
+      action placeOrder(quantity: Integer @title: '{i18n>Quantity}',
+                        customerName: String @title: '{i18n>Customer Name}',
+                        customerEmail: String @title: '{i18n>Customer Email}' ) returns UUID;
     };
 
   @requires: 'authenticated-user'

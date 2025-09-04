@@ -16,6 +16,13 @@
         "settings": {
           "odataVersion": "4.0"
         }
+      },
+      "CatalogServiceAnnotations": {
+        "type": "ODataAnnotation",
+        "uri": "annotations/annotations.xml",
+        "settings": {
+          "odataVersion": "4.0"
+        }
       }
     },
     "crossNavigation": {
@@ -70,6 +77,9 @@
       },
       "": {
         "dataSource": "CatalogService",
+        "annotations": [
+          "CatalogServiceAnnotations"
+        ],
         "settings": {
           "operationMode": "Server",
           "autoExpandSelect": true,

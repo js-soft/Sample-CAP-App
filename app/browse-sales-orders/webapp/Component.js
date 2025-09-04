@@ -1,6 +1,6 @@
 sap.ui.define(["sap/fe/core/AppComponent"], function(AppComponent) {
 	"use strict";
-	return AppComponent.extend("bookshop.Component", {
+	return AppComponent.extend("browse-sales-orders.Component", {
 		metadata: { manifest: "json" }
 	});
 });

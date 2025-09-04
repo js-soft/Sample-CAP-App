@@ -27,6 +27,14 @@
                                         "title": "Browse Warehouses",
                                         "targetURL": "#Warehouses-display"
                                     }
+                                },
+                                {
+                                    "id": "BrowseSalesOrders",
+                                    "tileType": "sap.ushell.ui.tile.StaticTile",
+                                    "properties": {
+                                        "title": "Browse Sales Orders",
+                                        "targetURL": "#SalesOrders-display"
+                                    }
                                 }
                             ]
                         },
@@ -111,6 +119,24 @@
                                 "applicationType": "SAPUI5",
                                 "additionalInformation": "SAPUI5.Component=warehouses",
                                 "url": "warehouses/webapp"
+                            }
+                        },
+                        "BrowseSalesOrders": {
+                            "semanticObject": "SalesOrders",
+                            "action": "display",
+                            "title": "Browse Sales Orders",
+                            "signature": {
+                                "parameters": {
+                                    "SalesOrders.ID": {
+                                        "renameTo": "ID"
+                                    }
+                                },
+                               "additionalParameters": "ignored"
+                            },
+                            "resolutionResult": {
+                                "applicationType": "SAPUI5",
+                                "additionalInformation": "SAPUI5.Component=browse-sales-orders",
+                                "url": "browse-sales-orders/webapp"
                             }
                         }
                     }

@@ -1,7 +1,7 @@
 {
   "_version": "1.49.0",
   "sap.app": {
-    "id": "sample-cap-app.admin-books",
+    "id": "sample-cap-app.browse-sales-orders",
     "applicationVersion": {
       "version": "1.0.0"
     },
@@ -17,8 +17,8 @@
       ]
     },
     "dataSources": {
-      "AdminService": {
-        "uri": "odata/v4/admin/",
+      "SalesService": {
+        "uri": "odata/v4/sales/",
         "type": "OData",
         "settings": {
           "odataVersion": "4.0"
@@ -27,13 +27,26 @@
     },
     "crossNavigation": {
       "inbounds": {
-        "intent-Books-manage": {
+        "SalesOrders-display": {
           "signature": {
-            "parameters": {},
+            "parameters": {
+              "SalesOrders.ID": {
+                "renameTo": "ID"
+              }
+            },
             "additionalParameters": "allowed"
           },
-          "semanticObject": "Books",
-          "action": "manage"
+          "semanticObject": "SalesOrders",
+          "action": "display",
+          "title": "{{appTitle}}",
+          "info": "{{appInfo}}",
+          "subTitle": "{{appSubTitle}}",
+          "icon": "sap-icon://sales-order",
+          "indicatorDataSource": {
+            "dataSource": "SalesService",
+            "path": "SalesOrders/$count",
+            "refresh": 1800
+          }
         }
       }
     }
@@ -67,7 +80,7 @@
         }
       },
       "": {
-        "dataSource": "AdminService",
+        "dataSource": "SalesService",
         "settings": {
           "operationMode": "Server",
           "autoExpandSelect": true,
@@ -84,64 +97,41 @@
       "routes": [
         {
           "pattern": ":?query:",
-          "name": "BooksList",
-          "target": "BooksList"
+          "name": "SalesOrdersList",
+          "target": "SalesOrdersList"
         },
         {
-          "pattern": "Books({key}):?query:",
-          "name": "BooksDetails",
-          "target": "BooksDetails"
-        },
-        {
-          "pattern": "Books({key}/author({key2}):?query:",
-          "name": "AuthorsDetails",
-          "target": "AuthorsDetails"
+          "pattern": "SalesOrders({key}):?query:",
+          "name": "SalesOrdersDetails",
+          "target": "SalesOrdersDetails"
         }
       ],
       "targets": {
-        "BooksList": {
+        "SalesOrdersList": {
           "type": "Component",
-          "id": "BooksList",
+          "id": "SalesOrdersList",
           "name": "sap.fe.templates.ListReport",
           "options": {
             "settings": {
-              "entitySet": "Books",
+              "entitySet": "SalesOrders",
               "initialLoad": true,
               "navigation": {
-                "Books": {
+                "SalesOrders": {
                   "detail": {
-                    "route": "BooksDetails"
+                    "route": "SalesOrdersDetails"
                   }
                 }
               }
             }
           }
         },
-        "BooksDetails": {
+        "SalesOrdersDetails": {
           "type": "Component",
-          "id": "BooksDetailsList",
+          "id": "SalesOrdersDetailsList",
           "name": "sap.fe.templates.ObjectPage",
           "options": {
             "settings": {
-              "entitySet": "Books",
-              "editableHeaderContent": false,
-              "navigation": {
-                "Authors": {
-                  "detail": {
-                    "route": "AuthorsDetails"
-                  }
-                }
-              }
-            }
-          }
-        },
-        "AuthorsDetails": {
-          "type": "Component",
-          "id": "AuthorsDetailsList",
-          "name": "sap.fe.templates.ObjectPage",
-          "options": {
-            "settings": {
-              "entitySet": "Authors"
+              "entitySet": "SalesOrders"
             }
           }
         }
