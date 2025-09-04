@@ -48,8 +48,8 @@ entity Genres : sap.common.CodeList {
 
 /** Inventory */
 entity Warehouses : managed {
-  key ID   : Integer;
-      name : String(111);
+  key ID      : Integer;
+      name    : String(111);
       address : String(255);
       city    : String(111);
       email   : String(111);
@@ -63,9 +63,10 @@ entity Inventory : managed {
 
 extend Books with {
   availabilities : Association to many Inventory
-                   on availabilities.book = $self;
+                     on availabilities.book = $self;
 }
 
 extend Warehouses with {
-  stocks : Association to many Inventory on stocks.warehouse = $self;
+  stocks : Association to many Inventory
+             on stocks.warehouse = $self;
 }
