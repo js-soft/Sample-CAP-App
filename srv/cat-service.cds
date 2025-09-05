@@ -27,6 +27,12 @@ service CatalogService {
       descr
     };
 
+    /** Expose Publishers entity */
+  @readonly entity Publishers as projection on my.Publishers {
+    *,
+    books   // include association for navigation
+  };
+
   @requires: 'authenticated-user'
   action submitOrder(book: Books:ID @mandatory,
                      quantity: Integer @mandatory

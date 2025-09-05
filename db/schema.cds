@@ -16,8 +16,19 @@ entity Books : managed {
       price             : Decimal;
       currency          : Currency;
       image             : LargeBinary @Core.MediaType: 'image/png';
+      publisher         : Association to Publishers;
       reviews           : Association to many Reviews
                             on reviews.book = $self;
+}
+
+entity Publishers : managed {
+  key ID          : Integer;
+      @mandatory name : String(111);
+      location    : String(111);
+      foundedYear : Integer;
+      website     : String(255);
+      books       : Association to many Books
+                      on books.publisher = $self;
 }
 
 entity Reviews : managed {

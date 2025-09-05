@@ -19,17 +19,24 @@ annotate my.Books with @(
     SelectionFields: [
       ID,
       author_ID,
+      publisher,
       price,
       currency_code
     ],
     LineItem       : [
       {
         Value: ID,
-        Label: '{i18n>Title}'
+        Label: '{i18n>Title}',
+        ![@HTML5.CssDefaults] : {width : '10rem'}
       },
       {
         Value: author.ID,
-        Label: '{i18n>Author}'
+        Label: '{i18n>Author}',
+        ![@HTML5.CssDefaults] : {width : '5rem'}
+      },
+      {
+        Value: publisher.name,
+        Label: '{i18n>Publisher}'
       },
       {Value: genre.name},
       {Value: stock},
@@ -263,6 +270,79 @@ annotate common.Currencies with @(UI: {
     {Value: descr}
   ]}
 });
+
+////////////////////////////////////////////////////////////////////////////
+//
+//	Publishers List
+//
+annotate my.Publishers with @(
+  Common.SemanticKey: [ID],
+  UI: {
+    LineItem: [
+      { Value: name },
+      { Value: location },
+      { Value: foundedYear },
+      { Value: website }
+    ]
+  }
+);
+
+////////////////////////////////////////////////////////////////////////////
+//
+//  Publishers Details with grouped sections
+//
+annotate my.Publishers with @(
+  UI: {
+    HeaderInfo: {
+      TypeName      : '{i18n>Publisher}',
+      TypeNamePlural: '{i18n>Publishers}',
+      Title         : { Value: name },
+      Description   : { Value: location }
+    },
+
+    Facets: [
+      {
+        $Type : 'UI.ReferenceFacet',
+        Label : '{i18n>GeneralInfo}',
+        Target: '@UI.FieldGroup#GeneralInfo'
+      },
+      {
+        $Type : 'UI.ReferenceFacet',
+        Label : '{i18n>AdditionalInfo}',
+        Target: '@UI.FieldGroup#AdditionalInfo'
+      },
+      {
+        $Type : 'UI.ReferenceFacet',
+        Label : '{i18n>Books}',
+        Target: 'books/@UI.LineItem'
+      }
+    ],
+
+    FieldGroup #GeneralInfo: {
+      Data: [
+        { Value: name,     Label: '{i18n>Name}' },
+        { Value: location, Label: '{i18n>Location}' }
+      ]
+    },
+
+    FieldGroup #AdditionalInfo: {
+      Data: [
+        { Value: foundedYear, Label: '{i18n>Founded}' },
+        { Value: website,     Label: '{i18n>Website}' }
+      ]
+    }
+  }
+);
+
+annotate my.Publishers:books with @(
+  UI.LineItem: [
+    { Value: books.ID,    Label: '{i18n>ID}' },
+    { Value: books.title, Label: '{i18n>Title}' },
+    { Value: books.price, Label: '{i18n>Price}' },
+    { Value: books.currency_code, Label: '{i18n>Currency}' }
+  ]
+);
+
 
 ////////////////////////////////////////////////////////////////////////////
 //
