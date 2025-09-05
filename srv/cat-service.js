@@ -135,7 +135,7 @@ module.exports = class CatalogService extends cds.ApplicationService { init() {
       const take = Math.min(quantity, firstWithStock.quantity);
       const chosenWarehouseId = firstWithStock.warehouse_ID;
 
-      // Atomisk reduksjon av inventory
+      // Reduce stock in inventory
       await tx.update(Inventory)
         .set({ quantity: { "-=": take } })
         .where({ book_ID: ID, warehouse_ID: chosenWarehouseId });
