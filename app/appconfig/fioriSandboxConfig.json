@@ -29,14 +29,6 @@
                   }
                 },
                 {
-                  "id": "BrowseWarehouses",
-                  "tileType": "sap.ushell.ui.tile.StaticTile",
-                  "properties": {
-                    "title": "Browse Warehouses",
-                    "targetURL": "#Warehouses-display"
-                  }
-                },
-                {
                   "id": "BrowsePublishers",
                   "tileType": "sap.ushell.ui.tile.StaticTile",
                   "properties": {
@@ -59,6 +51,14 @@
                   "properties": {
                     "title": "Manage Books",
                     "targetURL": "#Books-manage"
+                  }
+                },
+                {
+                  "id": "BrowseWarehouses",
+                  "tileType": "sap.ushell.ui.tile.StaticTile",
+                  "properties": {
+                    "title": "Browse Warehouses",
+                    "targetURL": "#Warehouses-display"
                   }
                 }
               ]
@@ -147,7 +147,7 @@
                 "url": "browse-sales-orders/webapp"
               }
             },
-                        "BrowsePublishers": {
+            "BrowsePublishers": {
               "semanticObject": "Publishers",
               "action": "display",
               "title": "Browse Publishers",
