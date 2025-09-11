@@ -13,6 +13,12 @@
       "target": "$1",
       "service": "html5-apps-repo-rt",
       "authenticationType": "xsuaa"
+    },
+    {
+      "source": "^/browse-sales-orders/(.*)$",
+      "target": "$1",
+      "authenticationType": "xsuaa",
+      "scope": "$XSAPPNAME.Admin"
     }
   ]
 }

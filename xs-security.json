@@ -1,19 +1,20 @@
 {
+  "xsappname": "sample-cap-app",
+  "tenant-mode": "shared",
   "scopes": [
-    {
-      "name": "$XSAPPNAME.admin",
-      "description": "admin"
-    }
+    { "name": "$XSAPPNAME.User",  "description": "Browse & order books" },
+    { "name": "$XSAPPNAME.Admin", "description": "Admin (manage sales orders)" }
   ],
-  "attributes": [],
   "role-templates": [
     {
-      "name": "admin",
-      "description": "generated",
-      "scope-references": [
-        "$XSAPPNAME.admin"
-      ],
-      "attribute-references": []
+      "name": "User",
+      "description": "Can browse books and place orders",
+      "scope-references": [ "$XSAPPNAME.User" ]
+    },
+    {
+      "name": "Admin",
+      "description": "Full admin (incl. sales orders app)",
+      "scope-references": [ "$XSAPPNAME.Admin" ]
     }
   ]
 }

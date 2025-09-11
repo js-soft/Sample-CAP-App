@@ -41,25 +41,23 @@ module.exports = class CatalogService extends cds.ApplicationService {
         const { ID } = req.params?.[0] || {};
         if (ID == null) return req.error(400, "Missing Book ID from context");
 
+        // Only quantity comes from the dialog now
         const quantity = Number(req.data.quantity);
-        const customerName = req.data.customerName;
-        const customerEmail = req.data.customerEmail;
-
         if (!Number.isFinite(quantity) || quantity <= 0) {
           return req.error(400, "Provide a positive quantity");
         }
-        if (!customerName || !customerEmail) {
-          return req.error(400, "Customer name and email are required");
-        }
 
         const tx = cds.tx(req);
+        const { Books, SalesOrders, SalesOrderItems, Customers } = cds.entities(
+          "sap.capire.bookshop"
+        );
 
+        // Fetch the book
         const book = await tx
           .read(Books)
           .where({ ID })
           .columns("ID", "title", "price", "currency_code")
-          .then((rows) => rows?.[0]);
-
+          .then((r) => r?.[0]);
         if (!book) return req.error(404, `Book ${ID} not found`);
         if (book.price == null)
           return req.error(409, `Book ${ID} has no price set`);
@@ -75,19 +73,65 @@ module.exports = class CatalogService extends cds.ApplicationService {
         const itemId = cds.utils.uuid();
         const today = new Date().toISOString().slice(0, 10);
 
+        // Logged-in user → Customer upsert
+        const userId = req.user?.id || "anonymous";
+        const userName =
+          req.user?.attr?.displayname ||
+          req.user?.displayname ||
+          req.user?.name ||
+          req.user?.id ||
+          "Unknown";
+        const userMail = req.user?.attr?.email || req.user?.email || null;
+
+        // (optional) quick debug to see what you get locally:
+        console.log("placeOrder user:", {
+          id: req.user?.id,
+          roles: req.user?.roles,
+          name: userName,
+          email: userMail,
+        });
+
+        let customerRow = await tx
+          .read(Customers)
+          .where({ userId })
+          .columns("ID")
+          .then((r) => r?.[0]);
+
+        if (!customerRow) {
+          const customerId = cds.utils.uuid();
+          await tx.run(
+            INSERT.into(Customers).entries({
+              ID: customerId,
+              userId,
+              name: userName,
+              email: userMail,
+            })
+          );
+          customerRow = { ID: customerId };
+        } else {
+          // keep master data in sync (optional)
+          await tx.run(
+            UPDATE(Customers)
+              .set({ name: userName, email: userMail })
+              .where({ userId })
+          );
+        }
+
+        // Create order + item
         await tx.run([
           INSERT.into(SalesOrders).entries({
             ID: orderId,
             orderNumber: `SO-${Math.floor(Math.random() * 90000 + 10000)}`,
             orderDate: today,
-            customerName,
-            customerEmail,
-            customerPhone: null,
-            deliveryAddress: null,
             totalAmount: total,
-            currency_code: curr,
+            currency_code: curr, // FK, not association
             status: "NEW",
             notes: `Auto-created from Books.placeOrder for Book ID ${ID}`,
+            customer_ID: customerRow.ID,
+
+            // If you keep these columns for now, fill them from the user too
+            customerName: userName,
+            customerEmail: userMail,
           }),
           INSERT.into(SalesOrderItems).entries({
             ID: itemId,
@@ -105,7 +149,7 @@ module.exports = class CatalogService extends cds.ApplicationService {
         req.info(
           `You have successfully placed an order for ${quantity} copy(ies) of book "${
             book.title
-          }".\n\nThe total amount is ${total.toFixed(2)} ${curr}.`
+          }".\nThe total amount is ${total.toFixed(2)} ${curr}.`
         );
 
         return orderId;
