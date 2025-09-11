@@ -28,6 +28,14 @@ service CatalogService {
                         customerEmail: String @title: '{i18n>Customer Email}' ) returns UUID;
     };
 
+  /** Expose Publishers entity */
+  @readonly
+  entity Publishers     as
+    projection on my.Publishers {
+      *,
+      books // include association for navigation
+    };
+
   @requires: 'authenticated-user'
   action submitOrder(book: Books:ID @mandatory,
                      quantity: Integer @mandatory
