@@ -40,3 +40,12 @@ annotate SalesService with @restrict: [{
   ],
   to   : ['admin']
 }];
+
+annotate CatalogService.Warehouses with @restrict: [{
+  grant: [
+    'READ',
+    'WRITE',
+    'EXECUTE'
+  ],
+  to   : ['admin']
+}];
