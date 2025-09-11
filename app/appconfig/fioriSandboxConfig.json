@@ -37,11 +37,11 @@
                   }
                 },
                 {
-                  "id": "BrowseSalesOrders",
+                  "id": "BrowsePublishers",
                   "tileType": "sap.ushell.ui.tile.StaticTile",
                   "properties": {
-                    "title": "Browse Sales Orders",
-                    "targetURL": "#SalesOrders-display"
+                    "title": "Browse Publishers",
+                    "targetURL": "#Publishers-display"
                   }
                 }
               ]
@@ -145,6 +145,24 @@
                 "applicationType": "SAPUI5",
                 "additionalInformation": "SAPUI5.Component=browse-sales-orders",
                 "url": "browse-sales-orders/webapp"
+              }
+            },
+                        "BrowsePublishers": {
+              "semanticObject": "Publishers",
+              "action": "display",
+              "title": "Browse Publishers",
+              "signature": {
+                "parameters": {
+                  "Publishers.ID": {
+                    "renameTo": "ID"
+                  }
+                },
+                "additionalParameters": "ignored"
+              },
+              "resolutionResult": {
+                "applicationType": "SAPUI5",
+                "additionalInformation": "SAPUI5.Component=publisher",
+                "url": "publish/webapp"
               }
             }
           }
