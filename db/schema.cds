@@ -12,7 +12,6 @@ entity Books : managed {
       descr             : localized String(1111);
       @mandatory author : Association to Authors;
       genre             : Association to Genres;
-      stock             : Integer;
       price             : Decimal;
       currency          : Currency;
       image             : LargeBinary @Core.MediaType: 'image/png';
@@ -57,6 +56,32 @@ entity Genres : sap.common.CodeList {
                    on children.parent = $self;
 }
 
+/** Inventory */
+entity Warehouses : managed {
+  key ID      : Integer;
+      name    : String(111);
+      address : String(255);
+      city    : String(111);
+      email   : String(111);
+}
+
+entity Inventory : managed {
+  key book      : Association to Books;
+  key warehouse : Association to Warehouses;
+      quantity  : Integer;
+}
+
+extend Books with {
+  availabilities : Association to many Inventory
+                     on availabilities.book = $self;
+}
+
+extend Warehouses with {
+  stocks : Association to many Inventory
+             on stocks.warehouse = $self;
+}
+
+/** Sales Orders */
 entity SalesOrders : managed {
   key ID              : UUID;
 
@@ -89,7 +114,6 @@ entity SalesOrders : managed {
       notes           : String(1000);
       items           : Composition of many SalesOrderItems
                           on items.salesOrder = $self;
-
       customer        : Association to Customers;
 }
 
