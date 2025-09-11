@@ -191,94 +191,120 @@ module.exports = class CatalogService extends cds.ApplicationService {
           );
         }
 
-        // 4) Pick a warehouse and attempt *atomic* reservation
-        //    Option A: require full quantity; Option B: allow partial. Below = full quantity.
+        // 4) Find available warehouse and allocate across multiple warehouses (full coverage required)
         const invRows = await tx
           .read(Inventory)
           .where({ book_ID: ID })
           .columns("book_ID", "warehouse_ID", "quantity")
-          .orderBy({ warehouse_ID: "asc" });
+          // Strategy: take from warehouses with the most first (minimizes number of splits)
+          .orderBy({ quantity: "desc" }, { warehouse_ID: "asc" });
 
-        // Try each warehouse until one can fulfill the entire quantity
-        let chosenWarehouseId = null;
-        for (const r of invRows) {
-          const q = Number(r.quantity ?? 0);
-          if (q >= quantity) {
-            // Conditional update: decrement only if enough stock remains
-            const affected = await tx
-              .update(Inventory)
-              .set({ quantity: { "-=": quantity } })
-              .where({
-                book_ID: ID,
-                warehouse_ID: r.warehouse_ID,
-                quantity: { ">=": quantity },
-              });
-
-            if (affected === 1) {
-              chosenWarehouseId = r.warehouse_ID;
-              break;
-            }
-          }
-        }
-
-        if (!chosenWarehouseId) {
-          // If you want to allow partial reservation, you can implement a "split" or a
-          // "reserve what you can" logic similar to your first handler. For now: fail fast.
+        const availableTotal = invRows.reduce(
+          (s, r) => s + Number(r.quantity ?? 0),
+          0
+        );
+        if (availableTotal < quantity) {
           return req.error(
             409,
-            `Insufficient stock to fulfill ${quantity} unit(s) of Book ${ID}`
+            `Only ${availableTotal} unit(s) of Book ${ID} available across all warehouses`
           );
         }
 
-        const wh = await tx
-          .read(Warehouses)
-          .where({ ID: chosenWarehouseId })
-          .columns("ID", "name", "city")
-          .then((r) => r?.[0]);
+        let remaining = quantity;
+        const allocations = []; // { warehouse_ID, take }
 
-        // 5) Create order + item (single tx)
+        // Allocate in the same transaction – each update is conditional (concurrency-safe)
+        for (const r of invRows) {
+          if (remaining <= 0) break;
+          const avail = Number(r.quantity ?? 0);
+          if (avail <= 0) continue;
+
+          const take = Math.min(remaining, avail);
+          // Atomic decrement only if enough remains right now
+          const affected = await tx
+            .update(Inventory)
+            .set({ quantity: { "-=": take } })
+            .where({
+              book_ID: ID,
+              warehouse_ID: r.warehouse_ID,
+              quantity: { ">=": take },
+            });
+
+          if (affected === 1) {
+            allocations.push({ warehouse_ID: r.warehouse_ID, take });
+            remaining -= take;
+          }
+          // If affected === 0, we were "run past" – skip to the next layer
+        }
+
+        if (remaining > 0) {
+          // Not enough after attempts → abort; all decrements are rolled back due to tx + req.error
+          return req.error(
+            409,
+            `Concurrent update: could only reserve ${
+              quantity - remaining
+            }/${quantity}. Please try again.`
+          );
+        }
+
+        // Get info about the storage for notes / nice UI
+        const whIds = [...new Set(allocations.map((a) => a.warehouse_ID))];
+        const whList = await tx
+          .read(Warehouses)
+          .where({ ID: { in: whIds } })
+          .columns("ID", "name", "city");
+        const whMap = new Map(whList.map((w) => [w.ID, w]));
+
+        // 5) Create order + one order line per allocated warehouse
         const orderId = cds.utils.uuid();
-        const itemId = cds.utils.uuid();
         const today = new Date().toISOString().slice(0, 10);
+
+        const items = allocations.map((a, idx) => ({
+          ID: cds.utils.uuid(),
+          itemNumber: (idx + 1) * 10,
+          productName: book.title,
+          productCode: String(ID),
+          quantity: a.take,
+          unitPrice: price,
+          totalPrice: Number((price * a.take).toFixed(2)),
+          currency_code: curr,
+          salesOrder_ID: orderId,
+          // optional: enter the warehouse ID in the product code/text if you wish
+        }));
+
+        const notes =
+          `Reserved ${quantity} across ${allocations.length} warehouse(s): ` +
+          allocations
+            .map((a) => {
+              const w = whMap.get(a.warehouse_ID);
+              return `${a.take}@${a.warehouse_ID}${
+                w ? `(${w.name}, ${w.city})` : ""
+              }`;
+            })
+            .join(", ") +
+          ".";
 
         await tx.run([
           INSERT.into(SalesOrders).entries({
             ID: orderId,
             orderNumber: `SO-${Math.floor(Math.random() * 90000 + 10000)}`,
             orderDate: today,
-            totalAmount: total, // consider using decimal type
+            totalAmount: total,
             currency_code: curr,
             status: "NEW",
-            notes: `Reserved ${quantity} from WH ${chosenWarehouseId}${
-              wh ? ` (${wh.name}, ${wh.city})` : ""
-            }.`,
+            notes,
             customer_ID: customer.ID,
             // Backward-compat columns if still present:
             customerName: userName,
             customerEmail: userMail,
           }),
-          INSERT.into(SalesOrderItems).entries({
-            ID: itemId,
-            itemNumber: 10,
-            productName: book.title,
-            productCode: String(ID),
-            quantity,
-            unitPrice: price,
-            totalPrice: total,
-            currency_code: curr,
-            salesOrder_ID: orderId,
-          }),
+          ...items.map((it) => INSERT.into(SalesOrderItems).entries(it)),
         ]);
 
-        // 6) (Optional) emit a domain event for async handlers
-        // await this.emit("SalesOrderCreated", { orderId, customerId: customer.ID });
-
         req.info(
-          `Order placed: ${quantity} × "${
-            book.title
-          }" from warehouse ${chosenWarehouseId}. Total ${total.toFixed(
-            2
-          )} ${curr}.`
+          `Order placed: ${quantity} × "${book.title}" from ${
+            allocations.length
+          } warehouse(s). Total ${total.toFixed(2)} ${curr}.`
         );
         return orderId;
       } catch (e) {
