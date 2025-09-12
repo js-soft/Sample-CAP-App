@@ -15,6 +15,6 @@ builder:
     - name: ui5-task-zipper
       afterTask: generateVersionInfo
       configuration:
-        archiveName: browse-sales-orders  
+        archiveName: browse-sales-orders
         additionalFiles:
           - xs-app.json

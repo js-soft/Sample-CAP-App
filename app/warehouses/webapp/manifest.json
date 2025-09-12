@@ -113,7 +113,9 @@
                             },
                             "tableSettings": {
                                 "type": "ResponsiveTable",
-                                "personalization": { "column": false }
+                                "personalization": {
+                                    "column": false
+                                }
                             }
                         }
                     }

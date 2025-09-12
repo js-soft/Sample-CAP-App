@@ -124,6 +124,12 @@
                     "route": "WarehousesDetails"
                   }
                 }
+              },
+              "tableSettings": {
+                "type": "ResponsiveTable",
+                "personalization": {
+                  "column": false
+                }
               }
             }
           }
