@@ -1,0 +1,7 @@
+ID;username;email;firstName;lastName;phone;department;role;isActive;lastLogin;password;passwordHash
+"550e8400-e29b-41d4-a716-446655440001";"admin";"admin@example.com";"Administrator";"System";"+1-555-0100";"IT";"admin";true;2024-01-15T10:30:00Z;"admin";"hashed_password_here"
+"550e8400-e29b-41d4-a716-446655440002";"fabian";"fabian.tschirschnitz@js-soft.com";"Fabian";"Tschirschnitz";"+1-555-0101";"Development";"user";true;2024-01-14T15:45:00Z;"jsFrog123!";"hashed_password_here"
+"550e8400-e29b-41d4-a716-446655440003";"alice";"alice@example.com";"Alice";"Buyer";"+1-555-0102";"Sales";"user";true;2024-01-13T09:20:00Z;"alice";"hashed_password_here"
+"550e8400-e29b-41d4-a716-446655440004";"john.doe";"john.doe@bookshop.com";"John";"Doe";"+1-555-0103";"Sales";"user";true;2024-01-14T15:45:00Z;"password123";"hashed_password_here"
+"550e8400-e29b-41d4-a716-446655440005";"jane.smith";"jane.smith@bookshop.com";"Jane";"Smith";"+1-555-0104";"Marketing";"manager";true;2024-01-13T09:20:00Z;"password123";"hashed_password_here"
+"550e8400-e29b-41d4-a716-446655440006";"bob.wilson";"bob.wilson@bookshop.com";"Bob";"Wilson";"+1-555-0105";"Operations";"user";false;2024-01-10T14:15:00Z;"password123";"hashed_password_here"

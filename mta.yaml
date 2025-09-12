@@ -78,6 +78,10 @@ modules:
           artifacts:
             - admin-books.zip
           target-path: app/
+        - name: samplecapappusermanagement
+          artifacts:
+            - user-management.zip
+          target-path: app/
         - name: samplecapappbrowse
           artifacts:
             - browse.zip
@@ -105,6 +109,17 @@ modules:
   - name: samplecapappadminbooks
     type: html5
     path: app/admin-books
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+  - name: samplecapappusermanagement
+    type: html5
+    path: app/user-management
     build-parameters:
       build-result: dist
       builder: custom

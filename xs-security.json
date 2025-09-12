@@ -3,7 +3,8 @@
   "tenant-mode": "shared",
   "scopes": [
     { "name": "$XSAPPNAME.User",  "description": "Browse & order books" },
-    { "name": "$XSAPPNAME.Admin", "description": "Admin (manage sales orders)" }
+    { "name": "$XSAPPNAME.Admin", "description": "Admin (manage sales orders and users)" },
+    { "name": "$XSAPPNAME.UserManagement", "description": "Manage users (admin only)" }
   ],
   "role-templates": [
     {
@@ -13,8 +14,11 @@
     },
     {
       "name": "Admin",
-      "description": "Full admin (incl. sales orders app)",
-      "scope-references": [ "$XSAPPNAME.Admin" ]
+      "description": "Full admin (incl. sales orders and user management)",
+      "scope-references": [ 
+        "$XSAPPNAME.Admin",
+        "$XSAPPNAME.UserManagement"
+      ]
     }
   ]
 }
