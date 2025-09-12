@@ -42,6 +42,13 @@ annotate CatalogService.Warehouses with @(UI: {
       Value         : email,
       Label         : '{i18n>Email}',
       @UI.Importance: #Low
+    },
+
+    {
+      $Type          : 'UI.DataFieldForAction',
+      Action         : 'CatalogService.EntityContainer/createWarehouse',
+      Label          : '{i18n>Add Warehouse}',
+      RequiresContext: false
     }
   ]
 });

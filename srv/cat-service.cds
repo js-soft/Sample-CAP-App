@@ -60,10 +60,15 @@ service CatalogService {
       action decreaseQuantity(by: Integer default 1) returns CatalogService.Availabilities;
     };
 
-  @readonly
   entity Warehouses     as
     projection on my.Warehouses {
       *,
       stocks
     };
+
+  action createWarehouse(name: String @title: '{i18n>Name}',
+                         address: String @title: '{i18n>Address}',
+                         city: String @title: '{i18n>City}',
+                         email: String @title: '{i18n>Email}'
+  ) returns CatalogService.Warehouses;
 }

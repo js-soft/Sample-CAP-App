@@ -313,6 +313,26 @@ module.exports = class CatalogService extends cds.ApplicationService {
       }
     });
 
+    this.on("createWarehouse", async (req) => {
+      const { Warehouses } = this.entities;
+      const tx = cds.transaction(req);
+      const { name, address, city, email } = req.data || {};
+
+      // Ikke angi ID her!
+      await tx.run(
+        INSERT.into(Warehouses).entries({ name, address, city, email })
+      );
+
+      // Hent tilbake raden (SQLite støtter ikke RETURNING i CAP out-of-the-box)
+      const created = await tx.run(
+        SELECT.one
+          .from(Warehouses)
+          .where({ name, address, city, email })
+          .orderBy("ID desc")
+      );
+      return created;
+    });
+
     // Delegate requests to the underlying generic service
     return super.init();
   }
