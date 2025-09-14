@@ -74,6 +74,7 @@ entity Inventory : managed {
 extend Books with {
   availabilities : Association to many Inventory
                      on availabilities.book = $self;
+  stock          : Integer @title: 'Total Stock' @readonly;
 }
 
 extend Warehouses with {
@@ -150,3 +151,23 @@ entity Customers : managed {
       name   : String(100);
       email  : String(255);
 }
+
+/** User Management Entity */
+entity Users : managed {
+  key ID          : UUID;
+      @mandatory username    : String(50) @title: 'Username';
+      @mandatory email       : String(255) @title: 'Email';
+      @mandatory firstName   : String(100) @title: 'First Name';
+      @mandatory lastName    : String(100) @title: 'Last Name';
+      phone        : String(20) @title: 'Phone';
+      department   : String(100) @title: 'Department';
+      role         : String(50) @title: 'Role' @default: 'user';
+      isActive     : Boolean @title: 'Active' @default: true;
+      lastLogin    : Timestamp @title: 'Last Login';
+      password     : String(255) @title: 'Password';
+      passwordHash : String(255) @title: 'Password Hash';
+      profileImage : LargeBinary @Core.MediaType: 'image/png' @title: 'Profile Image';
+}
+
+// Enable draft functionality for Users
+annotate Users with @fiori.draft.enabled;

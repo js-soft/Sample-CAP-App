@@ -28,7 +28,8 @@
     "app/browse",
     "app/browse-sales-orders",
     "app/warehouses",
-    "app/publish"
+    "app/publish",
+    "app/user-management"
   ],
   "cds": {
     "requires": {

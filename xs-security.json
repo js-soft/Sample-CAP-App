@@ -8,7 +8,11 @@
     },
     {
       "name": "$XSAPPNAME.Admin",
-      "description": "Admin (manage sales orders)"
+      "description": "Admin (manage sales orders and users)"
+    },
+    {
+      "name": "$XSAPPNAME.UserManagement",
+      "description": "Manage users (admin only)"
     },
     {
       "name": "$XSAPPNAME.admin",
@@ -30,15 +34,20 @@
     {
       "name": "User",
       "description": "Can browse books and place orders",
-      "scope-references": [
-        "$XSAPPNAME.User"
-      ]
+      "scope-references": ["$XSAPPNAME.User"]
     },
     {
-      "name": "Admin",
-      "description": "Full admin (incl. sales orders app)",
-      "scope-references": [
-        "$XSAPPNAME.Admin"
+      "role-templates": [
+        {
+          "name": "User",
+          "description": "Can browse books and place orders",
+          "scope-references": ["$XSAPPNAME.User"]
+        },
+        {
+          "name": "Admin",
+          "description": "Full admin (incl. sales orders and user management)",
+          "scope-references": ["$XSAPPNAME.Admin", "$XSAPPNAME.UserManagement"]
+        }
       ]
     }
   ],

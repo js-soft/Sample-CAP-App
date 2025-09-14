@@ -60,6 +60,14 @@
                     "title": "Browse Warehouses",
                     "targetURL": "#Warehouses-display"
                   }
+                },
+                {
+                  "id": "ManageUsers",
+                  "tileType": "sap.ushell.ui.tile.StaticTile",
+                  "properties": {
+                    "title": "Manage Users",
+                    "targetURL": "#Users-manage"
+                  }
                 }
               ]
             }
@@ -163,6 +171,24 @@
                 "applicationType": "SAPUI5",
                 "additionalInformation": "SAPUI5.Component=publisher",
                 "url": "publish/webapp"
+              }
+            },
+            "ManageUsers": {
+              "semanticObject": "Users",
+              "action": "manage",
+              "title": "Manage Users",
+              "signature": {
+                "parameters": {
+                  "Users.ID": {
+                    "renameTo": "ID"
+                  }
+                },
+                "additionalParameters": "allowed"
+              },
+              "resolutionResult": {
+                "applicationType": "SAPUI5",
+                "additionalInformation": "SAPUI5.Component=user-management",
+                "url": "user-management/webapp"
               }
             }
           }
