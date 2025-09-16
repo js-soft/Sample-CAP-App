@@ -1,3 +1,4 @@
+// srv/cat-service.js
 const cds = require("@sap/cds");
 const { SELECT, INSERT, UPDATE } = cds.ql;
 
@@ -35,87 +36,7 @@ module.exports = class CatalogService extends cds.ApplicationService {
       await this.emit("OrderedBook", { book, quantity, buyer: req.user.id });
     });
 
-    // Warehouse & inventory
-    const { Inventory } = cds.entities("sap.capire.bookshop");
-
-    const getKeys = (req) => {
-      const segs = Array.isArray(req.params) ? req.params : [req.params || {}];
-      const last = segs[segs.length - 1] || {};
-      const prev = segs.length > 1 ? segs[segs.length - 2] : {};
-
-      const book_ID =
-        last.book_ID ?? last.book?.ID ?? req.data?.bookId ?? req.data?.book_ID;
-
-      const warehouse_ID =
-        last.warehouse_ID ??
-        last.warehouse?.ID ??
-        prev.ID ?? // parent Warehouses(1)
-        req.data?.warehouseId ??
-        req.data?.warehouse_ID;
-
-      return { book_ID, warehouse_ID };
-    };
-
-    this.on("increaseQuantity", "Availabilities", async (req) => {
-      const { book_ID, warehouse_ID } = getKeys(req);
-      const by = Number(req.data?.by ?? 1) || 1;
-
-      if (book_ID == null || warehouse_ID == null) {
-        return req.error(
-          400,
-          "Missing keys: book_ID and warehouse_ID are required"
-        );
-      }
-
-      const row = await SELECT.one
-        .from(Inventory)
-        .where({ book_ID, warehouse_ID });
-      if (!row) {
-        await INSERT.into(Inventory).entries({
-          book_ID,
-          warehouse_ID,
-          quantity: by,
-        });
-      } else {
-        await UPDATE(Inventory)
-          .set({ quantity: { "+=": by } })
-          .where({ book_ID, warehouse_ID });
-      }
-      return SELECT.one.from(Inventory).where({ book_ID, warehouse_ID });
-    });
-
-    this.on("decreaseQuantity", "Availabilities", async (req) => {
-      const { book_ID, warehouse_ID } = getKeys(req);
-      const by = Number(req.data?.by ?? 1) || 1;
-
-      if (book_ID == null || warehouse_ID == null) {
-        return req.error(
-          400,
-          "Missing keys: book_ID and warehouse_ID are required"
-        );
-      }
-
-      const row = await SELECT.one
-        .from(Inventory)
-        .where({ book_ID, warehouse_ID });
-      const curr = row?.quantity ?? 0;
-      const next = Math.max(0, curr - by);
-
-      if (!row) {
-        await INSERT.into(Inventory).entries({
-          book_ID,
-          warehouse_ID,
-          quantity: 0,
-        });
-        return { book_ID, warehouse_ID, quantity: 0 };
-      }
-
-      await UPDATE(Inventory)
-        .set({ quantity: next })
-        .where({ book_ID, warehouse_ID });
-      return SELECT.one.from(Inventory).where({ book_ID, warehouse_ID });
-    });
-
+    // Place a sales order
     this.on("placeOrder", "Books", async (req) => {
       try {
         const { ID } = req.params?.[0] || {};
@@ -127,14 +48,9 @@ module.exports = class CatalogService extends cds.ApplicationService {
         if (!Number.isFinite(quantity) || quantity <= 0)
           return req.error(400, "Provide a positive quantity");
 
-        const {
-          Books,
-          Inventory,
-          Warehouses,
-          SalesOrders,
-          SalesOrderItems,
-          Customers,
-        } = cds.entities("sap.capire.bookshop");
+        const { Books, SalesOrders, SalesOrderItems, Customers } = cds.entities(
+          "sap.capire.bookshop"
+        );
 
         const book = await SELECT.one
           .from(Books)
@@ -176,90 +92,20 @@ module.exports = class CatalogService extends cds.ApplicationService {
             .where({ userId });
         }
 
-        const invRows = await SELECT.from(Inventory)
-          .columns("book_ID", "warehouse_ID", "quantity")
-          .where({ book_ID: ID })
-          .orderBy({ quantity: "desc" }, { warehouse_ID: "asc" });
-
-        const availableTotal = invRows.reduce(
-          (sum, r) => sum + Number(r.quantity ?? 0),
-          0
-        );
-        if (availableTotal < quantity) {
-          return req.error(
-            409,
-            `Only ${availableTotal} unit(s) of Book ${ID} available across all warehouses`
-          );
-        }
-
-        let remaining = quantity;
-        const allocations = [];
-
-        for (const r of invRows) {
-          if (remaining <= 0) break;
-          const available = Number(r.quantity ?? 0);
-          if (available <= 0) continue;
-
-          const take = Math.min(remaining, available);
-          const affected = await UPDATE(Inventory)
-            .set({ quantity: { "-=": take } })
-            .where({
-              book_ID: ID,
-              warehouse_ID: r.warehouse_ID,
-              quantity: { ">=": take },
-            });
-
-          if (affected === 1) {
-            allocations.push({ warehouse_ID: r.warehouse_ID, take });
-            remaining -= take;
-          }
-        }
-
-        if (remaining > 0) {
-          return req.error(
-            409,
-            `Concurrent update: could only reserve ${
-              quantity - remaining
-            }/${quantity}. Please try again.`
-          );
-        }
-
-        const warehouseIds = [
-          ...new Set(allocations.map((a) => a.warehouse_ID)),
-        ];
-        const warehouses = warehouseIds.length
-          ? await SELECT.from(Warehouses)
-              .columns("ID", "name", "city")
-              .where({ ID: { in: warehouseIds } })
-          : [];
-        const whById = new Map(warehouses.map((w) => [w.ID, w]));
-
         const orderId = cds.utils.uuid();
         const today = new Date().toISOString().slice(0, 10);
 
-        const orderItems = allocations.map((a, idx) => ({
+        const orderItem = {
           ID: cds.utils.uuid(),
-          itemNumber: (idx + 1) * 10,
+          itemNumber: 10,
           productName: book.title,
           productCode: String(ID),
-          quantity: a.take,
+          quantity,
           unitPrice: price,
-          totalPrice: Number((price * a.take).toFixed(2)),
+          totalPrice: Number((price * quantity).toFixed(2)),
           currency_code: currency,
           salesOrder_ID: orderId,
-        }));
-
-        const notes =
-          `Reserved ${quantity} across ${allocations.length} warehouse(s): ` +
-          allocations
-            .map((a) => {
-              const w = whById.get(a.warehouse_ID);
-              return `${a.take}@${a.warehouse_ID}${
-                w ? `(${w.name}, ${w.city})` : ""
-              }`;
-            })
-            .join(", ") +
-          ".";
+        };
 
         await INSERT.into(SalesOrders).entries({
           ID: orderId,
@@ -268,20 +114,18 @@ module.exports = class CatalogService extends cds.ApplicationService {
           totalAmount: total,
           currency_code: currency,
           status: "NEW",
-          notes,
+          notes: `Order placed for ${quantity} × "${book.title}"`,
           customer_ID: customer.ID,
           customerName: userName,
           customerEmail: userMail,
         });
 
-        await Promise.all(
-          orderItems.map((it) => INSERT.into(SalesOrderItems).entries(it))
-        );
+        await INSERT.into(SalesOrderItems).entries(orderItem);
 
         req.info(
-          `Order placed: ${quantity} × "${book.title}" from ${
-            allocations.length
-          } warehouse(s). Total ${total.toFixed(2)} ${currency}.`
+          `Order placed: ${quantity} × "${book.title}". Total ${total.toFixed(
+            2
+          )} ${currency}.`
         );
         return orderId;
       } catch (e) {

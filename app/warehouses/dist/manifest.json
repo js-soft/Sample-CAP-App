@@ -46,7 +46,7 @@
           "subTitle": "{{appSubTitle}}",
           "icon": "sap-icon://course-book",
           "indicatorDataSource": {
-            "dataSource": "CatalogService",
+            "dataSource": "WarehouseService",
             "path": "Warehouses/$count",
             "refresh": 1800
           }
@@ -83,7 +83,7 @@
         }
       },
       "": {
-        "dataSource": "CatalogService",
+        "dataSource": "WarehouseService",
         "settings": {
           "operationMode": "Server",
           "autoExpandSelect": true,

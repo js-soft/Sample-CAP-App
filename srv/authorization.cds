@@ -1,6 +1,7 @@
 using {CatalogService} from './cat-service';
 using {SalesService} from './sales-service';
 using {UserService} from './user-service';
+using {WarehouseService} from './warehouse-service';
 
 /* Service-level: users can READ data from CatalogService */
 annotate CatalogService with @restrict: [{
@@ -42,15 +43,6 @@ annotate SalesService with @restrict: [{
   to   : ['admin']
 }];
 
-/* Admin-only Warehouses */
-annotate CatalogService.Warehouses with @restrict: [{
-  grant: [
-    'READ',
-    'WRITE',
-    'EXECUTE'
-  ],
-  to   : ['admin']
-}];
 
 /* Admin-only UserService */
 annotate UserService with @restrict: [{
@@ -69,4 +61,14 @@ annotate UserService.UserProfiles with @restrict: [{
     'user',
     'admin'
   ]
+}];
+
+/* Admin-only WarehouseService */
+annotate WarehouseService with @restrict: [{
+  grant: [
+    'READ',
+    'WRITE',
+    'EXECUTE'
+  ],
+  to   : ['admin']
 }];

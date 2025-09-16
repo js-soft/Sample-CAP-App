@@ -1,7 +1,7 @@
-using {CatalogService} from '../../srv/cat-service.cds';
+using {WarehouseService} from '../../srv/warehouse-service.cds';
 
 // =-=-=-= warehouses list page
-annotate CatalogService.Warehouses with @(UI: {
+annotate WarehouseService with @(UI: {
   HeaderInfo     : {
     TypeName      : '{i18n>Warehouse}',
     TypeNamePlural: '{i18n>Warehouses}',
@@ -54,7 +54,7 @@ annotate CatalogService.Warehouses with @(UI: {
 });
 
 // =-=-=-= individual warehouse object page
-annotate CatalogService.Warehouses with @(UI: {
+annotate WarehouseService.Warehouses with @(UI: {
   // page sections
   Facets                   : [
     {
@@ -91,7 +91,7 @@ annotate CatalogService.Warehouses with @(UI: {
 });
 
 // (valgfritt) – fint å ha, men ikke nødvendig når du peker via navigasjonen:
-annotate CatalogService.Availabilities with @(UI: {LineItem: [
+annotate WarehouseService.Availabilities with @(UI: {LineItem: [
   {
     Value: book.title,
     Label: '{i18n>Book}'

@@ -4,7 +4,7 @@ service CatalogService {
 
   /** For displaying lists of Books */
   @readonly
-  entity ListOfBooks    as
+  entity ListOfBooks as
     projection on Books
     excluding {
       descr
@@ -12,7 +12,7 @@ service CatalogService {
 
   /** For display in details pages */
   @readonly
-  entity Books          as
+  entity Books       as
     projection on my.Books {
       *,
       author.name as author,
@@ -28,7 +28,7 @@ service CatalogService {
 
   /** Expose Publishers entity */
   @readonly
-  entity Publishers     as
+  entity Publishers  as
     projection on my.Publishers {
       *,
       books // include association for navigation
@@ -46,29 +46,4 @@ service CatalogService {
     quantity : Integer;
     buyer    : String
   };
-
-  /** List of availabilities per warehouse */
-  @readonly
-  entity Availabilities as
-    projection on my.Inventory {
-      book,
-      warehouse,
-      quantity
-    }
-    actions {
-      action increaseQuantity(by: Integer default 1) returns CatalogService.Availabilities;
-      action decreaseQuantity(by: Integer default 1) returns CatalogService.Availabilities;
-    };
-
-  entity Warehouses     as
-    projection on my.Warehouses {
-      *,
-      stocks
-    };
-
-  action createWarehouse(name: String @title: '{i18n>Name}',
-                         address: String @title: '{i18n>Address}',
-                         city: String @title: '{i18n>City}',
-                         email: String @title: '{i18n>Email}'
-  ) returns CatalogService.Warehouses;
 }

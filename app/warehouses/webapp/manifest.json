@@ -10,8 +10,8 @@
         "description": "{{appDescription}}",
         "i18n": "i18n/i18n.properties",
         "dataSources": {
-            "CatalogService": {
-                "uri": "odata/v4/catalog/",
+        "WarehouseService": {
+            "uri": "odata/v4/warehouse/",
                 "type": "OData",
                 "settings": {
                     "odataVersion": "4.0"
@@ -39,7 +39,7 @@
                     "subTitle": "{{appSubTitle}}",
                     "icon": "sap-icon://course-book",
                     "indicatorDataSource": {
-                        "dataSource": "CatalogService",
+                        "dataSource": "WarehouseService",
                         "path": "Warehouses/$count",
                         "refresh": 1800
                     }
@@ -69,7 +69,7 @@
                 "uri": "i18n/i18n.properties"
             },
             "": {
-                "dataSource": "CatalogService",
+                "dataSource": "WarehouseService",
                 "settings": {
                     "operationMode": "Server",
                     "autoExpandSelect": true,
