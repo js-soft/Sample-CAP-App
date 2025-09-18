@@ -1,148 +1,113 @@
 {
-    "_version": "1.49.0",
-    "sap.app": {
-        "id": "sample-cap-app.warehouses",
-        "applicationVersion": {
-            "version": "1.0.0"
-        },
-        "type": "application",
-        "title": "{{appTitle}}",
-        "description": "{{appDescription}}",
-        "i18n": "i18n/i18n.properties",
-        "dataSources": {
-        "WarehouseService": {
-            "uri": "odata/v4/warehouse/",
-                "type": "OData",
-                "settings": {
-                    "odataVersion": "4.0"
-                }
-            }
-        },
-        "crossNavigation": {
-            "inbounds": {
-                "Warehouses-display": {
-                    "signature": {
-                        "parameters": {
-                            "Warehouses.ID": {
-                                "renameTo": "ID"
-                            },
-                            "Authors.Warehouses.ID": {
-                                "renameTo": "ID"
-                            }
-                        },
-                        "additionalParameters": "allowed"
-                    },
-                    "semanticObject": "Warehouses",
-                    "action": "display",
-                    "title": "{{appTitle}}",
-                    "info": "{{appInfo}}",
-                    "subTitle": "{{appSubTitle}}",
-                    "icon": "sap-icon://course-book",
-                    "indicatorDataSource": {
-                        "dataSource": "WarehouseService",
-                        "path": "Warehouses/$count",
-                        "refresh": 1800
-                    }
-                }
-            }
+  "_version": "1.49.0",
+  "sap.app": {
+    "id": "sample-cap-app.warehouses",
+    "applicationVersion": { "version": "1.0.0" },
+    "type": "application",
+    "title": "{{appTitle}}",
+    "description": "{{appDescription}}",
+    "i18n": "i18n/i18n.properties",
+    "dataSources": {
+      "WarehouseService": {
+        "uri": "odata/v4/warehouse/",
+        "type": "OData",
+        "settings": { "odataVersion": "4.0" }
+      }
+    },
+    "crossNavigation": {
+      "inbounds": {
+        "Warehouses-display": {
+          "signature": {
+            "parameters": {},
+            "additionalParameters": "allowed"
+          },
+          "semanticObject": "Warehouses",
+          "action": "display",
+          "title": "{{appTitle}}",
+          "info": "{{appInfo}}",
+          "subTitle": "{{appSubTitle}}",
+          "icon": "sap-icon://course-book",
+          "indicatorDataSource": {
+            "dataSource": "WarehouseService",
+            "path": "Warehouses/$count",
+            "refresh": 1800
+          }
         }
-    },
-    "sap.ui": {
-        "technology": "UI5",
-        "fullWidth": false,
-        "deviceTypes": {
-            "desktop": true,
-            "tablet": true,
-            "phone": true
-        }
-    },
-    "sap.ui5": {
-        "dependencies": {
-            "minUI5Version": "1.115.1",
-            "libs": {
-                "sap.fe.templates": {}
-            }
-        },
-        "models": {
-            "i18n": {
-                "type": "sap.ui.model.resource.ResourceModel",
-                "uri": "i18n/i18n.properties"
-            },
-            "": {
-                "dataSource": "WarehouseService",
-                "settings": {
-                    "operationMode": "Server",
-                    "autoExpandSelect": true,
-                    "earlyRequests": true,
-                    "groupProperties": {
-                        "default": {
-                            "submit": "Auto"
-                        }
-                    }
-                }
-            }
-        },
-        "routing": {
-            "routes": [
-                {
-                    "pattern": ":?query:",
-                    "name": "WarehousesList",
-                    "target": "WarehousesList"
-                },
-                {
-                    "pattern": "Warehouses({key}):?query:",
-                    "name": "WarehousesDetails",
-                    "target": "WarehousesDetails"
-                }
-            ],
-            "targets": {
-                "WarehousesList": {
-                    "type": "Component",
-                    "id": "WarehousesList",
-                    "name": "sap.fe.templates.ListReport",
-                    "options": {
-                        "settings": {
-                            "entitySet": "Warehouses",
-                            "initialLoad": true,
-                            "navigation": {
-                                "Warehouses": {
-                                    "detail": {
-                                        "route": "WarehousesDetails"
-                                    }
-                                }
-                            },
-                            "tableSettings": {
-                                "type": "ResponsiveTable",
-                                "personalization": {
-                                    "column": false
-                                }
-                            }
-                        }
-                    }
-                },
-                "WarehousesDetails": {
-                    "type": "Component",
-                    "id": "WarehousesDetailsList",
-                    "name": "sap.fe.templates.ObjectPage",
-                    "options": {
-                        "settings": {
-                            "entitySet": "Warehouses"
-                        }
-                    }
-                }
-            }
-        },
-        "contentDensities": {
-            "compact": true,
-            "cozy": true
-        }
-    },
-    "sap.fiori": {
-        "registrationIds": [],
-        "archeType": "transactional"
-    },
-    "sap.cloud": {
-        "public": true,
-        "service": "samplecapapp.service"
+      }
     }
+  },
+  "sap.ui": {
+    "technology": "UI5",
+    "fullWidth": false,
+    "deviceTypes": { "desktop": true, "tablet": true, "phone": true }
+  },
+  "sap.ui5": {
+    "dependencies": {
+      "minUI5Version": "1.115.1",
+      "libs": {
+        "sap.ui.core": {},
+        "sap.m": {},
+        "sap.fe.templates": {}
+      }
+    },
+    "models": {
+      "i18n": {
+        "type": "sap.ui.model.resource.ResourceModel",
+        "settings": {
+          "bundleUrl": "i18n/i18n.properties",
+          "supportedLocales": ["", "de", "en"]
+        }
+      },
+      "": {
+        "dataSource": "WarehouseService",
+        "settings": {
+          "operationMode": "Server",
+          "autoExpandSelect": true,
+          "earlyRequests": true,
+          "groupProperties": { "default": { "submit": "Auto" } }
+        }
+      }
+    },
+    "routing": {
+      "routes": [
+        { "pattern": ":?query:", "name": "WarehousesList", "target": "WarehousesList" },
+        { "pattern": "Warehouses({key}):?query:", "name": "WarehousesDetails", "target": "WarehousesDetails" }
+      ],
+      "targets": {
+        "WarehousesList": {
+          "type": "Component",
+          "id": "WarehousesList",
+          "name": "sap.fe.templates.ListReport",
+          "options": {
+            "settings": {
+              "entitySet": "Warehouses",
+              "initialLoad": true,
+              "navigation": {
+                "Warehouses": { "detail": { "route": "WarehousesDetails" } }
+              },
+              "tableSettings": {
+                "type": "ResponsiveTable",
+                "personalization": { "column": false }
+              }
+            }
+          }
+        },
+        "WarehousesDetails": {
+          "type": "Component",
+          "id": "WarehousesDetailsList",
+          "name": "sap.fe.templates.ObjectPage",
+          "options": { "settings": { "entitySet": "Warehouses" } }
+        }
+      }
+    },
+    "contentDensities": { "compact": true, "cozy": true }
+  },
+  "sap.fiori": {
+    "registrationIds": [],
+    "archeType": "transactional"
+  },
+  "sap.cloud": {
+    "public": true,
+    "service": "samplecapapp.service"
+  }
 }
