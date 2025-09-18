@@ -21,14 +21,6 @@
                   }
                 },
                 {
-                  "id": "BrowseSalesOrders",
-                  "tileType": "sap.ushell.ui.tile.StaticTile",
-                  "properties": {
-                    "title": "Browse Sales Orders",
-                    "targetURL": "#SalesOrders-display"
-                  }
-                },
-                {
                   "id": "BrowsePublishers",
                   "tileType": "sap.ushell.ui.tile.StaticTile",
                   "properties": {
@@ -51,6 +43,14 @@
                   "properties": {
                     "title": "Manage Books",
                     "targetURL": "#Books-manage"
+                  }
+                },
+                {
+                  "id": "BrowseSalesOrders",
+                  "tileType": "sap.ushell.ui.tile.StaticTile",
+                  "properties": {
+                    "title": "Browse Sales Orders",
+                    "targetURL": "#SalesOrders-display"
                   }
                 },
                 {
