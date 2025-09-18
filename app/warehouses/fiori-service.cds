@@ -1,23 +1,23 @@
 using {WarehouseService} from '../../srv/warehouse-service.cds';
 
-// =-=-=-= warehouses list page
-annotate WarehouseService with @(UI: {
-  HeaderInfo     : {
+// =-=-=-= Warehouses: List + Object page
+annotate WarehouseService.Warehouses with @(UI: {
+  HeaderInfo               : {
     TypeName      : '{i18n>Warehouse}',
     TypeNamePlural: '{i18n>Warehouses}',
     Title         : {Value: name},
     Description   : {Value: city}
   },
 
-  // search field filters
-  SelectionFields: [
+  // Search bar filters
+  SelectionFields          : [
     name,
     city,
     email
   ],
 
-  // columns in warehous list
-  LineItem       : [
+  // Columns in the warehouse list
+  LineItem                 : [
     {
       Value         : ID,
       Label         : '{i18n>ID}',
@@ -43,30 +43,26 @@ annotate WarehouseService with @(UI: {
       Label         : '{i18n>Email}',
       @UI.Importance: #Low
     },
-
     {
       $Type          : 'UI.DataFieldForAction',
-      Action         : 'CatalogService.EntityContainer/createWarehouse',
+      Action         : 'WarehouseService.createWarehouse',
       Label          : '{i18n>Add Warehouse}',
       RequiresContext: false
     }
-  ]
-});
+  ],
 
-// =-=-=-= individual warehouse object page
-annotate WarehouseService.Warehouses with @(UI: {
-  // page sections
+  // Object page sections
   Facets                   : [
     {
       $Type : 'UI.ReferenceFacet',
       Label : '{i18n>Details}',
       Target: '@UI.FieldGroup#WarehouseInfo'
     },
-    // Pek til den ukvalifiserte LineItem-annotasjonen på navigasjonen:
+    // If your navigation is named 'stocks', change Target to 'stocks/@UI.LineItem'
     {
       $Type : 'UI.ReferenceFacet',
       Label : '{i18n>Inventory}',
-      Target: 'stocks/@UI.LineItem'
+      Target: 'availabilities/@UI.LineItem'
     }
   ],
 
@@ -90,7 +86,7 @@ annotate WarehouseService.Warehouses with @(UI: {
   ]}
 });
 
-// (valgfritt) – fint å ha, men ikke nødvendig når du peker via navigasjonen:
+// =-=-=-= Availabilities (inventory list on the nav)
 annotate WarehouseService.Availabilities with @(UI: {LineItem: [
   {
     Value: book.title,
@@ -104,16 +100,15 @@ annotate WarehouseService.Availabilities with @(UI: {LineItem: [
     Value: quantity,
     Label: '{i18n>Quantity}'
   },
-
   {
     $Type : 'UI.DataFieldForAction',
-    Action: 'CatalogService.decreaseQuantity',
+    Action: 'WarehouseService.decreaseQuantity',
     Label : '−',
     Inline: true
   },
   {
     $Type : 'UI.DataFieldForAction',
-    Action: 'CatalogService.increaseQuantity',
+    Action: 'WarehouseService.increaseQuantity',
     Label : '+',
     Inline: true
   }
