@@ -1,6 +1,5 @@
 using {CatalogService} from './cat-service';
 using {SalesService} from './sales-service';
-using {UserService} from './user-service';
 
 /* Service-level: users can READ data from CatalogService */
 annotate CatalogService with @restrict: [{
@@ -52,21 +51,44 @@ annotate CatalogService.Warehouses with @restrict: [{
   to   : ['admin']
 }];
 
-/* Admin-only UserService */
-annotate UserService with @restrict: [{
-  grant: [
-    'READ',
-    'WRITE',
-    'EXECUTE'
-  ],
-  to   : ['admin']
-}];
+// // Authorization annotations for entities
+annotate Books with @restrict: [
+  { grant: 'READ', to: 'authenticated-user' },
+  { grant: ['CREATE', 'UPDATE', 'DELETE'], to: 'admin' }
+];
 
-/* UserProfiles - Read-only for authenticated users */
-annotate UserService.UserProfiles with @restrict: [{
-  grant: 'READ',
-  to   : [
-    'user',
-    'admin'
-  ]
-}];
+annotate Authors with @restrict: [
+  { grant: 'READ', to: 'authenticated-user' },
+  { grant: ['CREATE', 'UPDATE', 'DELETE'], to: 'admin' }
+];
+
+annotate Publishers with @restrict: [
+  { grant: 'READ', to: 'authenticated-user' },
+  { grant: ['CREATE', 'UPDATE', 'DELETE'], to: 'admin' }
+];
+
+annotate Genres with @restrict: [
+  { grant: 'READ', to: 'authenticated-user' },
+  { grant: ['CREATE', 'UPDATE', 'DELETE'], to: 'admin' }
+];
+
+annotate SalesOrders with @restrict: [
+  { grant: 'READ', where: 'customer.user = $user' },
+  { grant: ['CREATE', 'UPDATE'], where: 'customer.user = $user' },
+  { grant: '*', to: 'admin' }
+];
+
+annotate Customers with @restrict: [
+  { grant: 'READ', where: 'user = $user' },
+  { grant: '*', to: 'admin' }
+];
+
+annotate Warehouses with @restrict: [
+  { grant: 'READ', to: 'authenticated-user' },
+  { grant: '*', to: 'admin' }
+];
+
+annotate Inventory with @restrict: [
+  { grant: 'READ', to: 'authenticated-user' },
+  { grant: '*', to: 'admin' }
+];
