@@ -36,7 +36,7 @@
             },
             "additionalParameters": "allowed"
           },
-          "semanticObject": "Sales Orders",
+          "semanticObject": "SalesOrders",
           "action": "display",
           "title": "{{appTitle}}",
           "info": "{{appInfo}}",
@@ -46,6 +46,12 @@
             "path": "SalesOrders/$count",
             "refresh": 1800
           }
+        }
+      },
+      "outbounds": {
+        "Books-display": {
+          "semanticObject": "Books",
+          "action": "display"
         }
       }
     }
