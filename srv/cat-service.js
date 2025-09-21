@@ -114,10 +114,7 @@ module.exports = class CatalogService extends cds.ApplicationService {
           totalAmount: total,
           currency_code: currency,
           status: "NEW",
-          notes: `Order placed for ${quantity} × "${book.title}"`,
           customer_ID: customer.ID,
-          customerName: userName,
-          customerEmail: userMail,
         });
 
         await INSERT.into(SalesOrderItems).entries(orderItem);

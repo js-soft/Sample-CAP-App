@@ -76,7 +76,7 @@ entity Inventory : managed {
 extend Books with {
   availabilities : Association to many Inventory
                      on availabilities.book = $self;
-  stock          : Integer @title: 'Total Stock' @readonly;
+  stock          : Integer  @title: 'Total Stock'  @readonly;
 }
 
 extend Warehouses with {
@@ -86,38 +86,30 @@ extend Warehouses with {
 
 /** Sales Orders */
 entity SalesOrders : managed {
-  key ID              : UUID;
+  key ID          : UUID;
 
       @UI.Identification: [{position: 10}]
       @UI.LineItem      : [{position: 10}]
-      orderNumber     : String(20);
-
-      @UI.Identification: [{position: 20}]
-      @UI.LineItem      : [{position: 20}]
-      customerName    : String(100);
+      orderNumber : String(20);
 
       @UI.Identification: [{position: 30}]
       @UI.LineItem      : [{position: 30}]
-      orderDate       : Date;
+      orderDate   : Date;
 
       @UI.Identification: [{position: 40}]
       @UI.LineItem      : [{position: 40}]
-      totalAmount     : Decimal(15, 2);
+      totalAmount : Decimal(15, 2);
 
       @UI.Identification: [{position: 50}]
       @UI.LineItem      : [{position: 50}]
-      currency        : Currency;
+      currency    : Currency;
 
       @UI.Identification: [{position: 60}]
       @UI.LineItem      : [{position: 60}]
-      status          : String(20);
-      customerEmail   : String(255);
-      customerPhone   : String(20);
-      deliveryAddress : String(500);
-      notes           : String(1000);
-      items           : Composition of many SalesOrderItems
-                          on items.salesOrder = $self;
-      customer        : Association to Customers;
+      status      : String(20);
+      items       : Composition of many SalesOrderItems
+                      on items.salesOrder = $self;
+      customer    : Association to Customers;
 }
 
 entity SalesOrderItems : managed {
