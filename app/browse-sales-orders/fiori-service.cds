@@ -56,17 +56,8 @@ annotate SalesService.SalesOrders with @(UI : {
             Label: '{i18n>ItemNumber}'
         },
         {
-            $Type: 'UI.DataFieldForIntentBasedNavigation',
-            Label: '{i18n>ProductName}',
             Value: productName,
-            SemanticObject: 'Books',
-            Action: 'display',
-            Mapping: [
-                {
-                    LocalProperty: 'book_ID',
-                    SemanticObjectProperty: 'Books.ID'
-                }
-            ]
+            Label: '{i18n>ProductName}'
         },
         {
             Value: productCode,
@@ -132,17 +123,40 @@ annotate SalesService.SalesOrders with @(UI : {
 
 ////////////////////////////////////////////////////////////////////////////
 //
-//	SalesOrderItems Association (Semantic Object Mapping for Books)
+//	SalesOrderItems Table
 //
-annotate SalesService.SalesOrderItems with {
-    book @Common: {
-        SemanticObject: 'Books',
-        SemanticObjectMapping: [{
-            LocalProperty: 'book_ID',      // Foreign key in SalesOrderItems
-            SemanticObjectProperty: 'Books.ID'   // Key property in Books
-        }]
-    };
-};
+annotate SalesService.SalesOrderItems with @(UI : {
+    LineItem: [
+        {
+            Value: itemNumber,
+            Label: '{i18n>ItemNumber}'
+        },
+        {
+            Value: productName,
+            Label: '{i18n>ProductName}'
+        },
+        {
+            Value: productCode,
+            Label: '{i18n>ProductCode}'
+        },
+        {
+            Value: quantity,
+            Label: '{i18n>Quantity}'
+        },
+        {
+            Value: unitPrice,
+            Label: '{i18n>UnitPrice}'
+        },
+        {
+            Value: totalPrice,
+            Label: '{i18n>TotalPrice}'
+        },
+        {
+            Value: currency_code,
+            Label: '{i18n>Currency}'
+        }
+    ]
+});
 
 ////////////////////////////////////////////////////////////////////////////
 //

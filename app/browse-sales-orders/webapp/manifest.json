@@ -51,7 +51,12 @@
       "outbounds": {
         "Books-display": {
           "semanticObject": "Books",
-          "action": "display"
+          "action": "display",
+          "parameters": {
+            "Books.ID": {
+              "value.format": "plain"
+            }
+          }
         }
       }
     }
@@ -132,7 +137,14 @@
           "name": "sap.fe.templates.ObjectPage",
           "options": {
             "settings": {
-              "entitySet": "SalesOrders"
+              "entitySet": "SalesOrders",
+              "navigation": {
+                "items": {
+                  "detail": {
+                    "outbound": "Books-display"
+                  }
+                }
+              }
             }
           }
         }

@@ -18,6 +18,8 @@ entity Books : managed {
       publisher         : Association to Publishers;
       reviews           : Association to many Reviews
                             on reviews.book = $self;
+      salesOrderItems   : Association to many SalesOrderItems
+                            on salesOrderItems.book = $self;
 }
 
 entity Publishers : managed {
