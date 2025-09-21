@@ -11,7 +11,7 @@
       "auth": {
         "kind": "mocked",
         "users": {
-          "fabian": { "password": "jsFrog123!", "roles": ["user"],  "email": "fabian.tschirschnitz@js-soft.com", "displayname": "Fabian Tschirschnitz" },
+          "fabian": { "password": "jsFrog123!", "roles": ["admin"],  "email": "fabian.tschirschnitz@js-soft.com", "displayname": "Fabian Tschirschnitz" },
           "alice": { "password": "alice", "roles": ["user"],  "email": "alice@example.com", "displayname": "Alice Buyer" },
           "admin": { "password": "admin", "roles": ["admin"], "email": "admin@example.com", "displayname": "Administrator" }
         }
