@@ -1,10 +1,27 @@
 using {sap.capire.bookshop as my} from '../db/schema';
 
 service CatalogService {
+  @readonly
+  entity Warehouses     as
+    projection on my.Warehouses {
+      ID,
+      name
+    // add more fields if you need them elsewhere
+    };
+
+  @readonly
+  entity Availabilities as
+    projection on my.Inventory {
+      book,
+      warehouse,
+      quantity
+    };
+
+  // Books already exposes `availabilities` — keep that as-is
 
   /** For displaying lists of Books */
   @readonly
-  entity ListOfBooks as
+  entity ListOfBooks    as
     projection on Books
     excluding {
       descr
@@ -12,7 +29,7 @@ service CatalogService {
 
   /** For display in details pages */
   @readonly
-  entity Books       as
+  entity Books          as
     projection on my.Books {
       *,
       author.name as author,
@@ -28,7 +45,7 @@ service CatalogService {
 
   /** Expose Publishers entity */
   @readonly
-  entity Publishers  as
+  entity Publishers     as
     projection on my.Publishers {
       *,
       books // include association for navigation

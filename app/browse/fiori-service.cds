@@ -96,3 +96,15 @@ annotate CatalogService.Books with @(UI: {
         }
     ]
 });
+
+annotate CatalogService.Availabilities with @(UI: {LineItem: [
+    {
+        Value: warehouse.name,
+        Label: '{i18n>Warehouse}'
+    },
+    {
+        Value: quantity,
+        Label: '{i18n>Quantity}'
+    }
+// Optional: { Value: book.title, Label: '{i18n>Book}' }
+]});
