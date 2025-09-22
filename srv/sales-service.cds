@@ -19,7 +19,9 @@ service SalesService {
     // Sales order items with associations
     entity SalesOrderItems as
         projection on my.SalesOrderItems {
-            * // salesOrder is already included from the schema
+            *,
+            salesOrder.customer.name  as customerName,
+            salesOrder.customer.email as customerEmail
         };
 
     // Books entity for value lists and associations

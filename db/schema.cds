@@ -144,4 +144,6 @@ entity Customers : managed {
       userId : String(255) @title: 'User ID';
       name   : String(100);
       email  : String(255);
+      salesOrders : Composition of many SalesOrders
+                      on salesOrders.customer = $self;
 }
