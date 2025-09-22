@@ -44,6 +44,15 @@ annotate CatalogService.Books with @(UI: {
             $Type : 'UI.DataFieldForAction',
             Action: 'CatalogService.placeOrder',
             Label : '{i18n>PlaceOrder}'
+        },
+        {
+            // Intent Based Navigation to Sales Orders from Object Page
+            $Type : 'UI.DataFieldForIntentBasedNavigation',
+            Label : '{i18n>ViewSalesOrders}',
+            SemanticObject : 'SalesOrders',
+            Action : 'display',
+            RequiresContext : false,
+            IconUrl : 'sap-icon://sales-order'
         }
     ]
 });
@@ -74,6 +83,16 @@ annotate CatalogService.Books with @(UI: {
         },
         {Value: genre.name},
         {Value: price},
-        {Value: currency.symbol}
+        {Value: currency.symbol},
+        {
+            // Intent Based Navigation to Sales Orders
+            $Type : 'UI.DataFieldForIntentBasedNavigation',
+            Label : '{i18n>ViewSalesOrders}',
+            SemanticObject : 'SalesOrders',
+            Action : 'display',
+            RequiresContext : false,
+            Inline : true,
+            IconUrl : 'sap-icon://sales-order'
+        }
     ]
 });

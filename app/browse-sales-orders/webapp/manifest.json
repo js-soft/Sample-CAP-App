@@ -138,6 +138,7 @@
           "options": {
             "settings": {
               "entitySet": "SalesOrders",
+              "showRelatedApps": true,
               "navigation": {
                 "items": {
                   "detail": {

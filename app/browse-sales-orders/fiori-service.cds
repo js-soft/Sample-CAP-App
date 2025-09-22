@@ -47,7 +47,16 @@ annotate SalesService.SalesOrders with @(UI : {
         {Value: totalAmount},
         {Value: currency_code},
         {Value: status},
-        {Value: notes}
+        {Value: notes},
+        {
+            // Intent Based Navigation to Books from Object Page
+            $Type : 'UI.DataFieldForIntentBasedNavigation',
+            Label : '{i18n>BrowseBooks}',
+            SemanticObject : 'Books',
+            Action : 'display',
+            RequiresContext : false,
+            IconUrl : 'sap-icon://course-book'
+        }
     ]}
 }) {
     items @UI.LineItem: [
@@ -117,6 +126,16 @@ annotate SalesService.SalesOrders with @(UI : {
         {
             Value: status,
             Label: '{i18n>Status}'
+        },
+        {
+            // Intent Based Navigation to Books
+            $Type : 'UI.DataFieldForIntentBasedNavigation',
+            Label : '{i18n>BrowseBooks}',
+            SemanticObject : 'Books',
+            Action : 'display',
+            RequiresContext : false,
+            Inline : true,
+            IconUrl : 'sap-icon://course-book'
         }
     ]
 });
