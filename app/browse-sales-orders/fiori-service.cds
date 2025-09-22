@@ -1,62 +1,62 @@
-using { SalesService } from '../../srv/sales-service.cds';
+using {SalesService} from '../../srv/sales-service.cds';
 
 ////////////////////////////////////////////////////////////////////////////
 //
-//	SalesOrders Object Page
+//  SalesOrders Object Page
 //
-annotate SalesService.SalesOrders with @(UI : {
-    HeaderInfo: {
+annotate SalesService.SalesOrders with @(UI: {
+    HeaderInfo          : {
         TypeName      : '{i18n>SalesOrder}',
         TypeNamePlural: '{i18n>SalesOrders}',
         Title         : {Value: orderNumber},
-        Description   : {Value : customerName}
+        Description   : {Value: customerName} // flat field
     },
-    HeaderFacets: [{
-        $Type : 'UI.ReferenceFacet',
-        Label : '{i18n>OrderSummary}',
-        Target: '@UI.FieldGroup#Summary'
-    }, {
-        $Type : 'UI.ReferenceFacet',
-        Label : '{i18n>CustomerInfo}',
-        Target: '@UI.FieldGroup#Customer'
-    }],
-    Facets: [{
-        $Type : 'UI.ReferenceFacet',
-        Label : '{i18n>OrderDetails}',
-        Target: '@UI.FieldGroup#Order'
-    }, {
-        $Type : 'UI.ReferenceFacet',
-        Label : '{i18n>Items}',
-        Target: 'items/@UI.LineItem'
-    }],
-    FieldGroup #Summary: {Data : [
+    HeaderFacets        : [
+        {
+            $Type : 'UI.ReferenceFacet',
+            Label : '{i18n>OrderSummary}',
+            Target: '@UI.FieldGroup#Summary'
+        },
+        {
+            $Type : 'UI.ReferenceFacet',
+            Label : '{i18n>CustomerInfo}',
+            Target: '@UI.FieldGroup#Customer'
+        }
+    ],
+    Facets              : [
+        {
+            $Type : 'UI.ReferenceFacet',
+            Label : '{i18n>OrderDetails}',
+            Target: '@UI.FieldGroup#Order'
+        },
+        {
+            $Type : 'UI.ReferenceFacet',
+            Label : '{i18n>Items}',
+            Target: 'items/@UI.LineItem'
+        }
+    ],
+    FieldGroup #Summary : {Data: [
         {Value: orderNumber},
         {Value: orderDate},
         {Value: status},
         {Value: totalAmount},
-        {Value: currency_code}
+        {Value: currency_code} // keep ISO code display
     ]},
-    FieldGroup #Customer: {Data : [
-        {Value: customerName},
-        {Value: customerEmail},
-        {Value: customerPhone},
-        {Value: deliveryAddress}
+    FieldGroup #Customer: {Data: [
+        {
+            Value: customerName,
+            Label: '{i18n>CustomerName}'
+        }, // flat field
+        {
+            Value: customerEmail,
+            Label: '{i18n>CustomerEmail}'
+        } // flat field
     ]},
-    FieldGroup #Order: {Data : [
+    FieldGroup #Order   : {Data: [
         {Value: orderDate},
         {Value: totalAmount},
         {Value: currency_code},
-        {Value: status},
-        {Value: notes},
-        {
-            // Intent Based Navigation to Books from Object Page
-            $Type : 'UI.DataFieldForIntentBasedNavigation',
-            Label : '{i18n>BrowseBooks}',
-            SemanticObject : 'Books',
-            Action : 'display',
-            RequiresContext : false,
-            IconUrl : 'sap-icon://course-book'
-        }
+        {Value: status}
     ]}
 }) {
     items @UI.LineItem: [
@@ -87,22 +87,22 @@ annotate SalesService.SalesOrders with @(UI : {
         {
             Value: currency,
             Label: '{i18n>Currency}'
-        }
+        } // type OK to show
     ];
 };
 
 ////////////////////////////////////////////////////////////////////////////
 //
-//	SalesOrders List Page
+//  SalesOrders List Page
 //
-annotate SalesService.SalesOrders with @(UI : {
+annotate SalesService.SalesOrders with @(UI: {
     SelectionFields: [
         orderNumber,
-        customerName,
+        customerName, // flat field instead of nav path
         status,
         orderDate
     ],
-    LineItem: [
+    LineItem       : [
         {
             Value: orderNumber,
             Label: '{i18n>OrderNumber}'
@@ -142,53 +142,51 @@ annotate SalesService.SalesOrders with @(UI : {
 
 ////////////////////////////////////////////////////////////////////////////
 //
-//	SalesOrderItems Table
+//  SalesOrderItems Table
 //
-annotate SalesService.SalesOrderItems with @(UI : {
-    LineItem: [
-        {
-            Value: itemNumber,
-            Label: '{i18n>ItemNumber}'
-        },
-        {
-            Value: productName,
-            Label: '{i18n>ProductName}'
-        },
-        {
-            Value: productCode,
-            Label: '{i18n>ProductCode}'
-        },
-        {
-            Value: quantity,
-            Label: '{i18n>Quantity}'
-        },
-        {
-            Value: unitPrice,
-            Label: '{i18n>UnitPrice}'
-        },
-        {
-            Value: totalPrice,
-            Label: '{i18n>TotalPrice}'
-        },
-        {
-            Value: currency_code,
-            Label: '{i18n>Currency}'
-        }
-    ]
-});
+annotate SalesService.SalesOrderItems with @(UI: {LineItem: [
+    {
+        Value: itemNumber,
+        Label: '{i18n>ItemNumber}'
+    },
+    {
+        Value: productName,
+        Label: '{i18n>ProductName}'
+    },
+    {
+        Value: productCode,
+        Label: '{i18n>ProductCode}'
+    },
+    {
+        Value: quantity,
+        Label: '{i18n>Quantity}'
+    },
+    {
+        Value: unitPrice,
+        Label: '{i18n>UnitPrice}'
+    },
+    {
+        Value: totalPrice,
+        Label: '{i18n>TotalPrice}'
+    },
+    {
+        Value: currency,
+        Label: '{i18n>Currency}'
+    }
+]});
 
 ////////////////////////////////////////////////////////////////////////////
 //
-//	Books Entity for Value List
+//  Books Entity for Value List
 //
-annotate SalesService.Books with @(UI : {
+annotate SalesService.Books with @(UI: {
     SelectionFields: [
         title,
         author.name,
         genre.name,
         price
     ],
-    LineItem: [
+    LineItem       : [
         {
             Value: ID,
             Label: '{i18n>ID}'
@@ -219,15 +217,15 @@ annotate SalesService.Books with @(UI : {
         }
     ]
 }) {
-    ID @Common: {
-        SemanticObject: 'Books',
-        Text: title,
+    ID       @Common: {
+        SemanticObject : 'Books',
+        Text           : title,
         TextArrangement: #TextOnly
     };
-    title @title: '{i18n>Title}';
-    author @title: '{i18n>Author}';
-    genre @title: '{i18n>Genre}';
-    price @title: '{i18n>Price}';
-    currency @title: '{i18n>Currency}';
-    stock @title: '{i18n>Stock}';
+    title    @title : '{i18n>Title}';
+    author   @title : '{i18n>Author}';
+    genre    @title : '{i18n>Genre}';
+    price    @title : '{i18n>Price}';
+    currency @title : '{i18n>Currency}';
+    stock    @title : '{i18n>Stock}';
 };
