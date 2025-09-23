@@ -4,3 +4,16 @@ ID,title,descr,author_ID,price,currency_code,genre_ID,publisher_ID
 251,The Raven,"""The Raven"" is a narrative poem by American writer Edgar Allan Poe. First published in January 1845, the poem is often noted for its musicality, stylized language, and supernatural atmosphere. It tells of a talking raven's mysterious visit to a distraught lover, tracing the man's slow fall into madness. The lover, often identified as being a student, is lamenting the loss of his love, Lenore. Sitting on a bust of Pallas, the raven seems to further distress the protagonist with its constant repetition of the word ""Nevermore"". The poem makes use of folk, mythological, religious, and classical references.",150,13.13,USD,16,2
 252,Eleonora,"""Eleonora"" is a short story by Edgar Allan Poe, first published in 1842 in Philadelphia in the literary annual The Gift. It is often regarded as somewhat autobiographical and has a relatively ""happy"" ending.",150,14,USD,16,2
 271,Catweazle,"Catweazle is a British fantasy television series, starring Geoffrey Bayldon in the title role, and created by Richard Carpenter for London Weekend Television. The first series, produced and directed by Quentin Lawrence, was screened in the UK on ITV in 1970. The second series, directed by David Reid and David Lane, was shown in 1971. Each series had thirteen episodes, most but not all written by Carpenter, who also published two books based on the scripts.",170,150,JPY,13,3
+301,The Shining,"A horror novel by Stephen King about a haunted hotel and the descent into madness.",200,15.99,USD,17,4
+302,It,"Stephen King's horror epic about childhood fears and an ancient evil.",200,18.50,USD,16,4
+303,The Hobbit,"J.R.R. Tolkien's classic fantasy novel about Bilbo Baggins and his unexpected journey.",201,12.99,GBP,13,1
+304,The Lord of the Rings,"The epic fantasy trilogy by J.R.R. Tolkien.",201,25.00,GBP,13,1
+305,The Neverending Story,"Michael Ende's beloved fantasy about Bastian and the magical world of Fantastica.",202,14.50,EUR,19,5
+306,1984,"George Orwell's dystopian classic depicting a totalitarian surveillance state.",203,10.99,USD,18,2
+307,Animal Farm,"George Orwell's allegorical novella about revolution and corruption.",203,8.99,USD,18,2
+308,Harry Potter and the Philosopher's Stone,"The first book in J.K. Rowling's Harry Potter series.",204,11.99,GBP,13,1
+309,Harry Potter and the Chamber of Secrets,"The second book in J.K. Rowling's series.",204,12.99,GBP,13,1
+310,Dune,"Frank Herbert's sci-fi epic set on the desert planet Arrakis.",205,16.50,USD,14,4
+311,Dune Messiah,"The sequel to Dune, continuing Paul Atreides' saga.",205,15.50,USD,14,4
+312,The Children of Dune,"The third book in the Dune saga.",205,17.00,USD,14,4
+
