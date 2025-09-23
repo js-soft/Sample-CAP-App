@@ -4,57 +4,45 @@ const { SELECT, INSERT, UPDATE } = cds.ql;
 
 module.exports = class CatalogService extends cds.ApplicationService {
   init() {
-    const { Books, SalesOrders, SalesOrderItems } = cds.entities(
-      "sap.capire.bookshop"
-    );
+    const { Books, SalesOrders, SalesOrderItems, Customers, Inventory } =
+      cds.entities("sap.capire.bookshop");
     const { ListOfBooks } = this.entities;
 
-    // Add some discount for overstocked books
-    this.after("each", ListOfBooks, (book) => {
-      if (book.stock > 111) book.title += ` -- 11% discount!`;
-    });
-
-    // Reduce stock of ordered books if available stock suffices
     this.on("submitOrder", async (req) => {
       let { book: id, quantity } = req.data;
       let book = await SELECT.one.from(Books, id, (b) => b.stock);
 
-      // Validate input data
       if (!book) return req.error(404, `Book #${id} doesn't exist`);
       if (quantity < 1) return req.error(400, `quantity has to be 1 or more`);
       if (!book.stock || quantity > book.stock)
         return req.error(409, `${quantity} exceeds stock for book #${id}`);
 
-      // Reduce stock in database and return updated stock value
       await UPDATE(Books, id).with({ stock: (book.stock -= quantity) });
       return book;
     });
 
-    // Emit event when an order has been submitted
     this.after("submitOrder", async (_, req) => {
       let { book, quantity } = req.data;
       await this.emit("OrderedBook", { book, quantity, buyer: req.user.id });
     });
 
-    // Place a sales order
+    // --- Place a sales order + allocate from warehouses ---
     this.on("placeOrder", "Books", async (req) => {
       try {
         const { ID } = req.params?.[0] || {};
         if (ID == null) return req.error(400, "Missing Book ID from context");
-        if (!req.user || req.user.is?.("anonymous"))
+        if (!req.user || req.user.is?.("anonymous")) {
           return req.error(401, "You must be logged in to place an order");
+        }
 
         const quantity = Number(req.data.quantity);
-        if (!Number.isFinite(quantity) || quantity <= 0)
+        if (!Number.isFinite(quantity) || quantity <= 0) {
           return req.error(400, "Provide a positive quantity");
-
-        const { Books, SalesOrders, SalesOrderItems, Customers } = cds.entities(
-          "sap.capire.bookshop"
-        );
+        }
 
         const book = await SELECT.one
           .from(Books)
-          .columns("ID", "title", "price", "currency_code")
+          .columns("ID", "title", "price", "currency_code", "stock")
           .where({ ID });
         if (!book) return req.error(404, `Book ${ID} not found`);
 
@@ -63,6 +51,22 @@ module.exports = class CatalogService extends cds.ApplicationService {
           return req.error(409, `Book ${ID} has no valid price`);
         const currency = book.currency_code || "EUR";
         const total = Number((price * quantity).toFixed(2));
+
+        const invRows = await SELECT.from(Inventory)
+          .columns("book_ID", "warehouse_ID", "quantity")
+          .where({ book_ID: ID })
+          .orderBy({ quantity: "desc" });
+
+        const totalAvailable = invRows.reduce(
+          (s, r) => s + (r.quantity || 0),
+          0
+        );
+        if (totalAvailable < quantity) {
+          return req.error(
+            409,
+            `Requested ${quantity} exceeds total available stock (${totalAvailable}) for book ${ID}`
+          );
+        }
 
         const userId = req.user?.id;
         const userName =
@@ -95,18 +99,6 @@ module.exports = class CatalogService extends cds.ApplicationService {
         const orderId = cds.utils.uuid();
         const today = new Date().toISOString().slice(0, 10);
 
-        const orderItem = {
-          ID: cds.utils.uuid(),
-          itemNumber: 10,
-          productName: book.title,
-          productCode: String(ID),
-          quantity,
-          unitPrice: price,
-          totalPrice: Number((price * quantity).toFixed(2)),
-          currency_code: currency,
-          salesOrder_ID: orderId,
-        };
-
         await INSERT.into(SalesOrders).entries({
           ID: orderId,
           orderNumber: `SO-${Math.floor(Math.random() * 90000 + 10000)}`,
@@ -117,7 +109,69 @@ module.exports = class CatalogService extends cds.ApplicationService {
           customer_ID: customer.ID,
         });
 
-        await INSERT.into(SalesOrderItems).entries(orderItem);
+        await INSERT.into(SalesOrderItems).entries({
+          ID: cds.utils.uuid(),
+          itemNumber: 10,
+          productName: book.title,
+          productCode: String(ID),
+          quantity,
+          unitPrice: price,
+          totalPrice: Number((price * quantity).toFixed(2)),
+          currency_code: currency,
+          salesOrder_ID: orderId,
+          book_ID: ID,
+        });
+
+        let remaining = quantity;
+
+        for (const row of invRows) {
+          if (remaining <= 0) break;
+          const take = Math.min(remaining, row.quantity);
+
+          if (take > 0) {
+            const affected = await UPDATE(Inventory)
+              .set({ quantity: { "-=": take } })
+              .where({
+                book_ID: ID,
+                warehouse_ID: row.warehouse_ID,
+                quantity: { ">=": take },
+              });
+
+            if (affected === 0) {
+              const fresh = await SELECT.one
+                .from(Inventory)
+                .columns("quantity")
+                .where({ book_ID: ID, warehouse_ID: row.warehouse_ID });
+
+              const canTake = Math.min(remaining, fresh?.quantity ?? 0);
+              if (canTake > 0) {
+                const affected2 = await UPDATE(Inventory)
+                  .set({ quantity: { "-=": canTake } })
+                  .where({
+                    book_ID: ID,
+                    warehouse_ID: row.warehouse_ID,
+                    quantity: { ">=": canTake },
+                  });
+
+                if (affected2 > 0) remaining -= canTake;
+              }
+            } else {
+              remaining -= take;
+            }
+          }
+        }
+
+        if (remaining > 0) {
+          return req.error(
+            500,
+            `Failed to allocate ${remaining} items from warehouses`
+          );
+        }
+
+        const [{ sum }] = await SELECT.from(Inventory)
+          .columns(`sum(quantity) as sum`)
+          .where({ book_ID: ID });
+        await UPDATE(Books, ID).with({ stock: Number(sum || 0) });
 
         req.info(
           `Order placed: ${quantity} × "${book.title}". Total ${total.toFixed(
@@ -131,7 +185,6 @@ module.exports = class CatalogService extends cds.ApplicationService {
       }
     });
 
-    // Delegate requests to the underlying generic service
     return super.init();
   }
 };
