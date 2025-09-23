@@ -16,4 +16,13 @@ ID,title,descr,author_ID,price,currency_code,genre_ID,publisher_ID
 310,Dune,"Frank Herbert's sci-fi epic set on the desert planet Arrakis.",205,16.50,USD,14,4
 311,Dune Messiah,"The sequel to Dune, continuing Paul Atreides' saga.",205,15.50,USD,14,4
 312,The Children of Dune,"The third book in the Dune saga.",205,17.00,USD,14,4
-
+313,Misery,"A psychological horror novel by Stephen King about an author held captive by a fan.",200,14.50,USD,17,4
+314,Carrie,"Stephen King's debut novel about a bullied girl with telekinetic powers.",200,13.50,USD,17,4
+315,The Silmarillion,"A collection of J.R.R. Tolkien's mythopoeic works, published posthumously.",201,19.99,GBP,13,1
+316,Momo,"Michael Ende's fantasy novel about a girl who fights against the Men in Grey who steal time.",202,11.00,EUR,19,5
+317,Lolita,"Vladimir Nabokov's controversial and classic novel about obsession and desire.",206,16.00,USD,11,5
+318,Weaveworld,"Clive Barker's dark fantasy novel involving a magical world hidden in a rug.",207,15.00,USD,13,4
+319,Hyperion,"Dan Simmons' award-winning sci-fi novel, first in the Hyperion Cantos.",208,17.50,USD,14,4
+320,The Fall of Hyperion,"The direct sequel to Hyperion, continuing the pilgrims’ story.",208,18.00,USD,14,4
+321,Harry Potter and the Prisoner of Azkaban,"The third book in J.K. Rowling's Harry Potter series.",204,13.50,GBP,13,1
+322,Essays of George Orwell,"A collection of George Orwell’s essays on politics, literature, and culture.",203,14.00,USD,23,2
