@@ -9,8 +9,27 @@
     <pages>
       <Page title="{i18n>appTitle}">
         <content>
-          <!-- Donut (pie) chart: Orders by Genre (quantity) -->
-          <viz:VizFrame id="pieByGenre" vizType="donut" height="420px" width="100%">
+        <!-- Revenue by Day -->
+          <viz:VizFrame id="lineRevenue" vizType="line" height="420px" width="100%" class="sapUiSmallMarginTop">
+            <viz:dataset>
+              <viz.data:FlattenedDataset data="{/RevenueByDay}">
+                <viz.data:dimensions>
+                  <viz.data:DimensionDefinition name="Date" value="{orderDate}" />
+                </viz.data:dimensions>
+                <viz.data:measures>
+                  <viz.data:MeasureDefinition name="Revenue" value="{revenue}" />
+                </viz.data:measures>
+              </viz.data:FlattenedDataset>
+            </viz:dataset>
+            <viz:feeds>
+              <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+                uid="categoryAxis" type="Dimension" values="Date" />
+              <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+                uid="valueAxis" type="Measure" values="Revenue" />
+            </viz:feeds>
+          </viz:VizFrame>
+          <!-- Orders by Genre -->
+          <viz:VizFrame id="pieByGenre" vizType="donut" height="420px" width="50%">
             <viz:dataset>
               <viz.data:FlattenedDataset data="{/OrdersByGenre}">
                 <viz.data:dimensions>
@@ -30,25 +49,7 @@
             </viz:feeds>
           </viz:VizFrame>
 
-          <!-- (Optional) A simple line chart: Revenue by Day -->
-          <viz:VizFrame id="lineRevenue" vizType="line" height="420px" width="100%" class="sapUiSmallMarginTop">
-            <viz:dataset>
-              <viz.data:FlattenedDataset data="{/RevenueByDay}">
-                <viz.data:dimensions>
-                  <viz.data:DimensionDefinition name="Date" value="{orderDate}" />
-                </viz.data:dimensions>
-                <viz.data:measures>
-                  <viz.data:MeasureDefinition name="Revenue" value="{revenue}" />
-                </viz.data:measures>
-              </viz.data:FlattenedDataset>
-            </viz:dataset>
-            <viz:feeds>
-              <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-                uid="categoryAxis" type="Dimension" values="Date" />
-              <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-                uid="valueAxis" type="Measure" values="Revenue" />
-            </viz:feeds>
-          </viz:VizFrame>
+          
 
         </content>
       </Page>
