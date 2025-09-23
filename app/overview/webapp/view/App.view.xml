@@ -1,0 +1,57 @@
+<mvc:View
+  controllerName="overview.controller.App"
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:viz="sap.viz.ui5.controls"
+  xmlns:viz.data="sap.viz.ui5.data">
+
+  <App>
+    <pages>
+      <Page title="{i18n>appTitle}">
+        <content>
+          <!-- Donut (pie) chart: Orders by Genre (quantity) -->
+          <viz:VizFrame id="pieByGenre" vizType="donut" height="420px" width="100%">
+            <viz:dataset>
+              <viz.data:FlattenedDataset data="{/OrdersByGenre}">
+                <viz.data:dimensions>
+                  <viz.data:DimensionDefinition name="Genre" value="{genre}" />
+                </viz.data:dimensions>
+                <viz.data:measures>
+                  <viz.data:MeasureDefinition name="Quantity" value="{quantity}" />
+                </viz.data:measures>
+              </viz.data:FlattenedDataset>
+            </viz:dataset>
+
+            <viz:feeds>
+              <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+                uid="color" type="Dimension" values="Genre" />
+              <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+                uid="size" type="Measure" values="Quantity" />
+            </viz:feeds>
+          </viz:VizFrame>
+
+          <!-- (Optional) A simple line chart: Revenue by Day -->
+          <viz:VizFrame id="lineRevenue" vizType="line" height="420px" width="100%" class="sapUiSmallMarginTop">
+            <viz:dataset>
+              <viz.data:FlattenedDataset data="{/RevenueByDay}">
+                <viz.data:dimensions>
+                  <viz.data:DimensionDefinition name="Date" value="{orderDate}" />
+                </viz.data:dimensions>
+                <viz.data:measures>
+                  <viz.data:MeasureDefinition name="Revenue" value="{revenue}" />
+                </viz.data:measures>
+              </viz.data:FlattenedDataset>
+            </viz:dataset>
+            <viz:feeds>
+              <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+                uid="categoryAxis" type="Dimension" values="Date" />
+              <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+                uid="valueAxis" type="Measure" values="Revenue" />
+            </viz:feeds>
+          </viz:VizFrame>
+
+        </content>
+      </Page>
+    </pages>
+  </App>
+</mvc:View>

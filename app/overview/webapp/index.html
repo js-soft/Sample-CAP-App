@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <title>Overview</title>
+    <script
+      id="sap-ui-bootstrap"
+      src="https://ui5.sap.com/resources/sap-ui-core.js"
+      data-sap-ui-async="true"
+      data-sap-ui-theme="sap_horizon"
+      data-sap-ui-libs="sap.ovp,sap.ui.comp,sap.m,sap.ui.table"
+      data-sap-ui-xx-waitForTheme="true"
+      data-sap-ui-compatVersion="edge"
+      data-sap-ui-onInit="module:overview/init"
+      data-sap-ui-resourceroots='{"overview": "./"}'
+      data-sap-ui-libs="sap.m,sap.ui.table,sap.ui.comp,sap.viz"
+    ></script>
+    <script>
+      sap.ui.define(
+        "overview/init",
+        ["sap/ui/core/ComponentContainer"],
+        function (ComponentContainer) {
+          "use strict";
+          new ComponentContainer({ name: "overview", height: "100%" }).placeAt(
+            "content"
+          );
+        }
+      );
+    </script>
+    <style>
+      html,
+      body,
+      #content {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body class="sapUiBody">
+    <div id="content"></div>
+  </body>
+</html>

@@ -38,6 +38,14 @@
               "isGroupLocked": false,
               "tiles": [
                 {
+                  "id": "Overview",
+                  "tileType": "sap.ushell.ui.tile.StaticTile",
+                  "properties": {
+                    "title": "Overview",
+                    "targetURL": "#Overview-display"
+                  }
+                },
+                {
                   "id": "ManageBooks",
                   "tileType": "sap.ushell.ui.tile.StaticTile",
                   "properties": {
@@ -127,6 +135,24 @@
                 "applicationType": "SAPUI5",
                 "additionalInformation": "SAPUI5.Component=warehouses",
                 "url": "warehouses/webapp"
+              }
+            },
+            "Overview": {
+              "semanticObject": "Overview",
+              "action": "display",
+              "title": "Overview page",
+              "signature": {
+                "parameters": {
+                  "Warehouses.ID": {
+                    "renameTo": "ID"
+                  }
+                },
+                "additionalParameters": "ignored"
+              },
+              "resolutionResult": {
+                "applicationType": "SAPUI5",
+                "additionalInformation": "SAPUI5.Component=overview",
+                "url": "overview/webapp"
               }
             },
             "BrowseSalesOrders": {
