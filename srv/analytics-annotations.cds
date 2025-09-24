@@ -47,7 +47,7 @@ annotate An.TopBooks with @(UI: {Chart #TopBooks: {
 
 annotate An.TopCustomers with @(UI: {Chart #TopCustomers: {
   Title              : 'Top Customers',
-  ChartType          : #Donut,
+  ChartType          : #Column,
   Dimensions         : ['customer'],
   Measures           : ['revenue'],
   DimensionAttributes: [{
