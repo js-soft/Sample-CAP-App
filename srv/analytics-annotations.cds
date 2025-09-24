@@ -59,3 +59,18 @@ annotate An.TopCustomers with @(UI: {Chart #TopCustomers: {
     Role   : #Axis1
   }]
 }});
+
+// Add a PresentationVariant to enforce sorting
+annotate An.TopCustomers with @(UI: {PresentationVariant #TopCustByRevenue: {
+  SortOrder: [{
+    Property  : revenue,
+    Descending: true
+  }],
+  MaxItems : 5
+}});
+
+// Link Chart + PresentationVariant
+annotate An.TopCustomers with @(UI: {SelectionPresentationVariant #TopCustSPV: {
+  PresentationVariant: @UI.PresentationVariant #TopCustByRevenue,
+  Chart              : @UI.Chart #TopCustomers
+}});

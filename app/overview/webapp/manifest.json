@@ -56,8 +56,7 @@
         "model": "",
         "template": "sap.ovp.cards.charts.analytical",
         "settings": {
-          "entitySet": "TopCustomers",
-          "annotationPath": "com.sap.vocabularies.UI.v1.Chart#TopCustomers",
+          "selectionPresentationVariantAnnotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#TopCustSPV",
           "title": "{{TopCustomers}}"
         }
       }
