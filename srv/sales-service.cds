@@ -5,7 +5,8 @@ service SalesService {
     entity SalesOrders     as
         projection on my.SalesOrders {
             *,
-            items : redirected to SalesOrderItems
+            items : redirected to SalesOrderItems,
+            customer : redirected to Customers
         };
 
     // Sales order items with associations
@@ -22,5 +23,7 @@ service SalesService {
         };
 
     // Customers entity for associations
-    entity Customers       as projection on my.Customers;
+    entity Customers       as projection on my.Customers {
+        *
+    };
 }

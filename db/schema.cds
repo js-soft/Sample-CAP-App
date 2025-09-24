@@ -107,9 +107,9 @@ entity SalesOrders : managed {
       @UI.Identification: [{position: 60}]
       @UI.LineItem      : [{position: 60}]
       status      : String(20);
+      customer    : Association to Customers;
       items       : Composition of many SalesOrderItems
                       on items.salesOrder = $self;
-      customer    : Association to Customers;
 }
 
 entity SalesOrderItems : managed {
@@ -144,4 +144,6 @@ entity Customers : managed {
       userId : String(255) @title: 'User ID';
       name   : String(100);
       email  : String(255);
+      salesOrders : Association to many SalesOrders
+                      on salesOrders.customer = $self;
 }
