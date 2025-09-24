@@ -33,7 +33,7 @@ annotate CatalogService.Books with @(UI: {
     FieldGroup #Price: {Data: [
         {Value: price},
         {
-            Value: currency.symbol,
+            Value: currency_code,
             Label: '{i18n>Currency}'
         },
     ]},
@@ -83,7 +83,7 @@ annotate CatalogService.Books with @(UI: {
         },
         {Value: genre.name},
         {Value: price},
-        {Value: currency.symbol},
+        {Value: currency_code},
         {
             // Intent Based Navigation to Sales Orders
             $Type : 'UI.DataFieldForIntentBasedNavigation',

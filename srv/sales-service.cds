@@ -4,6 +4,7 @@ service SalesService {
     // Main sales orders entity with proper projections
     entity SalesOrders     as
         projection on my.SalesOrders {
+            *,
             ID,
             orderNumber,
             orderDate,
