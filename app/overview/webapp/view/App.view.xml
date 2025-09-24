@@ -39,7 +39,7 @@
 
               <!-- Orders by Genre -->
               <VBox>
-                <viz:VizFrame id="pieByGenre" vizType="donut" height="420px" width="100%" vizProperties="{title:{text: 'Orders by Genre'}}">
+                <viz:VizFrame id="pieByGenre" vizType="donut" height="420px" width="100%" vizProperties="{plotArea: { drawingEffect: 'glossy'},title:{text: 'Orders by Genre'}}">
                   <viz:dataset>
                     <viz.data:FlattenedDataset data="{/OrdersByGenre}">
                       <viz.data:dimensions>
@@ -61,7 +61,7 @@
 
               <!-- Orders by Book -->
               <VBox>
-                <viz:VizFrame id="pieByBook" vizType="pie" height="420px" width="100%" vizProperties="{title:{text: 'Orders by Book'}}">
+                <viz:VizFrame id="pieByBook" vizType="pie" height="420px" width="100%" vizProperties="{plotArea: { drawingEffect: 'glossy'},title:{text: 'Orders by Book'},dataLabel:{visible:true,showTotal:true}}">
                   <viz:dataset>
                     <viz.data:FlattenedDataset data="{/TopBooks}">
                       <viz.data:dimensions>
