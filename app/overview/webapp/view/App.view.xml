@@ -84,6 +84,30 @@
             </layout:content>
           </layout:Grid>
 
+          <!-- Top Customers -->
+              <VBox>
+                <viz:VizFrame id="pieByCustomers" vizType="bar" height="420px" width="100%" 
+                vizProperties="{plotArea: { drawingEffect: 'glossy'},title:{text: 'Top Customers'},dataLabel:{visible:true,showTotal:true}}">
+                  <viz:dataset>
+                    <viz.data:FlattenedDataset  
+                    data="{ path: '/TopCustomers'  }">
+                      <viz.data:dimensions>
+                        <viz.data:DimensionDefinition name="Customer" value="{customer}" />
+                      </viz.data:dimensions>
+                      <viz.data:measures>
+                        <viz.data:MeasureDefinition name="Revenue" value="{revenue}" />
+                      </viz.data:measures>
+                    </viz.data:FlattenedDataset>
+                  </viz:dataset>
+                  <viz:feeds>
+                    <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+                      uid="categoryAxis" type="Dimension" values="Customer" />
+                    <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+                      uid="valueAxis" type="Measure" values="Revenue" />
+                  </viz:feeds>
+                </viz:VizFrame>
+              </VBox>
+
         </content>
       </Page>
     </pages>
