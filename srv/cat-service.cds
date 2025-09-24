@@ -1,12 +1,12 @@
 using {sap.capire.bookshop as my} from '../db/schema';
 
 service CatalogService {
+
   @readonly
   entity Warehouses     as
     projection on my.Warehouses {
       ID,
       name
-    // add more fields if you need them elsewhere
     };
 
   @readonly
@@ -17,9 +17,6 @@ service CatalogService {
       quantity
     };
 
-  // Books already exposes `availabilities` — keep that as-is
-
-  /** For displaying lists of Books */
   @readonly
   entity ListOfBooks    as
     projection on Books
@@ -27,7 +24,6 @@ service CatalogService {
       descr
     };
 
-  /** For display in details pages */
   @readonly
   entity Books          as
     projection on my.Books {
@@ -43,12 +39,11 @@ service CatalogService {
       action placeOrder(quantity: Integer @title: '{i18n>Quantity}' ) returns UUID;
     };
 
-  /** Expose Publishers entity */
   @readonly
   entity Publishers     as
     projection on my.Publishers {
       *,
-      books // include association for navigation
+      books
     };
 
   @requires: 'authenticated-user'
@@ -61,6 +56,55 @@ service CatalogService {
   event OrderedBook : {
     book     : Books:ID;
     quantity : Integer;
-    buyer    : String
+    buyer    : String;
   };
 }
+
+annotate CatalogService.Books with @(UI: {
+  Facets           : [
+    {
+      $Type : 'UI.ReferenceFacet',
+      Label : '{i18n>OrderDetails}',
+      Target: '@UI.FieldGroup#Order'
+    },
+    {
+      $Type : 'UI.ReferenceFacet',
+      Label : '{i18n>Inventory}',
+      Target: 'availabilities/@UI.LineItem'
+    }
+  ],
+  FieldGroup #Order: {Data: [
+    {
+      Value: orderDate,
+      ![unknown]
+    }, // harmless if not present; FE ignores
+    {
+      Value: totalAmount,
+      ![unknown]
+    },
+    {
+      Value: currency_code,
+      ![unknown]
+    },
+    {
+      Value: status,
+      ![unknown]
+    }
+  ]}
+});
+
+/** Define how to render rows of Availabilities (Book × Warehouse × Quantity) */
+annotate CatalogService.Availabilities with @(UI: {LineItem: [
+  {
+    Value: book.title,
+    Label: '{i18n>Book}'
+  },
+  {
+    Value: warehouse.name,
+    Label: '{i18n>Warehouse}'
+  },
+  {
+    Value: quantity,
+    Label: '{i18n>Quantity}'
+  }
+]});
