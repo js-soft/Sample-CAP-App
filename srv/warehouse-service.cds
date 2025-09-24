@@ -5,7 +5,9 @@ service WarehouseService {
   entity Availabilities as
     projection on my.Inventory {
       book,
+      book.title     as bookTitle,
       warehouse,
+      warehouse.name as warehouseName,
       quantity
     }
     actions {
