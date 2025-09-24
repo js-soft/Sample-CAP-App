@@ -63,7 +63,7 @@
               <!-- Orders by Book -->
               <VBox>
                 <viz:VizFrame id="pieByBook" vizType="pie" height="420px" width="100%" 
-                vizProperties="{plotArea: { drawingEffect: 'glossy'},title:{text: 'Orders by Book'}}">
+                vizProperties="{title:{text: 'Orders by Book'}}">
                   <viz:dataset>
                     <viz.data:FlattenedDataset data="{/TopBooks}">
                       <viz.data:dimensions>
@@ -92,7 +92,7 @@
                 vizProperties="{plotArea: { drawingEffect: 'glossy'},title:{text: 'Top Customers'},dataLabel:{visible:true,showTotal:true}}">
                   <viz:dataset>
                     <viz.data:FlattenedDataset  
-                    data="{ path: '/TopCustomers'  }">
+                    data="{ path: '/TopCustomers' }">
                       <viz.data:dimensions>
                         <viz.data:DimensionDefinition name="Customer" value="{customer}" />
                       </viz.data:dimensions>
