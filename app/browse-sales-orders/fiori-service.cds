@@ -170,7 +170,7 @@ annotate SalesService.SalesOrderItems with @(UI: {LineItem: [
         Label: '{i18n>TotalPrice}'
     },
     {
-        Value: currency,
+        Value: currency_code,
         Label: '{i18n>Currency}'
     }
 ]});
