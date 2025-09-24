@@ -1,6 +1,5 @@
 using {WarehouseService} from '../../srv/warehouse-service.cds';
 
-// =-=-=-= Warehouses: List + Object page
 annotate WarehouseService.Warehouses with @(UI: {
   HeaderInfo               : {
     TypeName      : '{i18n>Warehouse}',
@@ -9,14 +8,12 @@ annotate WarehouseService.Warehouses with @(UI: {
     Description   : {Value: city}
   },
 
-  // Search bar filters
   SelectionFields          : [
     name,
     city,
     email
   ],
 
-  // Columns in the warehouse list
   LineItem                 : [
     {
       Value         : ID,
@@ -51,18 +48,16 @@ annotate WarehouseService.Warehouses with @(UI: {
     }
   ],
 
-  // Object page sections
   Facets                   : [
     {
       $Type : 'UI.ReferenceFacet',
       Label : '{i18n>Details}',
       Target: '@UI.FieldGroup#WarehouseInfo'
     },
-    // If your navigation is named 'stocks', change Target to 'stocks/@UI.LineItem'
     {
       $Type : 'UI.ReferenceFacet',
       Label : '{i18n>Inventory}',
-      Target: 'availabilities/@UI.LineItem'
+      Target: 'stocks/@UI.LineItem'
     }
   ],
 
@@ -86,14 +81,13 @@ annotate WarehouseService.Warehouses with @(UI: {
   ]}
 });
 
-// =-=-=-= Availabilities (inventory list on the nav)
 annotate WarehouseService.Availabilities with @(UI: {LineItem: [
   {
-    Value: book.title,
+    Value: bookTitle,
     Label: '{i18n>Book}'
   },
   {
-    Value: warehouse.name,
+    Value: warehouseName,
     Label: '{i18n>Warehouse}'
   },
   {
@@ -101,15 +95,17 @@ annotate WarehouseService.Availabilities with @(UI: {LineItem: [
     Label: '{i18n>Quantity}'
   },
   {
-    $Type : 'UI.DataFieldForAction',
-    Action: 'WarehouseService.decreaseQuantity',
-    Label : '−',
-    Inline: true
+    $Type          : 'UI.DataFieldForAction',
+    Action         : 'WarehouseService.decreaseQuantity',
+    Label          : '−',
+    Inline         : true,
+    RequiresContext: true
   },
   {
-    $Type : 'UI.DataFieldForAction',
-    Action: 'WarehouseService.increaseQuantity',
-    Label : '+',
-    Inline: true
+    $Type          : 'UI.DataFieldForAction',
+    Action         : 'WarehouseService.increaseQuantity',
+    Label          : '+',
+    Inline         : true,
+    RequiresContext: true
   }
 ]});
