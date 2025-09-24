@@ -21,6 +21,8 @@ service SalesService {
     entity SalesOrderItems as
         projection on my.SalesOrderItems {
             *,
+            salesOrder.customer.name as customerName,
+            salesOrder.customer.email as customerEmail
         };
 
     // Books entity for value lists and associations
