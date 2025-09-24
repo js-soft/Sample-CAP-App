@@ -12,9 +12,8 @@
         <content>
 
           <!-- Revenue by Day (full width) -->
-          <VBox class="sapUiSmallMarginTop sapUiMediumMarginBottom">
-            <Title text="Revenue by Day" level="H3"/>            
-            <viz:VizFrame id="lineRevenue" vizType="line" height="420px" width="100%">
+          <VBox class="sapUiSmallMarginTop sapUiMediumMarginBottom">  
+            <viz:VizFrame id="lineRevenue" vizType="line" height="420px" width="100%" vizProperties="{title:{text: 'Revenue by Day'}}">
               <viz:dataset>
                 <viz.data:FlattenedDataset data="{/RevenueByDay}">
                   <viz.data:dimensions>
@@ -40,8 +39,7 @@
 
               <!-- Orders by Genre -->
               <VBox>
-                <Title text="Orders by Genre" level="H3"/>
-                <viz:VizFrame id="pieByGenre" vizType="donut" height="420px" width="100%">
+                <viz:VizFrame id="pieByGenre" vizType="donut" height="420px" width="100%" vizProperties="{title:{text: 'Orders by Genre'}}">
                   <viz:dataset>
                     <viz.data:FlattenedDataset data="{/OrdersByGenre}">
                       <viz.data:dimensions>
@@ -63,8 +61,7 @@
 
               <!-- Orders by Book -->
               <VBox>
-                <Title text="Orders by Book" level="H3"/>
-                <viz:VizFrame id="pieByBook" vizType="pie" height="420px" width="100%">
+                <viz:VizFrame id="pieByBook" vizType="pie" height="420px" width="100%" vizProperties="{title:{text: 'Orders by Book'}}">
                   <viz:dataset>
                     <viz.data:FlattenedDataset data="{/TopBooks}">
                       <viz.data:dimensions>
