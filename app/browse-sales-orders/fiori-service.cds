@@ -9,7 +9,7 @@ annotate SalesService.SalesOrders with @(UI: {
         TypeName      : '{i18n>SalesOrder}',
         TypeNamePlural: '{i18n>SalesOrders}',
         Title         : {Value: orderNumber},
-        Description   : {Value: customerName} // flat field
+        Description   : {Value: customer.name}
     },
     HeaderFacets        : [
         {
@@ -44,13 +44,13 @@ annotate SalesService.SalesOrders with @(UI: {
     ]},
     FieldGroup #Customer: {Data: [
         {
-            Value: customerName,
+            Value: customer.name,
             Label: '{i18n>CustomerName}'
-        }, // flat field
+        },
         {
-            Value: customerEmail,
+            Value: customer.email,
             Label: '{i18n>CustomerEmail}'
-        } // flat field
+        }
     ]},
     FieldGroup #Order   : {Data: [
         {Value: orderDate},
@@ -98,7 +98,7 @@ annotate SalesService.SalesOrders with @(UI: {
 annotate SalesService.SalesOrders with @(UI: {
     SelectionFields: [
         orderNumber,
-        customerName, // flat field instead of nav path
+        customer.name,
         status,
         orderDate
     ],
@@ -108,7 +108,7 @@ annotate SalesService.SalesOrders with @(UI: {
             Label: '{i18n>OrderNumber}'
         },
         {
-            Value: customerName,
+            Value: customer.name,
             Label: '{i18n>CustomerName}'
         },
         {

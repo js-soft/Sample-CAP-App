@@ -5,24 +5,13 @@ service SalesService {
     entity SalesOrders     as
         projection on my.SalesOrders {
             *,
-            ID,
-            orderNumber,
-            orderDate,
-            totalAmount,
-            status,
-            customer,
-            // keep the association
-            customer.name  as customerName, // <-- add this
-            customer.email as customerEmail, // <-- add this
             items : redirected to SalesOrderItems
         };
 
     // Sales order items with associations
     entity SalesOrderItems as
         projection on my.SalesOrderItems {
-            *,
-            salesOrder.customer.name as customerName,
-            salesOrder.customer.email as customerEmail
+            *
         };
 
     // Books entity for value lists and associations
@@ -31,4 +20,7 @@ service SalesService {
             *,
             author.name as author_name
         };
+
+    // Customers entity for associations
+    entity Customers       as projection on my.Customers;
 }
