@@ -3,53 +3,89 @@
   xmlns:mvc="sap.ui.core.mvc"
   xmlns="sap.m"
   xmlns:viz="sap.viz.ui5.controls"
-  xmlns:viz.data="sap.viz.ui5.data">
+  xmlns:viz.data="sap.viz.ui5.data"
+  xmlns:layout="sap.ui.layout">
 
   <App>
     <pages>
       <Page title="{i18n>appTitle}">
         <content>
-        <!-- Revenue by Day -->
-          <viz:VizFrame id="lineRevenue" vizType="line" height="420px" width="100%" class="sapUiSmallMarginTop">
-            <viz:dataset>
-              <viz.data:FlattenedDataset data="{/RevenueByDay}">
-                <viz.data:dimensions>
-                  <viz.data:DimensionDefinition name="Date" value="{orderDate}" />
-                </viz.data:dimensions>
-                <viz.data:measures>
-                  <viz.data:MeasureDefinition name="Revenue" value="{revenue}" />
-                </viz.data:measures>
-              </viz.data:FlattenedDataset>
-            </viz:dataset>
-            <viz:feeds>
-              <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-                uid="categoryAxis" type="Dimension" values="Date" />
-              <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-                uid="valueAxis" type="Measure" values="Revenue" />
-            </viz:feeds>
-          </viz:VizFrame>
-          <!-- Orders by Genre -->
-          <viz:VizFrame id="pieByGenre" vizType="donut" height="420px" width="50%">
-            <viz:dataset>
-              <viz.data:FlattenedDataset data="{/OrdersByGenre}">
-                <viz.data:dimensions>
-                  <viz.data:DimensionDefinition name="Genre" value="{genre}" />
-                </viz.data:dimensions>
-                <viz.data:measures>
-                  <viz.data:MeasureDefinition name="Quantity" value="{quantity}" />
-                </viz.data:measures>
-              </viz.data:FlattenedDataset>
-            </viz:dataset>
 
-            <viz:feeds>
-              <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-                uid="color" type="Dimension" values="Genre" />
-              <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-                uid="size" type="Measure" values="Quantity" />
-            </viz:feeds>
-          </viz:VizFrame>
+          <!-- Revenue by Day (full width) -->
+          <VBox class="sapUiSmallMarginTop sapUiMediumMarginBottom">
+            <Title text="Revenue by Day" level="H3"/>            
+            <viz:VizFrame id="lineRevenue" vizType="line" height="420px" width="100%">
+              <viz:dataset>
+                <viz.data:FlattenedDataset data="{/RevenueByDay}">
+                  <viz.data:dimensions>
+                    <viz.data:DimensionDefinition name="Date" value="{orderDate}" />
+                  </viz.data:dimensions>
+                  <viz.data:measures>
+                    <viz.data:MeasureDefinition name="Revenue" value="{revenue}" />
+                  </viz.data:measures>
+                </viz.data:FlattenedDataset>
+              </viz:dataset>
+              <viz:feeds>
+                <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+                  uid="categoryAxis" type="Dimension" values="Date" />
+                <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+                  uid="valueAxis" type="Measure" values="Revenue" />
+              </viz:feeds>
+            </viz:VizFrame>
+          </VBox>
 
-          
+          <!-- Genre + Book side by side -->
+          <layout:Grid defaultSpan="L6 M6 S12" class="sapUiSmallMarginTop">
+            <layout:content>
+
+              <!-- Orders by Genre -->
+              <VBox>
+                <Title text="Orders by Genre" level="H3"/>
+                <viz:VizFrame id="pieByGenre" vizType="donut" height="420px" width="100%">
+                  <viz:dataset>
+                    <viz.data:FlattenedDataset data="{/OrdersByGenre}">
+                      <viz.data:dimensions>
+                        <viz.data:DimensionDefinition name="Genre" value="{genre}" />
+                      </viz.data:dimensions>
+                      <viz.data:measures>
+                        <viz.data:MeasureDefinition name="Quantity" value="{quantity}" />
+                      </viz.data:measures>
+                    </viz.data:FlattenedDataset>
+                  </viz:dataset>
+                  <viz:feeds>
+                    <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+                      uid="color" type="Dimension" values="Genre" />
+                    <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+                      uid="size" type="Measure" values="Quantity" />
+                  </viz:feeds>
+                </viz:VizFrame>
+              </VBox>
+
+              <!-- Orders by Book -->
+              <VBox>
+                <Title text="Orders by Book" level="H3"/>
+                <viz:VizFrame id="pieByBook" vizType="pie" height="420px" width="100%">
+                  <viz:dataset>
+                    <viz.data:FlattenedDataset data="{/TopBooks}">
+                      <viz.data:dimensions>
+                        <viz.data:DimensionDefinition name="Title" value="{title}" />
+                      </viz.data:dimensions>
+                      <viz.data:measures>
+                        <viz.data:MeasureDefinition name="Quantity" value="{quantity}" />
+                      </viz.data:measures>
+                    </viz.data:FlattenedDataset>
+                  </viz:dataset>
+                  <viz:feeds>
+                    <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+                      uid="color" type="Dimension" values="Title" />
+                    <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
+                      uid="size" type="Measure" values="Quantity" />
+                  </viz:feeds>
+                </viz:VizFrame>
+              </VBox>
+
+            </layout:content>
+          </layout:Grid>
 
         </content>
       </Page>
