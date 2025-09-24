@@ -2,7 +2,21 @@ using {sap.capire.bookshop as my} from '../db/schema';
 
 service CatalogService {
 
-  /** For displaying lists of Books */
+  @readonly
+  entity Warehouses     as
+    projection on my.Warehouses {
+      ID,
+      name
+    };
+
+  @readonly
+  entity Availabilities as
+    projection on my.Inventory {
+      book,
+      warehouse,
+      quantity
+    };
+
   @readonly
   entity ListOfBooks    as
     projection on Books
@@ -10,7 +24,6 @@ service CatalogService {
       descr
     };
 
-  /** For display in details pages */
   @readonly
   entity Books          as
     projection on my.Books {
@@ -23,17 +36,14 @@ service CatalogService {
       modifiedBy
     }
     actions {
-      action placeOrder(quantity: Integer @title: '{i18n>Quantity}',
-                        customerName: String @title: '{i18n>Customer Name}',
-                        customerEmail: String @title: '{i18n>Customer Email}' ) returns UUID;
+      action placeOrder(quantity: Integer @title: '{i18n>Quantity}' ) returns UUID;
     };
 
-  /** Expose Publishers entity */
   @readonly
   entity Publishers     as
     projection on my.Publishers {
       *,
-      books // include association for navigation
+      books
     };
 
   @requires: 'authenticated-user'
@@ -46,26 +56,55 @@ service CatalogService {
   event OrderedBook : {
     book     : Books:ID;
     quantity : Integer;
-    buyer    : String
+    buyer    : String;
   };
-
-  /** List of availabilities per warehouse */
-  @readonly
-  entity Availabilities as
-    projection on my.Inventory {
-      book,
-      warehouse,
-      quantity
-    }
-    actions {
-      action increaseQuantity(by: Integer default 1) returns CatalogService.Availabilities;
-      action decreaseQuantity(by: Integer default 1) returns CatalogService.Availabilities;
-    };
-
-  @readonly
-  entity Warehouses     as
-    projection on my.Warehouses {
-      *,
-      stocks
-    };
 }
+
+annotate CatalogService.Books with @(UI: {
+  Facets           : [
+    {
+      $Type : 'UI.ReferenceFacet',
+      Label : '{i18n>OrderDetails}',
+      Target: '@UI.FieldGroup#Order'
+    },
+    {
+      $Type : 'UI.ReferenceFacet',
+      Label : '{i18n>Inventory}',
+      Target: 'availabilities/@UI.LineItem'
+    }
+  ],
+  FieldGroup #Order: {Data: [
+    {
+      Value: orderDate,
+      ![unknown]
+    }, // harmless if not present; FE ignores
+    {
+      Value: totalAmount,
+      ![unknown]
+    },
+    {
+      Value: currency_code,
+      ![unknown]
+    },
+    {
+      Value: status,
+      ![unknown]
+    }
+  ]}
+});
+
+/** Define how to render rows of Availabilities (Book × Warehouse × Quantity) */
+annotate CatalogService.Availabilities with @(UI: {LineItem: [
+  {
+    Value: book.title,
+    Label: '{i18n>Book}'
+  },
+  {
+    Value: warehouse.name,
+    Label: '{i18n>Warehouse}'
+  },
+  {
+    Value: quantity,
+    Label: '{i18n>Quantity}'
+  }
+]});

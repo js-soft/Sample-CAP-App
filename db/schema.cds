@@ -18,16 +18,18 @@ entity Books : managed {
       publisher         : Association to Publishers;
       reviews           : Association to many Reviews
                             on reviews.book = $self;
+      salesOrderItems   : Association to many SalesOrderItems
+                            on salesOrderItems.book = $self;
 }
 
 entity Publishers : managed {
-  key ID          : Integer;
+  key ID              : Integer;
       @mandatory name : String(111);
-      location    : String(111);
-      foundedYear : Integer;
-      website     : String(255);
-      books       : Association to many Books
-                      on books.publisher = $self;
+      location        : String(111);
+      foundedYear     : Integer;
+      website         : String(255);
+      books           : Association to many Books
+                          on books.publisher = $self;
 }
 
 entity Reviews : managed {
@@ -74,6 +76,7 @@ entity Inventory : managed {
 extend Books with {
   availabilities : Association to many Inventory
                      on availabilities.book = $self;
+  stock          : Integer  @title: 'Total Stock'  @readonly;
 }
 
 extend Warehouses with {
@@ -83,37 +86,30 @@ extend Warehouses with {
 
 /** Sales Orders */
 entity SalesOrders : managed {
-  key ID              : UUID;
+  key ID          : UUID;
 
       @UI.Identification: [{position: 10}]
       @UI.LineItem      : [{position: 10}]
-      orderNumber     : String(20);
-
-      @UI.Identification: [{position: 20}]
-      @UI.LineItem      : [{position: 20}]
-      customerName    : String(100);
+      orderNumber : String(20);
 
       @UI.Identification: [{position: 30}]
       @UI.LineItem      : [{position: 30}]
-      orderDate       : Date;
+      orderDate   : Date;
 
       @UI.Identification: [{position: 40}]
       @UI.LineItem      : [{position: 40}]
-      totalAmount     : Decimal(15, 2);
+      totalAmount : Decimal(15, 2);
 
       @UI.Identification: [{position: 50}]
       @UI.LineItem      : [{position: 50}]
-      currency        : Currency;
+      currency    : Currency;
 
       @UI.Identification: [{position: 60}]
       @UI.LineItem      : [{position: 60}]
-      status          : String(20);
-      customerEmail   : String(255);
-      customerPhone   : String(20);
-      deliveryAddress : String(500);
-      notes           : String(1000);
-      items           : Composition of many SalesOrderItems
-                          on items.salesOrder = $self;
+      status      : String(20);
+      customer    : Association to Customers;
+      items       : Composition of many SalesOrderItems
+                      on items.salesOrder = $self;
 }
 
 entity SalesOrderItems : managed {
@@ -141,4 +137,13 @@ entity SalesOrderItems : managed {
       currency    : Currency;
       salesOrder  : Association to SalesOrders;
       book        : Association to Books;
+}
+
+entity Customers : managed {
+  key ID     : UUID;
+      userId : String(255) @title: 'User ID';
+      name   : String(100);
+      email  : String(255);
+      salesOrders : Association to many SalesOrders
+                      on salesOrders.customer = $self;
 }

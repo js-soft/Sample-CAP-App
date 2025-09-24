@@ -6,10 +6,11 @@
   "license": "UNLICENSED",
   "private": true,
   "dependencies": {
-    "@sap/cds": "^9.2.0",
-    "express": "^4",
     "@cap-js/hana": "^2",
-    "@sap/xssec": "^4"
+    "@sap/cds": "^9.3.1",
+    "@sap/cds-mtxs": "^3",
+    "@sap/xssec": "^4",
+    "express": "^4"
   },
   "engines": {
     "node": ">=20"
@@ -27,16 +28,21 @@
     "app/browse",
     "app/browse-sales-orders",
     "app/warehouses",
-    "app/publish"
+    "app/publish",
+    "app/user-management",
+    "app/overview"
   ],
   "cds": {
     "requires": {
       "[production]": {
-        "auth": "xsuaa"
+        "auth": "xsuaa",
+        "multitenancy": true
       },
       "destinations": true,
       "html5-runtime": true,
-      "workzone": true
-    }
+      "workzone": true,
+      "html5-repo": true
+    },
+    "profile": "with-mtx-sidecar"
   }
 }

@@ -6,7 +6,7 @@
       "version": "1.0.0"
     },
     "type": "application",
-    "title": "{{appTitle}}",
+    "title": "{{Browse Publishers}}",
     "description": "{{appDescription}}",
     "i18n": "i18n/i18n.properties",
     "dataSources": {
@@ -31,7 +31,7 @@
           },
           "semanticObject": "Publishers",
           "action": "display",
-          "title": "{{appTitle}}",
+          "title": "{{Browse Publishers}}",
           "info": "{{appInfo}}",
           "subTitle": "{{appSubTitle}}",
           "icon": "sap-icon://course-book",

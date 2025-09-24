@@ -6,7 +6,7 @@
       "version": "1.0.0"
     },
     "type": "application",
-    "title": "{{appTitle}}",
+    "title": "{{Browse Publishers}}",
     "description": "{{appDescription}}",
     "i18n": {
       "bundleUrl": "i18n/i18n.properties",
@@ -30,10 +30,7 @@
         "Publishers-display": {
           "signature": {
             "parameters": {
-              "Books.ID": {
-                "renameTo": "ID"
-              },
-              "Authors.books.ID": {
+              "Publishers.ID": {
                 "renameTo": "ID"
               }
             },
@@ -41,7 +38,7 @@
           },
           "semanticObject": "Publishers",
           "action": "display",
-          "title": "{{appTitle}}",
+          "title": "{{Browse Publishers}}",
           "info": "{{appInfo}}",
           "subTitle": "{{appSubTitle}}",
           "icon": "sap-icon://course-book",
@@ -100,45 +97,46 @@
       "routes": [
         {
           "pattern": ":?query:",
-          "name": "BooksList",
-          "target": "BooksList"
+          "name": "PublishersList",
+          "target": "PublishersList"
         },
         {
-          "pattern": "Books({key}):?query:",
-          "name": "BooksDetails",
-          "target": "BooksDetails"
+          "pattern": "Publishers({key}):?query:",
+          "name": "PublishersDetails",
+          "target": "PublishersDetails"
         }
       ],
       "targets": {
-        "BooksList": {
+        "PublishersList": {
           "type": "Component",
-          "id": "BooksList",
+          "id": "PublishersList",
           "name": "sap.fe.templates.ListReport",
           "options": {
             "settings": {
-              "entitySet": "Books",
+              "entitySet": "Publishers",
               "initialLoad": true,
               "navigation": {
-                "Books": {
+                "Publishers": {
                   "detail": {
-                    "route": "BooksDetails"
+                    "route": "PublishersDetails"
                   }
                 }
               }
             }
           }
         },
-        "BooksDetails": {
+        "PublishersDetails": {
           "type": "Component",
-          "id": "BooksDetailsList",
+          "id": "PublishersDetailsList",
           "name": "sap.fe.templates.ObjectPage",
           "options": {
             "settings": {
-              "entitySet": "Books"
+              "entitySet": "Publishers"
             }
           }
         }
-      }
+      },
+      "config": {}
     },
     "contentDensities": {
       "compact": true,

@@ -25,16 +25,8 @@ modules:
         properties:
           srv-url: ${default-url}
     requires:
-      - name: sample-cap-app-db
       - name: sample-cap-app-auth
       - name: sample-cap-app-destination
-
-  - name: sample-cap-app-db-deployer
-    type: hdb
-    path: gen/db
-    parameters:
-      buildpack: nodejs_buildpack
-    requires:
       - name: sample-cap-app-db
 
   - name: sample-cap-app
@@ -54,11 +46,19 @@ modules:
       - name: sample-cap-app-auth
       - name: sample-cap-app-destination
       - name: sample-cap-app-html5-runtime
+      - name: sample-cap-app-html5-repo-host
+      - name: mtx-api
+        group: destinations
+        properties:
+          name: mtx-api # must be used in xs-app.json as well
+          url: ~{mtx-url}
     provides:
       - name: app-api
         properties:
           app-protocol: ${protocol}
           app-uri: ${default-uri}
+    properties:
+      TENANT_HOST_PATTERN: "^(.*)-${default-uri}"
 
   - name: sample-cap-app-app-deployer
     type: com.sap.application.content
@@ -78,9 +78,25 @@ modules:
           artifacts:
             - admin-books.zip
           target-path: app/
+        - name: samplecapappusermanagement
+          artifacts:
+            - user-management.zip
+          target-path: app/
         - name: samplecapappbrowse
           artifacts:
             - browse.zip
+          target-path: app/
+        - name: samplecapappbrowsesalesorders
+          artifacts:
+            - browse-sales-orders.zip
+          target-path: app/
+        - name: samplecapapppublish
+          artifacts:
+            - publish.zip
+          target-path: app/
+        - name: samplecapappwarehouses
+          artifacts:
+            - warehouses.zip
           target-path: app/
     parameters:
       config:
@@ -105,6 +121,17 @@ modules:
   - name: samplecapappadminbooks
     type: html5
     path: app/admin-books
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+  - name: samplecapappusermanagement
+    type: html5
+    path: app/user-management
     build-parameters:
       build-result: dist
       builder: custom
@@ -156,13 +183,65 @@ modules:
               ServiceInstanceName: sample-cap-app-auth
               ServiceKeyName: sample-cap-app-auth-key
               sap.cloud.service: samplecapapp.service
+  - name: samplecapappbrowsesalesorders
+    type: html5
+    path: app/browse-sales-orders
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+  - name: samplecapapppublish
+    type: html5
+    path: app/publish
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+  - name: samplecapappwarehouses
+    type: html5
+    path: app/warehouses
+    build-parameters:
+      build-result: dist
+      builder: custom
+      commands:
+        - npm ci
+        - npm run build
+      supported-platforms:
+        []
+
+  - name: sample-cap-app-mtx
+    type: nodejs
+    path: gen/mtx/sidecar
+    build-parameters:
+      builder: npm-ci
+    parameters:
+      instances: 1
+      memory: 256M
+      disk-quota: 512M
+    provides:
+      - name: mtx-api
+        properties:
+          mtx-url: ${default-url}
+    requires:
+      - name: sample-cap-app-registry
+      - name: sample-cap-app-auth
+      - name: sample-cap-app-db
+      - name: app-api
+        properties:
+          SUBSCRIPTION_URL: ~{app-protocol}://\${tenant_subdomain}-~{app-uri}
+      - name: sample-cap-app-destination
+      - name: sample-cap-app-html5-runtime
+      - name: sample-cap-app-html5-repo-host
 
 resources:
-  - name: sample-cap-app-db
-    type: com.sap.xs.hdi-container
-    parameters:
-      service: hana
-      service-plan: hdi-shared
   - name: sample-cap-app-auth
     type: org.cloudfoundry.managed-service
     parameters:
@@ -171,7 +250,7 @@ resources:
       path: ./xs-security.json
       config:
         xsappname: sample-cap-app-${org}-${space}
-        tenant-mode: dedicated
+        tenant-mode: shared
         role-collections:
           - name: 'admin (sample-cap-app ${org}-${space})'
             description: 'generated'
@@ -200,6 +279,15 @@ resources:
                 ProxyType: Internet
                 HTML5.ForwardAuthToken: true
                 HTML5.DynamicDestination: true
+          subaccount:
+            existing_destinations_policy: update
+            destinations:
+              - Name: sample-cap-app-workzone-runtime
+                Authentication: NoAuthentication
+                Type: HTTP
+                ProxyType: Internet
+                URL: https://${org}.launchpad.${default-domain}
+                CEP.HTML5contentprovider: true
     requires:
       - name: srv-api
         group: destinations
@@ -218,3 +306,28 @@ resources:
     parameters:
       service: html5-apps-repo
       service-plan: app-runtime
+  - name: sample-cap-app-registry
+    type: org.cloudfoundry.managed-service
+    requires:
+      - name: mtx-api
+    parameters:
+      service: saas-registry
+      service-plan: application
+      config:
+        xsappname: sample-cap-app-${org}-${space}
+        appName: sample-cap-app-${org}-${space}
+        displayName: sample-cap-app
+        description: A simple CAP project.
+        category: 'Category'
+        appUrls:
+          getDependencies: ~{mtx-api/mtx-url}/-/cds/saas-provisioning/dependencies
+          onSubscription: ~{mtx-api/mtx-url}/-/cds/saas-provisioning/tenant/{tenantId}
+          onSubscriptionAsync: true
+          onUnSubscriptionAsync: true
+          onUpdateDependenciesAsync: true
+          callbackTimeoutMillis: 300000 # Increase if your deployments are taking longer than that
+  - name: sample-cap-app-db
+    type: org.cloudfoundry.managed-service
+    parameters:
+      service: service-manager
+      service-plan: container

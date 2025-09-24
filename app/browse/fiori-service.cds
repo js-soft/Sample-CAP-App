@@ -33,7 +33,7 @@ annotate CatalogService.Books with @(UI: {
     FieldGroup #Price: {Data: [
         {Value: price},
         {
-            Value: currency.symbol,
+            Value: currency_code,
             Label: '{i18n>Currency}'
         },
     ]},
@@ -44,6 +44,15 @@ annotate CatalogService.Books with @(UI: {
             $Type : 'UI.DataFieldForAction',
             Action: 'CatalogService.placeOrder',
             Label : '{i18n>PlaceOrder}'
+        },
+        {
+            // Intent Based Navigation to Sales Orders from Object Page
+            $Type : 'UI.DataFieldForIntentBasedNavigation',
+            Label : '{i18n>ViewSalesOrders}',
+            SemanticObject : 'SalesOrders',
+            Action : 'display',
+            RequiresContext : false,
+            IconUrl : 'sap-icon://sales-order'
         }
     ]
 });
@@ -74,6 +83,28 @@ annotate CatalogService.Books with @(UI: {
         },
         {Value: genre.name},
         {Value: price},
-        {Value: currency.symbol}
+        {Value: currency_code},
+        {
+            // Intent Based Navigation to Sales Orders
+            $Type : 'UI.DataFieldForIntentBasedNavigation',
+            Label : '{i18n>ViewSalesOrders}',
+            SemanticObject : 'SalesOrders',
+            Action : 'display',
+            RequiresContext : false,
+            Inline : true,
+            IconUrl : 'sap-icon://sales-order'
+        }
     ]
 });
+
+annotate CatalogService.Availabilities with @(UI: {LineItem: [
+    {
+        Value: warehouse.name,
+        Label: '{i18n>Warehouse}'
+    },
+    {
+        Value: quantity,
+        Label: '{i18n>Quantity}'
+    }
+// Optional: { Value: book.title, Label: '{i18n>Book}' }
+]});

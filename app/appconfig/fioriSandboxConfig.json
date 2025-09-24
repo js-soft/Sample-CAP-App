@@ -21,6 +21,39 @@
                   }
                 },
                 {
+                  "id": "BrowsePublishers",
+                  "tileType": "sap.ushell.ui.tile.StaticTile",
+                  "properties": {
+                    "title": "Browse Publishers",
+                    "targetURL": "#Publishers-display"
+                  }
+                }
+              ]
+            },
+            {
+              "id": "Administration",
+              "title": "Administration",
+              "isPreset": true,
+              "isVisible": true,
+              "isGroupLocked": false,
+              "tiles": [
+                {
+                  "id": "Overview",
+                  "tileType": "sap.ushell.ui.tile.StaticTile",
+                  "properties": {
+                    "title": "Overview",
+                    "targetURL": "#Overview-display"
+                  }
+                },
+                {
+                  "id": "ManageBooks",
+                  "tileType": "sap.ushell.ui.tile.StaticTile",
+                  "properties": {
+                    "title": "Manage Books",
+                    "targetURL": "#Books-manage"
+                  }
+                },
+                {
                   "id": "BrowseSalesOrders",
                   "tileType": "sap.ushell.ui.tile.StaticTile",
                   "properties": {
@@ -34,31 +67,6 @@
                   "properties": {
                     "title": "Browse Warehouses",
                     "targetURL": "#Warehouses-display"
-                  }
-                },
-                {
-                  "id": "BrowseSalesOrders",
-                  "tileType": "sap.ushell.ui.tile.StaticTile",
-                  "properties": {
-                    "title": "Browse Sales Orders",
-                    "targetURL": "#SalesOrders-display"
-                  }
-                }
-              ]
-            },
-            {
-              "id": "Administration",
-              "title": "Administration",
-              "isPreset": true,
-              "isVisible": true,
-              "isGroupLocked": false,
-              "tiles": [
-                {
-                  "id": "ManageBooks",
-                  "tileType": "sap.ushell.ui.tile.StaticTile",
-                  "properties": {
-                    "title": "Manage Books",
-                    "targetURL": "#Books-manage"
                   }
                 }
               ]
@@ -129,6 +137,24 @@
                 "url": "warehouses/webapp"
               }
             },
+            "Overview": {
+              "semanticObject": "Overview",
+              "action": "display",
+              "title": "Overview page",
+              "signature": {
+                "parameters": {
+                  "Warehouses.ID": {
+                    "renameTo": "ID"
+                  }
+                },
+                "additionalParameters": "ignored"
+              },
+              "resolutionResult": {
+                "applicationType": "SAPUI5",
+                "additionalInformation": "SAPUI5.Component=overview",
+                "url": "overview/webapp"
+              }
+            },
             "BrowseSalesOrders": {
               "semanticObject": "SalesOrders",
               "action": "display",
@@ -145,6 +171,24 @@
                 "applicationType": "SAPUI5",
                 "additionalInformation": "SAPUI5.Component=browse-sales-orders",
                 "url": "browse-sales-orders/webapp"
+              }
+            },
+            "BrowsePublishers": {
+              "semanticObject": "Publishers",
+              "action": "display",
+              "title": "Browse Publishers",
+              "signature": {
+                "parameters": {
+                  "Publishers.ID": {
+                    "renameTo": "ID"
+                  }
+                },
+                "additionalParameters": "ignored"
+              },
+              "resolutionResult": {
+                "applicationType": "SAPUI5",
+                "additionalInformation": "SAPUI5.Component=publisher",
+                "url": "publish/webapp"
               }
             }
           }

@@ -1,19 +1,55 @@
 {
+  "xsappname": "sample-cap-app",
+  "tenant-mode": "shared",
   "scopes": [
+    {
+      "name": "$XSAPPNAME.User",
+      "description": "Browse & order books"
+    },
+    {
+      "name": "$XSAPPNAME.Admin",
+      "description": "Admin (manage sales orders and users)"
+    },
+    {
+      "name": "$XSAPPNAME.UserManagement",
+      "description": "Manage users (admin only)"
+    },
     {
       "name": "$XSAPPNAME.admin",
       "description": "admin"
+    },
+    {
+      "name": "$XSAPPNAME.user",
+      "description": "user"
+    },
+    {
+      "name": "$XSAPPNAME.mtcallback",
+      "description": "Subscription via SaaS Registry",
+      "grant-as-authority-to-apps": [
+        "$XSAPPNAME(application,sap-provisioning,tenant-onboarding)"
+      ]
     }
   ],
-  "attributes": [],
   "role-templates": [
     {
-      "name": "admin",
-      "description": "generated",
-      "scope-references": [
-        "$XSAPPNAME.admin"
-      ],
-      "attribute-references": []
+      "name": "User",
+      "description": "Can browse books and place orders",
+      "scope-references": ["$XSAPPNAME.User"]
+    },
+    {
+      "role-templates": [
+        {
+          "name": "User",
+          "description": "Can browse books and place orders",
+          "scope-references": ["$XSAPPNAME.User"]
+        },
+        {
+          "name": "Admin",
+          "description": "Full admin (incl. sales orders and user management)",
+          "scope-references": ["$XSAPPNAME.Admin", "$XSAPPNAME.UserManagement"]
+        }
+      ]
     }
-  ]
+  ],
+  "attributes": []
 }

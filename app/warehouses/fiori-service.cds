@@ -1,23 +1,20 @@
-using {CatalogService} from '../../srv/cat-service.cds';
+using {WarehouseService} from '../../srv/warehouse-service.cds';
 
-// =-=-=-= warehouses list page
-annotate CatalogService.Warehouses with @(UI: {
-  HeaderInfo     : {
+annotate WarehouseService.Warehouses with @(UI: {
+  HeaderInfo               : {
     TypeName      : '{i18n>Warehouse}',
     TypeNamePlural: '{i18n>Warehouses}',
     Title         : {Value: name},
     Description   : {Value: city}
   },
 
-  // search field filters
-  SelectionFields: [
+  SelectionFields          : [
     name,
     city,
     email
   ],
 
-  // columns in warehous list
-  LineItem       : [
+  LineItem                 : [
     {
       Value         : ID,
       Label         : '{i18n>ID}',
@@ -42,20 +39,21 @@ annotate CatalogService.Warehouses with @(UI: {
       Value         : email,
       Label         : '{i18n>Email}',
       @UI.Importance: #Low
+    },
+    {
+      $Type          : 'UI.DataFieldForAction',
+      Action         : 'WarehouseService.createWarehouse',
+      Label          : '{i18n>Add Warehouse}',
+      RequiresContext: false
     }
-  ]
-});
+  ],
 
-// =-=-=-= individual warehouse object page
-annotate CatalogService.Warehouses with @(UI: {
-  // page sections
   Facets                   : [
     {
       $Type : 'UI.ReferenceFacet',
       Label : '{i18n>Details}',
       Target: '@UI.FieldGroup#WarehouseInfo'
     },
-    // Pek til den ukvalifiserte LineItem-annotasjonen på navigasjonen:
     {
       $Type : 'UI.ReferenceFacet',
       Label : '{i18n>Inventory}',
@@ -83,31 +81,31 @@ annotate CatalogService.Warehouses with @(UI: {
   ]}
 });
 
-// (valgfritt) – fint å ha, men ikke nødvendig når du peker via navigasjonen:
-annotate CatalogService.Availabilities with @(UI: {LineItem: [
+annotate WarehouseService.Availabilities with @(UI: {LineItem: [
   {
-    Value: book.title,
+    Value: bookTitle,
     Label: '{i18n>Book}'
   },
   {
-    Value: warehouse.name,
+    Value: warehouseName,
     Label: '{i18n>Warehouse}'
   },
   {
     Value: quantity,
     Label: '{i18n>Quantity}'
   },
-
   {
-    $Type : 'UI.DataFieldForAction',
-    Action: 'CatalogService.decreaseQuantity',
-    Label : '−',
-    Inline: true
+    $Type          : 'UI.DataFieldForAction',
+    Action         : 'WarehouseService.decreaseQuantity',
+    Label          : '−',
+    Inline         : true,
+    RequiresContext: true
   },
   {
-    $Type : 'UI.DataFieldForAction',
-    Action: 'CatalogService.increaseQuantity',
-    Label : '+',
-    Inline: true
+    $Type          : 'UI.DataFieldForAction',
+    Action         : 'WarehouseService.increaseQuantity',
+    Label          : '+',
+    Inline         : true,
+    RequiresContext: true
   }
 ]});

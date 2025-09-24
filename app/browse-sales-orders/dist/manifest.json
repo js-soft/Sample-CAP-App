@@ -23,6 +23,13 @@
         "settings": {
           "odataVersion": "4.0"
         }
+      },
+      "SalesServiceAnnotations": {
+        "type": "ODataAnnotation",
+        "uri": "annotations/annotations.xml",
+        "settings": {
+          "odataVersion": "4.0"
+        }
       }
     },
     "crossNavigation": {
@@ -36,12 +43,11 @@
             },
             "additionalParameters": "allowed"
           },
-          "semanticObject": "SalesOrders",
+          "semanticObject": "Sales Orders",
           "action": "display",
           "title": "{{appTitle}}",
           "info": "{{appInfo}}",
           "subTitle": "{{appSubTitle}}",
-          "icon": "sap-icon://sales-order",
           "indicatorDataSource": {
             "dataSource": "SalesService",
             "path": "SalesOrders/$count",
@@ -81,6 +87,9 @@
       },
       "": {
         "dataSource": "SalesService",
+        "annotations": [
+          "SalesServiceAnnotations"
+        ],
         "settings": {
           "operationMode": "Server",
           "autoExpandSelect": true,

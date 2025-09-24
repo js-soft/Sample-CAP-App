@@ -2,41 +2,31 @@
   "_version": "1.49.0",
   "sap.app": {
     "id": "sample-cap-app.warehouses",
-    "applicationVersion": {
-      "version": "1.0.0"
-    },
+    "applicationVersion": { "version": "1.0.0" },
     "type": "application",
     "title": "{{appTitle}}",
     "description": "{{appDescription}}",
     "i18n": {
       "bundleUrl": "i18n/i18n.properties",
-      "supportedLocales": [
-        "",
-        "de",
-        "en"
-      ]
+      "supportedLocales": ["", "de", "en"]
     },
     "dataSources": {
       "CatalogService": {
         "uri": "odata/v4/catalog/",
         "type": "OData",
-        "settings": {
-          "odataVersion": "4.0"
-        }
+        "settings": { "odataVersion": "4.0" }
+      },
+      "WarehouseService": {
+        "uri": "odata/v4/warehouse/",
+        "type": "OData",
+        "settings": { "odataVersion": "4.0" }
       }
     },
     "crossNavigation": {
       "inbounds": {
         "Warehouses-display": {
           "signature": {
-            "parameters": {
-              "Warehouses.ID": {
-                "renameTo": "ID"
-              },
-              "Authors.Warehouses.ID": {
-                "renameTo": "ID"
-              }
-            },
+            "parameters": {},
             "additionalParameters": "allowed"
           },
           "semanticObject": "Warehouses",
@@ -46,7 +36,7 @@
           "subTitle": "{{appSubTitle}}",
           "icon": "sap-icon://course-book",
           "indicatorDataSource": {
-            "dataSource": "CatalogService",
+            "dataSource": "WarehouseService",
             "path": "Warehouses/$count",
             "refresh": 1800
           }
@@ -57,41 +47,33 @@
   "sap.ui": {
     "technology": "UI5",
     "fullWidth": false,
-    "deviceTypes": {
-      "desktop": true,
-      "tablet": true,
-      "phone": true
-    }
+    "deviceTypes": { "desktop": true, "tablet": true, "phone": true }
   },
   "sap.ui5": {
     "dependencies": {
       "minUI5Version": "1.115.1",
       "libs": {
+        "sap.ui.core": {},
+        "sap.m": {},
         "sap.fe.templates": {}
       }
     },
     "models": {
       "i18n": {
         "type": "sap.ui.model.resource.ResourceModel",
-        "uri": "i18n/i18n.properties",
         "settings": {
-          "supportedLocales": [
-            "",
-            "de",
-            "en"
-          ]
+          "bundleUrl": "i18n/i18n.properties",
+          "supportedLocales": ["", "de", "en"]
         }
       },
       "": {
-        "dataSource": "CatalogService",
+        "dataSource": "WarehouseService",
         "settings": {
           "operationMode": "Server",
           "autoExpandSelect": true,
           "earlyRequests": true,
           "groupProperties": {
-            "default": {
-              "submit": "Auto"
-            }
+            "default": { "submit": "Auto" }
           }
         }
       }
@@ -120,10 +102,12 @@
               "initialLoad": true,
               "navigation": {
                 "Warehouses": {
-                  "detail": {
-                    "route": "WarehousesDetails"
-                  }
+                  "detail": { "route": "WarehousesDetails" }
                 }
+              },
+              "tableSettings": {
+                "type": "ResponsiveTable",
+                "personalization": { "column": false }
               }
             }
           }
@@ -133,17 +117,12 @@
           "id": "WarehousesDetailsList",
           "name": "sap.fe.templates.ObjectPage",
           "options": {
-            "settings": {
-              "entitySet": "Warehouses"
-            }
+            "settings": { "entitySet": "Warehouses" }
           }
         }
       }
     },
-    "contentDensities": {
-      "compact": true,
-      "cozy": true
-    }
+    "contentDensities": { "compact": true, "cozy": true }
   },
   "sap.fiori": {
     "registrationIds": [],

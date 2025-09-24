@@ -6,5 +6,8 @@ service AdminService @(requires: 'admin') {
   entity Reviews         as projection on my.Reviews;
   entity SalesOrders     as projection on my.SalesOrders;
   entity SalesOrderItems as projection on my.SalesOrderItems;
-  entity Publishers      as projection on my.Publishers
+  entity Publishers      as projection on my.Publishers;
+  entity Customers       as projection on my.Customers;
+  entity Warehouses      as projection on my.Warehouses;
+  entity Inventory       as projection on my.Inventory
 }
