@@ -54,7 +54,8 @@
           "action": "display",
           "parameters": {
             "Books.ID": {
-              "value.format": "plain"
+              "value": "{book_ID}",
+              "value.format": "binding"
             }
           }
         }
@@ -138,14 +139,8 @@
           "options": {
             "settings": {
               "entitySet": "SalesOrders",
-              "showRelatedApps": true,
-              "navigation": {
-                "items": {
-                  "detail": {
-                    "outbound": "Books-display"
-                  }
-                }
-              }
+              "showRelatedApps": true
+              
             }
           }
         }

@@ -150,8 +150,8 @@ annotate SalesService.SalesOrderItems with @(UI: {LineItem: [
         Label: '{i18n>ItemNumber}'
     },
     {
-        Value: productName,
-        Label: '{i18n>ProductName}'
+        Value: book_ID,
+        Label: '{i18n>BookID}'
     },
     {
         Value: productCode,
