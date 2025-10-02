@@ -63,6 +63,13 @@
           "parameters": {
             "Publishers.ID": {}
           }
+        },
+        "Warehouses-display": {
+          "semanticObject": "Warehouses",
+          "action": "display",
+          "parameters": {
+            "Warehouses.ID": {}
+          }
         }
       }
     }

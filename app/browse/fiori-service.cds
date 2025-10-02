@@ -108,8 +108,15 @@ annotate CatalogService.Books with @(UI: {
 
 annotate CatalogService.Availabilities with @(UI: {LineItem: [
     {
+        $Type: 'UI.DataFieldWithIntentBasedNavigation',
+        Label: '{i18n>Warehouse}',
         Value: warehouse.name,
-        Label: '{i18n>Warehouse}'
+        SemanticObject: 'Warehouses',
+        Action: 'display',
+        Mapping: [{
+            LocalProperty: warehouse_ID,
+            SemanticObjectProperty: 'Warehouses.ID'
+        }]
     },
     {
         Value: quantity,
