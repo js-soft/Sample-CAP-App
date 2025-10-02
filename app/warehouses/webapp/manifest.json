@@ -18,7 +18,11 @@
       "inbounds": {
         "Warehouses-display": {
           "signature": {
-            "parameters": {},
+            "parameters": {
+              "Warehouses.ID": {
+                "renameTo": "ID"
+              }
+            },
             "additionalParameters": "allowed"
           },
           "semanticObject": "Warehouses",

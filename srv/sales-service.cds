@@ -12,7 +12,8 @@ service SalesService {
     // Sales order items with associations
     entity SalesOrderItems as
         projection on my.SalesOrderItems {
-            *
+            *,
+            book : redirected to Books
         };
 
     // Books entity for value lists and associations
