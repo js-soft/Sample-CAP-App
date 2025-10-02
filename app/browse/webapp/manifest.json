@@ -56,6 +56,13 @@
         "SalesOrders-display": {
           "semanticObject": "SalesOrders",
           "action": "display"
+        },
+        "Publishers-display": {
+          "semanticObject": "Publishers",
+          "action": "display",
+          "parameters": {
+            "Publishers.ID": {}
+          }
         }
       }
     }
