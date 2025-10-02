@@ -53,10 +53,7 @@
           "semanticObject": "Books",
           "action": "display",
           "parameters": {
-            "Books.ID": {
-              "value": "{book_ID}",
-              "value.format": "binding"
-            }
+            "Books.ID": {}
           }
         }
       }
@@ -85,9 +82,6 @@
       },
       "": {
         "dataSource": "SalesService",
-        "annotations": [
-          "SalesServiceAnnotations"
-        ],
         "settings": {
           "operationMode": "Server",
           "autoExpandSelect": true,
