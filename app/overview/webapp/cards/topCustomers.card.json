@@ -1,0 +1,37 @@
+{
+    "sap.app": {
+        "id": "overview.cards.topCustomers"
+    },
+    "sap.card": {
+        "type": "Analytical",
+        "header": {
+            "title": "Top Customers",
+            "subTitle": "Revenue (Top 5)"
+        },
+        "data": {
+            "request": {
+                "url": "/odata/v4/analytics/TopCustomers?$orderby=revenue%20desc&$top=5",
+                "headers": {
+                    "Accept": "application/json"
+                }
+            },
+            "path": "/value"
+        },
+        "content": {
+            "chartType": "column",
+            "legend": {
+                "position": "Bottom"
+            },
+            "dimensions": {
+                "label": "Customer",
+                "value": "{customer}"
+            },
+            "measures": [
+                {
+                    "label": "Revenue",
+                    "value": "{= ${revenue} * 1 }"
+                }
+            ]
+        }
+    }
+}
