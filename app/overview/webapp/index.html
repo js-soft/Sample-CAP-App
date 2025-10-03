@@ -8,13 +8,13 @@
       src="https://ui5.sap.com/resources/sap-ui-core.js"
       data-sap-ui-async="true"
       data-sap-ui-theme="sap_horizon"
-      data-sap-ui-libs="sap.ovp,sap.ui.comp,sap.m,sap.ui.table"
-      data-sap-ui-xx-waitForTheme="true"
       data-sap-ui-compatVersion="edge"
+      data-sap-ui-xx-waitForTheme="true"
+      data-sap-ui-resourceroots='{"overview":"./"}'
+      data-sap-ui-libs="sap.m,sap.ui.table,sap.viz,sap.ui.integration"
       data-sap-ui-onInit="module:overview/init"
-      data-sap-ui-resourceroots='{"overview": "./"}'
-      data-sap-ui-libs="sap.m,sap.ui.table,sap.ui.comp,sap.viz"
     ></script>
+
     <script>
       sap.ui.define(
         "overview/init",
