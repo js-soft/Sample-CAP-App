@@ -1,0 +1,40 @@
+{
+    "sap.app": {
+        "id": "overview.cards.revenueByDay"
+    },
+    "sap.card": {
+        "type": "Analytical",
+        "header": {
+            "title": "Revenue by Day",
+            "subTitle": "Last period"
+        },
+        "data": {
+            "request": {
+                "url": "/odata/v4/analytics/RevenueByDay?$orderby=orderDate%20asc",
+                "headers": {
+                    "Accept": "application/json"
+                }
+            },
+            "path": "/value"
+        },
+        "content": {
+            "chartType": "line",
+            "legend": {
+                "visible": true,
+                "position": "Bottom"
+            },
+            "dimensions": [
+                {
+                    "label": "Date",
+                    "value": "{orderDate}"
+                }
+            ],
+            "measures": [
+                {
+                    "label": "Revenue",
+                    "value": "{= ${revenue} * 1 }"
+                }
+            ]
+        }
+    }
+}
