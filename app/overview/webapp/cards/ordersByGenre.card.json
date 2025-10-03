@@ -1,0 +1,34 @@
+{
+    "sap.app": {
+        "id": "overview.cards.ordersByGenre"
+    },
+    "sap.card": {
+        "type": "Analytical",
+        "header": {
+            "title": "Orders by Genre",
+            "subTitle": "Quantity"
+        },
+        "data": {
+            "request": {
+                "url": "/odata/v4/analytics/OrdersByGenre?$orderby=quantity%20desc"
+            },
+            "path": "/value"
+        },
+        "content": {
+            "chartType": "bar",
+            "legend": {
+                "visible": false
+            },
+            "dimensions": {
+                "label": "Genre",
+                "value": "{genre}"
+            },
+            "measures": [
+                {
+                    "label": "Quantity",
+                    "value": "{quantity}"
+                }
+            ]
+        }
+    }
+}
