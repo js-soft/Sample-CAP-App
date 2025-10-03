@@ -19,17 +19,16 @@
         },
         "content": {
             "chartType": "column",
-            "legend": {
-                "position": "Bottom"
-            },
-            "dimensions": {
-                "label": "Customer",
-                "value": "{customer}"
-            },
+            "dimensions": [
+                {
+                    "label": "Customer",
+                    "value": "{customer}"
+                }
+            ],
             "measures": [
                 {
                     "label": "Revenue",
-                    "value": "{= ${revenue} * 1 }"
+                    "value": "{revenue}"
                 }
             ]
         }
