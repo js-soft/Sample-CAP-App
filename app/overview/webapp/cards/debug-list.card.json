@@ -1,0 +1,29 @@
+{
+    "sap.app": {
+        "id": "overview.cards.debuglist"
+    },
+    "sap.card": {
+        "type": "List",
+        "header": {
+            "title": "Debug - Static List"
+        },
+        "data": {
+            "json": [
+                {
+                    "customer": "A",
+                    "revenue": 100
+                },
+                {
+                    "customer": "B",
+                    "revenue": 200
+                }
+            ]
+        },
+        "content": {
+            "item": {
+                "title": "{customer}",
+                "value": "{revenue}"
+            }
+        }
+    }
+}
