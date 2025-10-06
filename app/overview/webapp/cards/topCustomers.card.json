@@ -3,7 +3,7 @@
         "id": "overview.cards.topCustomers"
     },
     "sap.card": {
-        "type": "Analytical",
+        "type": "Component",
         "header": {
             "title": "Top Customers",
             "subTitle": "Revenue (Top 5)"
@@ -18,19 +18,9 @@
             "path": "/value"
         },
         "content": {
-            "chartType": "column",
-            "dimensions": [
-                {
-                    "label": "Customer",
-                    "value": "{customer}"
-                }
-            ],
-            "measures": [
-                {
-                    "label": "Revenue",
-                    "value": "{revenue}"
-                }
-            ]
+            "component": {
+                "name": "overview.cards.topCustomers"
+            }
         }
     }
 }
