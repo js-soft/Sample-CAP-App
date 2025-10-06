@@ -73,7 +73,7 @@
                   vizType="pie"
                   height="420px"
                   width="100%"
-                  vizProperties="{title:{text:'Orders by Book'},interaction:{selectability:{mode:'single'}},legend:{visible:true},dataLabel:{visible:true}}"
+                  vizProperties="{title:{text:'Orders by Book'},interaction:{selectability:{mode:'single'}},legend:{visible:true}}"
                   selectData="onBookSliceSelect">
                   <viz:dataset>
                     <viz.data:FlattenedDataset data="{/TopBooks}">
