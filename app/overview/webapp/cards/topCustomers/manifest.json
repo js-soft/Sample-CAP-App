@@ -1,0 +1,25 @@
+{
+    "sap.app": {
+        "id": "overview.cards.topCustomers",
+        "type": "component",
+        "applicationVersion": {
+            "version": "1.0.0"
+        }
+    },
+    "sap.ui5": {
+        "rootView": {
+            "viewName": "overview.cards.topCustomers.view.TopCustomers",
+            "type": "XML",
+            "async": true
+        },
+        "dependencies": {
+            "libs": {
+                "sap.m": {},
+                "sap.suite.ui.microchart": {}
+            }
+        },
+        "models": {
+            "": {}
+        }
+    }
+}
