@@ -1,0 +1,43 @@
+{
+    "sap.app": {
+        "id": "overview.cards.debugAnalytical"
+    },
+    "sap.card": {
+        "type": "Analytical",
+        "header": {
+            "title": "Debug Analytical",
+            "subTitle": "Static Data"
+        },
+        "data": {
+            "json": [
+                {
+                    "label": "A",
+                    "value": 100
+                },
+                {
+                    "label": "B",
+                    "value": 200
+                },
+                {
+                    "label": "C",
+                    "value": 150
+                }
+            ]
+        },
+        "content": {
+            "chartType": "column",
+            "dimensions": [
+                {
+                    "label": "Label",
+                    "value": "{label}"
+                }
+            ],
+            "measures": [
+                {
+                    "label": "Value",
+                    "value": "{value}"
+                }
+            ]
+        }
+    }
+}
