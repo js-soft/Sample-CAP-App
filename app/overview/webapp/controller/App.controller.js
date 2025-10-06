@@ -16,3 +16,23 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
     },
   });
 });
+
+// sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
+//   "use strict";
+//   return Controller.extend("overview.controller.App", {
+//     onInit: function () {
+//       const toUrl = sap.ui.require.toUrl;
+
+//       // Only set ONE card first to prove it works
+//       const card = this.byId("cardTopCust");
+//       const url = toUrl("overview/cards/topCustomers.card.json");
+
+//       card.setManifest(url);
+
+//       // // Helpful signals
+//       // card.attachManifestReady(() => console.log("[Card ready]", url));
+//       // card.attachDataReady(() => console.log("[Card data ready]"));
+//       // card.attachError((e) => console.error("[Card error]", e.getParameters()));
+//     },
+//   });
+// });
