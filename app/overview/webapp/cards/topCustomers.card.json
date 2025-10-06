@@ -10,7 +10,7 @@
         },
         "data": {
             "request": {
-                "url": "/odata/v4/analytics/TopCustomers?$orderby=revenue%20desc&$top=5",
+                "url": "/odata/v4/analytics/TopCustomers?$orderby=revenue%20desc&$top=3",
                 "headers": {
                     "Accept": "application/json"
                 }
