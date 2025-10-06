@@ -1,0 +1,12 @@
+<mvc:View
+  xmlns:mvc="sap.ui.core.mvc"
+  xmlns="sap.m"
+  xmlns:mc="sap.suite.ui.microchart"
+  controllerName="overview.cards.topCustomers.controller.TopCustomers">
+
+  <VBox class="sapUiSmallMargin">
+    <mc:ColumnMicroChart id="topCustChart" width="100%" height="200px">
+      <mc:columns/>
+    </mc:ColumnMicroChart>
+  </VBox>
+</mvc:View>
