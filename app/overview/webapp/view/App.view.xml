@@ -48,7 +48,7 @@
                   vizType="donut"
                   height="420px"
                   width="100%"
-                  vizProperties="{plotArea:{drawingEffect:'glossy'},title:{text:'Orders by Genre'},dataLabel:{visible:true,showTotal:true}}">
+                  vizProperties="{title:{text:'Orders by Genre'},dataLabel:{visible:true,showTotal:true}}">
                   <viz:dataset>
                     <viz.data:FlattenedDataset data="{/OrdersByGenre}">
                       <viz.data:dimensions>
