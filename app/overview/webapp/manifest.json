@@ -2,6 +2,10 @@
   "sap.app": {
     "id": "overview",
     "type": "application",
+    "title": "Overview",
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
     "i18n": "i18n/i18n.properties",
     "dataSources": {
       "mainService": {
@@ -19,48 +23,13 @@
         "dataSource": "mainService",
         "preload": true
       }
-    }
-  },
-  "sap.ovp": {
-    "globalFilterModel": "",
-    "globalFilterEntityType": "",
-    "cards": {
-      "byGenre": {
-        "model": "",
-        "template": "sap.ovp.cards.charts.analytical",
-        "settings": {
-          "entitySet": "OrdersByGenre",
-          "annotationPath": "com.sap.vocabularies.UI.v1.Chart#ByGenre",
-          "title": "{{ByGenre}}"
-        }
-      },
-      "revenueDaily": {
-        "model": "",
-        "template": "sap.ovp.cards.charts.analytical",
-        "settings": {
-          "entitySet": "RevenueByDay",
-          "annotationPath": "com.sap.vocabularies.UI.v1.Chart#RevenueDaily",
-          "title": "{{RevenueByDay}}"
-        }
-      },
-      "topBooks": {
-        "model": "",
-        "template": "sap.ovp.cards.charts.analytical",
-        "settings": {
-          "entitySet": "TopBooks",
-          "annotationPath": "com.sap.vocabularies.UI.v1.Chart#TopBooks",
-          "title": "{{TopBooks}}"
-        }
-      },
-      "topCustomers": {
-        "model": "",
-        "template": "sap.ovp.cards.charts.analytical",
-        "settings": {
-          "selectionPresentationVariantAnnotationPath": "com.sap.vocabularies.UI.v1.SelectionPresentationVariant#TopCustSPV",
-          "title": "{{TopCustomers}}"
-        }
-      }
     },
-    "chartSettings": {}
+    "dependencies": {
+      "minUI5Version": "1.120.0"
+    },
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    }
   }
 }
