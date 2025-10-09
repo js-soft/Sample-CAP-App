@@ -4,6 +4,7 @@
   xmlns="sap.m"
   xmlns:viz="sap.viz.ui5.controls"
   xmlns:viz.data="sap.viz.ui5.data"
+  xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
   xmlns:layout="sap.ui.layout">
 
   <App>
@@ -12,8 +13,13 @@
         <content>
 
           <!-- Revenue by Day (full width) -->
-          <VBox class="sapUiSmallMarginTop sapUiMediumMarginBottom">  
-            <viz:VizFrame id="lineRevenue" vizType="line" height="420px" width="100%" vizProperties="{title:{text: 'Revenue by Day'}}">
+          <VBox class="sapUiSmallMarginTop sapUiMediumMarginBottom">
+            <viz:VizFrame
+              id="lineRevenue"
+              vizType="line"
+              height="420px"
+              width="100%"
+              vizProperties="{title:{text: 'Revenue by Day'}}">
               <viz:dataset>
                 <viz.data:FlattenedDataset data="{/RevenueByDay}">
                   <viz.data:dimensions>
@@ -25,10 +31,8 @@
                 </viz.data:FlattenedDataset>
               </viz:dataset>
               <viz:feeds>
-                <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-                  uid="categoryAxis" type="Dimension" values="Date" />
-                <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-                  uid="valueAxis" type="Measure" values="Revenue" />
+                <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Date" />
+                <viz.feeds:FeedItem uid="valueAxis" type="Measure" values="Revenue" />
               </viz:feeds>
             </viz:VizFrame>
           </VBox>
@@ -39,8 +43,12 @@
 
               <!-- Orders by Genre -->
               <VBox>
-                <viz:VizFrame id="pieByGenre" vizType="donut" height="420px" width="100%" 
-                vizProperties="{plotArea: { drawingEffect: 'glossy'},title:{text: 'Orders by Genre'},dataLabel:{visible:true,showTotal:true}}">
+                <viz:VizFrame
+                  id="pieByGenre"
+                  vizType="donut"
+                  height="420px"
+                  width="100%"
+                  vizProperties="{title:{text:'Orders by Genre'},dataLabel:{visible:true,showTotal:true}}">
                   <viz:dataset>
                     <viz.data:FlattenedDataset data="{/OrdersByGenre}">
                       <viz.data:dimensions>
@@ -52,22 +60,26 @@
                     </viz.data:FlattenedDataset>
                   </viz:dataset>
                   <viz:feeds>
-                    <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-                      uid="color" type="Dimension" values="Genre" />
-                    <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-                      uid="size" type="Measure" values="Quantity" />
+                    <viz.feeds:FeedItem uid="color" type="Dimension" values="Genre" />
+                    <viz.feeds:FeedItem uid="size"  type="Measure"   values="Quantity" />
                   </viz:feeds>
                 </viz:VizFrame>
               </VBox>
 
               <!-- Orders by Book -->
               <VBox>
-                <viz:VizFrame id="pieByBook" vizType="pie" height="420px" width="100%" 
-                vizProperties="{title:{text: 'Orders by Book'}}">
+                <viz:VizFrame
+                  id="pieByBook"
+                  vizType="pie"
+                  height="420px"
+                  width="100%"
+                  vizProperties="{title:{text:'Orders by Book'},interaction:{selectability:{mode:'single'}},legend:{visible:true}}"
+                  selectData="onBookSliceSelect">
                   <viz:dataset>
                     <viz.data:FlattenedDataset data="{/TopBooks}">
                       <viz.data:dimensions>
-                        <viz.data:DimensionDefinition name="Title" value="{title}" />
+                        <!-- Single dimension: value = bookID (used for nav), displayValue = title (shown in chart) -->
+                        <viz.data:DimensionDefinition name="Book" value="{bookID}" displayValue="{title}" />
                       </viz.data:dimensions>
                       <viz.data:measures>
                         <viz.data:MeasureDefinition name="Quantity" value="{quantity}" />
@@ -75,10 +87,8 @@
                     </viz.data:FlattenedDataset>
                   </viz:dataset>
                   <viz:feeds>
-                    <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-                      uid="color" type="Dimension" values="Title" />
-                    <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-                      uid="size" type="Measure" values="Quantity" />
+                    <viz.feeds:FeedItem uid="color" type="Dimension" values="Book" />
+                    <viz.feeds:FeedItem uid="size"  type="Measure"   values="Quantity" />
                   </viz:feeds>
                 </viz:VizFrame>
               </VBox>
@@ -87,28 +97,29 @@
           </layout:Grid>
 
           <!-- Top Customers -->
-              <VBox>
-                <viz:VizFrame id="pieByCustomers" vizType="bar" height="420px" width="100%" 
-                vizProperties="{plotArea: { drawingEffect: 'glossy'},title:{text: 'Top Customers'},dataLabel:{visible:true,showTotal:true}}">
-                  <viz:dataset>
-                    <viz.data:FlattenedDataset  
-                    data="{ path: '/TopCustomers' }">
-                      <viz.data:dimensions>
-                        <viz.data:DimensionDefinition name="Customer" value="{customer}" />
-                      </viz.data:dimensions>
-                      <viz.data:measures>
-                        <viz.data:MeasureDefinition name="Revenue" value="{revenue}" />
-                      </viz.data:measures>
-                    </viz.data:FlattenedDataset>
-                  </viz:dataset>
-                  <viz:feeds>
-                    <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-                      uid="categoryAxis" type="Dimension" values="Customer" />
-                    <viz.feeds:FeedItem xmlns:viz.feeds="sap.viz.ui5.controls.common.feeds"
-                      uid="valueAxis" type="Measure" values="Revenue" />
-                  </viz:feeds>
-                </viz:VizFrame>
-              </VBox>
+          <VBox>
+            <viz:VizFrame
+              id="pieByCustomers"
+              vizType="bar"
+              height="420px"
+              width="100%"
+              vizProperties="{title:{text:'Top Customers'},dataLabel:{visible:true,showTotal:true}}">
+              <viz:dataset>
+                <viz.data:FlattenedDataset data="{/TopCustomers?$orderby=revenue%20desc&amp;$top=3}">
+                  <viz.data:dimensions>
+                    <viz.data:DimensionDefinition name="Customer" value="{customer}" />
+                  </viz.data:dimensions>
+                  <viz.data:measures>
+                    <viz.data:MeasureDefinition name="Revenue" value="{revenue}" />
+                  </viz.data:measures>
+                </viz.data:FlattenedDataset>
+              </viz:dataset>
+              <viz:feeds>
+                <viz.feeds:FeedItem uid="categoryAxis" type="Dimension" values="Customer" />
+                <viz.feeds:FeedItem uid="valueAxis"    type="Measure"   values="Revenue" />
+              </viz:feeds>
+            </viz:VizFrame>
+          </VBox>
 
         </content>
       </Page>
