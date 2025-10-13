@@ -53,9 +53,7 @@
           "semanticObject": "Books",
           "action": "display",
           "parameters": {
-            "Books.ID": {
-              "value.format": "plain"
-            }
+            "Books.ID": {}
           }
         }
       }
@@ -84,9 +82,6 @@
       },
       "": {
         "dataSource": "SalesService",
-        "annotations": [
-          "SalesServiceAnnotations"
-        ],
         "settings": {
           "operationMode": "Server",
           "autoExpandSelect": true,
@@ -138,14 +133,8 @@
           "options": {
             "settings": {
               "entitySet": "SalesOrders",
-              "showRelatedApps": true,
-              "navigation": {
-                "items": {
-                  "detail": {
-                    "outbound": "Books-display"
-                  }
-                }
-              }
+              "showRelatedApps": true
+              
             }
           }
         }
