@@ -48,7 +48,7 @@
                   vizType="donut"
                   height="420px"
                   width="100%"
-                  vizProperties="{plotArea:{drawingEffect:'glossy'},title:{text:'Orders by Genre'},dataLabel:{visible:true,showTotal:true}}">
+                  vizProperties="{title:{text:'Orders by Genre'},dataLabel:{visible:true,showTotal:true}}">
                   <viz:dataset>
                     <viz.data:FlattenedDataset data="{/OrdersByGenre}">
                       <viz.data:dimensions>
@@ -73,7 +73,7 @@
                   vizType="pie"
                   height="420px"
                   width="100%"
-                  vizProperties="{title:{text:'Orders by Book'},interaction:{selectability:{mode:'single'}},legend:{visible:true},dataLabel:{visible:true}}"
+                  vizProperties="{title:{text:'Orders by Book'},interaction:{selectability:{mode:'single'}},legend:{visible:true}}"
                   selectData="onBookSliceSelect">
                   <viz:dataset>
                     <viz.data:FlattenedDataset data="{/TopBooks}">
@@ -103,9 +103,9 @@
               vizType="bar"
               height="420px"
               width="100%"
-              vizProperties="{plotArea:{drawingEffect:'glossy'},title:{text:'Top Customers'},dataLabel:{visible:true,showTotal:true}}">
+              vizProperties="{title:{text:'Top Customers'},dataLabel:{visible:true,showTotal:true}}">
               <viz:dataset>
-                <viz.data:FlattenedDataset data="{/TopCustomers}">
+                <viz.data:FlattenedDataset data="{/TopCustomers?$orderby=revenue%20desc&amp;$top=3}">
                   <viz.data:dimensions>
                     <viz.data:DimensionDefinition name="Customer" value="{customer}" />
                   </viz.data:dimensions>
