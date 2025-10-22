@@ -68,20 +68,46 @@ annotate CatalogService.Books with @(UI: {
             Value: author,
             Label: '{i18n>Author}'
         },
+        {   Value: publisher_ID,
+            Label: '{i18n>PublisherID}'},
         {
+            $Type: 'UI.DataFieldWithIntentBasedNavigation',
+            Label: '{i18n>Publisher}',
             Value: publisher.name,
-            Label: '{i18n>Publisher}'
+            SemanticObject: 'Publishers',
+            Action: 'display',
+            Mapping: [{
+                LocalProperty: publisher_ID,
+                SemanticObjectProperty: 'Publishers.ID'
+            }]
         },
         {Value: genre.name},
         {Value: price},
-        {Value: currency_code}
+        {Value: currency_code},
+        // {
+        //     // Intent Based Navigation to Sales Orders
+        //     $Type : 'UI.DataFieldForIntentBasedNavigation',
+        //     Label : '{i18n>ViewSalesOrders}',
+        //     SemanticObject : 'SalesOrders',
+        //     Action : 'display',
+        //     RequiresContext : false,
+        //     Inline : true,
+        //     IconUrl : 'sap-icon://sales-order'
+        // }
     ]
 });
 
 annotate CatalogService.Availabilities with @(UI: {LineItem: [
     {
+        $Type: 'UI.DataFieldWithIntentBasedNavigation',
+        Label: '{i18n>Warehouse}',
         Value: warehouse.name,
-        Label: '{i18n>Warehouse}'
+        SemanticObject: 'Warehouses',
+        Action: 'display',
+        Mapping: [{
+            LocalProperty: warehouse_ID,
+            SemanticObjectProperty: 'Warehouses.ID'
+        }]
     },
     {
         Value: quantity,
