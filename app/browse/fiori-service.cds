@@ -44,15 +44,6 @@ annotate CatalogService.Books with @(UI: {
             $Type : 'UI.DataFieldForAction',
             Action: 'CatalogService.placeOrder',
             Label : '{i18n>PlaceOrder}'
-        },
-        {
-            // Intent Based Navigation to Sales Orders from Object Page
-            $Type : 'UI.DataFieldForIntentBasedNavigation',
-            Label : '{i18n>ViewSalesOrders}',
-            SemanticObject : 'SalesOrders',
-            Action : 'display',
-            RequiresContext : false,
-            IconUrl : 'sap-icon://sales-order'
         }
     ]
 });
