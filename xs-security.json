@@ -30,26 +30,5 @@
       ]
     }
   ],
-  "role-templates": [
-    {
-      "name": "User",
-      "description": "Can browse books and place orders",
-      "scope-references": ["$XSAPPNAME.User"]
-    },
-    {
-      "role-templates": [
-        {
-          "name": "User",
-          "description": "Can browse books and place orders",
-          "scope-references": ["$XSAPPNAME.User"]
-        },
-        {
-          "name": "Admin",
-          "description": "Full admin (incl. sales orders and user management)",
-          "scope-references": ["$XSAPPNAME.Admin", "$XSAPPNAME.UserManagement"]
-        }
-      ]
-    }
-  ],
   "attributes": []
 }

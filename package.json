@@ -42,7 +42,6 @@
       "html5-runtime": true,
       "workzone": true,
       "html5-repo": true
-    },
-    "profile": "with-mtx-sidecar"
+    }
   }
 }

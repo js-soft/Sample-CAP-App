@@ -27,7 +27,7 @@ modules:
     requires:
       - name: sample-cap-app-auth
       - name: sample-cap-app-destination
-      - name: sample-cap-app-db
+      - name: sample-cap-app-db-v2
 
   - name: sample-cap-app
     type: approuter.nodejs
@@ -47,7 +47,7 @@ modules:
       - name: sample-cap-app-destination
       - name: sample-cap-app-html5-runtime
       - name: sample-cap-app-html5-repo-host
-      
+
     provides:
       - name: app-api
         properties:
@@ -74,10 +74,6 @@ modules:
           artifacts:
             - admin-books.zip
           target-path: app/
-        - name: samplecapappusermanagement
-          artifacts:
-            - user-management.zip
-          target-path: app/
         - name: samplecapappbrowse
           artifacts:
             - browse.zip
@@ -93,6 +89,10 @@ modules:
         - name: samplecapappwarehouses
           artifacts:
             - warehouses.zip
+          target-path: app/
+        - name: samplecapappoverview
+          artifacts:
+            - overview.zip
           target-path: app/
     parameters:
       config:
@@ -117,17 +117,6 @@ modules:
   - name: samplecapappadminbooks
     type: html5
     path: app/admin-books
-    build-parameters:
-      build-result: dist
-      builder: custom
-      commands:
-        - npm ci
-        - npm run build
-      supported-platforms:
-        []
-  - name: samplecapappusermanagement
-    type: html5
-    path: app/user-management
     build-parameters:
       build-result: dist
       builder: custom
@@ -212,6 +201,17 @@ modules:
         - npm run build
       supported-platforms:
         []
+  - name: samplecapappoverview
+    type: html5
+    path: app/overview
+    build-parameters:
+        build-result: dist
+        builder: custom
+        commands:
+          - npm ci
+          - npm run build
+        supported-platforms:
+          []
 
 resources:
   - name: sample-cap-app-auth
@@ -278,8 +278,8 @@ resources:
     parameters:
       service: html5-apps-repo
       service-plan: app-runtime
-  - name: sample-cap-app-db
-    type: org.cloudfoundry.managed-service
+  - name: sample-cap-app-db-v2
+    type: com.sap.xs.hdi-container
     parameters:
-      service: service-manager
-      service-plan: container
+      service: hana
+      service-plan: hdi-shared

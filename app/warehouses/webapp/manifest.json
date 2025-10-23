@@ -2,7 +2,9 @@
   "_version": "1.49.0",
   "sap.app": {
     "id": "sample-cap-app.warehouses",
-    "applicationVersion": { "version": "1.0.0" },
+    "applicationVersion": {
+      "version": "1.0.0"
+    },
     "type": "application",
     "title": "{{appTitle}}",
     "description": "{{appDescription}}",
@@ -11,7 +13,9 @@
       "WarehouseService": {
         "uri": "odata/v4/warehouse/",
         "type": "OData",
-        "settings": { "odataVersion": "4.0" }
+        "settings": {
+          "odataVersion": "4.0"
+        }
       }
     },
     "crossNavigation": {
@@ -43,7 +47,11 @@
   "sap.ui": {
     "technology": "UI5",
     "fullWidth": false,
-    "deviceTypes": { "desktop": true, "tablet": true, "phone": true }
+    "deviceTypes": {
+      "desktop": true,
+      "tablet": true,
+      "phone": true
+    }
   },
   "sap.ui5": {
     "dependencies": {
@@ -59,7 +67,11 @@
         "type": "sap.ui.model.resource.ResourceModel",
         "settings": {
           "bundleUrl": "i18n/i18n.properties",
-          "supportedLocales": ["", "de", "en"]
+          "supportedLocales": [
+            "",
+            "de",
+            "en"
+          ]
         }
       },
       "": {
@@ -68,14 +80,26 @@
           "operationMode": "Server",
           "autoExpandSelect": true,
           "earlyRequests": true,
-          "groupProperties": { "default": { "submit": "Auto" } }
+          "groupProperties": {
+            "default": {
+              "submit": "Auto"
+            }
+          }
         }
       }
     },
     "routing": {
       "routes": [
-        { "pattern": ":?query:", "name": "WarehousesList", "target": "WarehousesList" },
-        { "pattern": "Warehouses({key}):?query:", "name": "WarehousesDetails", "target": "WarehousesDetails" }
+        {
+          "pattern": ":?query:",
+          "name": "WarehousesList",
+          "target": "WarehousesList"
+        },
+        {
+          "pattern": "Warehouses({key}):?query:",
+          "name": "WarehousesDetails",
+          "target": "WarehousesDetails"
+        }
       ],
       "targets": {
         "WarehousesList": {
@@ -87,11 +111,17 @@
               "entitySet": "Warehouses",
               "initialLoad": true,
               "navigation": {
-                "Warehouses": { "detail": { "route": "WarehousesDetails" } }
+                "Warehouses": {
+                  "detail": {
+                    "route": "WarehousesDetails"
+                  }
+                }
               },
               "tableSettings": {
                 "type": "ResponsiveTable",
-                "personalization": { "column": false }
+                "personalization": {
+                  "column": false
+                }
               }
             }
           }
@@ -100,11 +130,18 @@
           "type": "Component",
           "id": "WarehousesDetailsList",
           "name": "sap.fe.templates.ObjectPage",
-          "options": { "settings": { "entitySet": "Warehouses" } }
+          "options": {
+            "settings": {
+              "entitySet": "Warehouses"
+            }
+          }
         }
       }
     },
-    "contentDensities": { "compact": true, "cozy": true }
+    "contentDensities": {
+      "compact": true,
+      "cozy": true
+    }
   },
   "sap.fiori": {
     "registrationIds": [],
