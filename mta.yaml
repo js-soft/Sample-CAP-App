@@ -27,7 +27,14 @@ modules:
     requires:
       - name: sample-cap-app-auth
       - name: sample-cap-app-destination
-      - name: sample-cap-app-db-v2
+      - name: sample-cap-app-db-v3
+  - name: bookshop-db-deployer
+    type: hdb
+    path: gen/db
+    parameters:
+      buildpack: nodejs_buildpack
+      requires:
+      - name: sample-cap-app-db-v3
 
   - name: sample-cap-app
     type: approuter.nodejs
@@ -278,7 +285,7 @@ resources:
     parameters:
       service: html5-apps-repo
       service-plan: app-runtime
-  - name: sample-cap-app-db-v2
+  - name: sample-cap-app-db-v3
     type: com.sap.xs.hdi-container
     parameters:
       service: hana
