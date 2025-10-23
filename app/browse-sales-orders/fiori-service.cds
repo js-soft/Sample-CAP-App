@@ -144,36 +144,41 @@ annotate SalesService.SalesOrders with @(UI: {
 //
 //  SalesOrderItems Table
 //
-annotate SalesService.SalesOrderItems with @(UI: {LineItem: [
-    {
-        Value: itemNumber,
-        Label: '{i18n>ItemNumber}'
-    },
-    {
-        Value: productName,
-        Label: '{i18n>ProductName}'
-    },
-    {
-        Value: productCode,
-        Label: '{i18n>ProductCode}'
-    },
-    {
-        Value: quantity,
-        Label: '{i18n>Quantity}'
-    },
-    {
-        Value: unitPrice,
-        Label: '{i18n>UnitPrice}'
-    },
-    {
-        Value: totalPrice,
-        Label: '{i18n>TotalPrice}'
-    },
-    {
-        Value: currency_code,
-        Label: '{i18n>Currency}'
-    }
-]});
+annotate SalesService.SalesOrderItems with @(UI: {
+    LineItem: [
+        {
+            Value: itemNumber,
+            Label: '{i18n>ItemNumber}'
+        },
+        {
+            Value: book_ID,
+        Label: '{i18n>BookID}'
+        },
+       {
+            $Type: 'UI.DataFieldWithIntentBasedNavigation',
+            Label: '{i18n>Book}',
+            Value: book.title,
+            SemanticObject: 'Books',
+            Action: 'display',
+            Mapping: [{
+                LocalProperty: book_ID,
+                SemanticObjectProperty: 'Books.ID'
+            }]
+        },
+        {
+            Value: quantity,
+            Label: '{i18n>Quantity}'
+        },
+        {
+            Value: unitPrice,
+            Label: '{i18n>UnitPrice}'
+        },
+        {
+            Value: totalPrice,
+            Label: '{i18n>TotalPrice}'
+        }
+    ]
+});
 
 ////////////////////////////////////////////////////////////////////////////
 //
